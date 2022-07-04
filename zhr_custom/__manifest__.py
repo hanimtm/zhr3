@@ -16,6 +16,7 @@
         'views/product_inherit.xml',
         'views/sale_order.xml',
         'reports/inherit_template.xml',
+        'data/service.xml',
     ],
     'installable': True,
     'application': True,
