@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="hr.view_department_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='manager_id']" position="after">
-                <field name="arabic_name" />
+                <field name="arabic_name"/>
             </xpath>
         </field>
     </record>
@@ -30,29 +30,21 @@
         <field name="priority">30</field>
         <field name="arch" type="xml">
             <xpath expr="//div[@class='oe_title']" position="replace"/>
-<!--            <xpath expr="//field[@name='category_ids']" position="replace"/>-->
+            <!--            <xpath expr="//field[@name='category_ids']" position="replace"/>-->
 
-            <xpath expr="//notebook" position="before">
-                <group colspan="4">
-                    <div>
-                        <label for="name" class="oe_edit_only"/>
-                        <h1 class="o_row">
-                            <field name="name" placeholder="Employee's Name" required="True"/>
-                            <field name="middle_name" placeholder="Middle Name" required="True"/>
-                            <field name="grand_father_name" placeholder="Grand Father Name"/>
-                            <field name="last_name" placeholder="Last Name" required='1'/>
-                        </h1>
-                        <br/>
-                        <label for="arabic_name" class="oe_edit_only"/>
-                        <h2 class="o_row">
-                            <field name="arabic_name" placeholder="Arabic Name" nolabel="1" colspan="4"/>
-                        </h2>
-                        <label for="category_ids" class="oe_edit_only"/>
-                        <field name="category_ids" widget="many2many_tags" placeholder="e.g. Part Time" nolabel="1" colspan="4"/>
-                        <br/>
-                        <label for="employee_code" class="oe_edit_only"/>
-                        <field name="employee_code" placeholder="Employee Code" required="1" nolabel="1"/>
-                    </div>
+            <xpath expr="//sheet/group" position="before">
+                <group>
+                    <group>
+                        <field name="name" placeholder="Employee's Name" required="True"/>
+                        <field name="middle_name" placeholder="Middle Name" required="True"/>
+                        <field name="grand_father_name" placeholder="Grand Father Name"/>
+                        <field name="last_name" placeholder="Last Name" required='1'/>
+                    </group>
+                    <group>
+                        <field name="arabic_name" placeholder="Arabic Name"/>
+                        <field name="category_ids" widget="many2many_tags" placeholder="e.g. Part Time"/>
+                        <field name="employee_code" placeholder="Employee Code" required="1"/>
+                    </group>
                 </group>
             </xpath>
             <xpath expr="//field[@name='birthday']" position="after">
@@ -68,27 +60,30 @@
             </xpath>
             <xpath expr="//group[@name='active_group']" position="before">
                 <group string="Employment">
-                    <field name="joining_date" required="1" />
+                    <field name="joining_date" required="1"/>
                     <field name="date_of_leave"/>
                     <field name="total_service_year"/>
                     <field name='employee_status' required="1"/>
                     <field name="sponsored_by"/>
-                    <field name="reference_by" attrs="{'invisible':[('sponsored_by', 'not in', ['other'])], 'required': [('sponsored_by', 'in', ['other'])]}"/>
+                    <field name="reference_by"
+                           attrs="{'invisible':[('sponsored_by', 'not in', ['other'])], 'required': [('sponsored_by', 'in', ['other'])]}"/>
                 </group>
             </xpath>
             <xpath expr="//field[@name='company_id']" position="after">
-                <field name="branch_id" domain="[('company_id', '=', company_id)]" groups="ahcec_hr_branch.group_company_branch"/>
+                <field name="branch_id" domain="[('company_id', '=', company_id)]"
+                       groups="ahcec_hr_branch.group_company_branch"/>
             </xpath>
             <xpath expr="//field[@name='work_phone']" position="after">
-                <field name="branch_id"  groups="ahcec_hr_branch.group_company_branch"/>
+                <field name="branch_id" groups="ahcec_hr_branch.group_company_branch"/>
                 <field name="laptop_desktop"/>
                 <field name="laptop_desktop_serial"/>
             </xpath>
             <xpath expr="//field[@name='address_home_id']" position="after">
-                <field name="emergency_contact" />
-                <field name="spouse_number" />
+                <field name="emergency_contact"/>
+                <field name="spouse_number"/>
                 <field name="ksa_address_id" options="{'no_create': True}"
-                       attrs="{'invisible': [('is_saudi','=',True),('country_id','!=',False)]}" groups="hr.group_hr_user"/>
+                       attrs="{'invisible': [('is_saudi','=',True),('country_id','!=',False)]}"
+                       groups="hr.group_hr_user"/>
             </xpath>
             <xpath expr="//field[@name='marital']" position="after">
                 <field name="infants"/>
