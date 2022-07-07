@@ -198,7 +198,9 @@ class HRContract(models.Model):
                 else:
                     contract.eos_amount = (1825 * (contract.total_salary / 2) / 365) + (
                             ((days - 1825) * contract.total_salary) / 365)
-
+            else:
+                print('a')
+                
     @api.depends('wage')
     def _get_amount(self):
         for contract in self:
