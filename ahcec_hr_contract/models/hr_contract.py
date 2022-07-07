@@ -83,7 +83,7 @@ class HRContract(models.Model):
         if values.get('employee_id', False):
             employee = self.env['hr.employee'].browse(values['employee_id'])
             values.update({'job_id': employee.job_id.id or False})
-            contracts = employee.get_active_contracts(date=fields.Date.today())
+            # contracts = employee.get_active_contracts(date=fields.Date.today())
             # for cont in contracts:
             #     if cont.state in ('draft','open','pending'):
             #         raise UserError(_('Please close the active contracts of %s') % employee.name)
