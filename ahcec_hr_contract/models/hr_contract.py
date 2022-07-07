@@ -167,6 +167,8 @@ class HRContract(models.Model):
     def _get_eos(self):
         for contract in self:
             contract.today = fields.Date.today()
+            contract.total_days = 0
+            contract.eos_amount = 0
             if contract.employee_id.joining_date:
                 # join_date = datetime.strptime(contract.employee_id.joining_date, DEFAULT_SERVER_DATE_FORMAT)
                 join_date = datetime.strptime(str(contract.employee_id.joining_date), DEFAULT_SERVER_DATE_FORMAT)
