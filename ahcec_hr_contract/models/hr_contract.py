@@ -166,6 +166,7 @@ class HRContract(models.Model):
     @api.depends()
     def _get_eos(self):
         for contract in self:
+            contract.today = fields.Date.today()
             if contract.employee_id.joining_date:
                 # join_date = datetime.strptime(contract.employee_id.joining_date, DEFAULT_SERVER_DATE_FORMAT)
                 join_date = datetime.strptime(str(contract.employee_id.joining_date), DEFAULT_SERVER_DATE_FORMAT)
@@ -200,7 +201,7 @@ class HRContract(models.Model):
                             ((days - 1825) * contract.total_salary) / 365)
             else:
                 print('a')
-                
+
     @api.depends('wage')
     def _get_amount(self):
         for contract in self:
