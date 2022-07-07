@@ -182,6 +182,7 @@ class HRContract(models.Model):
                 end_date = datetime.strptime(str(fields.Date.today()), '%Y-%m-%d')
                 end = datetime.date(end_date)
                 days = abs(end - start).days + 1
+                _logger.critical('*==========================*')
                 _logger.critical(days)
                 contract.total_days = days
                 logging.info('duration_days : %s' + str(days))
