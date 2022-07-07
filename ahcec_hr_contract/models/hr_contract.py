@@ -171,14 +171,14 @@ class HRContract(models.Model):
                 join_date = datetime.strptime(str(contract.employee_id.joining_date), DEFAULT_SERVER_DATE_FORMAT)
                 # contract.today = fields.Date.today()
                 # leave_date = datetime.strptime(contract.today, DEFAULT_SERVER_DATE_FORMAT)
-                leave_date = datetime.strptime(str(contract.today), DEFAULT_SERVER_DATE_FORMAT)
+                leave_date = datetime.strptime(str(fields.Date.today()), DEFAULT_SERVER_DATE_FORMAT)
                 diff = relativedelta(leave_date, join_date)
                 duration_days = diff.days
                 duration_months = diff.months
                 duration_years = diff.years
                 from_date = datetime.strptime(str(contract.employee_id.joining_date), '%Y-%m-%d')
                 start = datetime.date(from_date)
-                end_date = datetime.strptime(str(contract.today), '%Y-%m-%d')
+                end_date = datetime.strptime(str(fields.Date.today()), '%Y-%m-%d')
                 end = datetime.date(end_date)
                 days = abs(end - start).days + 1
                 contract.total_days = days
