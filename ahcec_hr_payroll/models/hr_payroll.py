@@ -7,6 +7,8 @@ from odoo import api, models, fields, _
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from odoo.exceptions import UserError
 from datetime import time as datetime_time
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class HrPayslipLine(models.Model):
@@ -42,10 +44,11 @@ class HrPayslipRun(models.Model):
 class HrPayslip(models.Model):
     _inherit = "hr.payslip"
 
+    @api.depends('date_from', 'date_to')
     def _get_payment_days(self):
         for line in self:
-            day_from = datetime.combine(fields.Date.from_string(line.date_from), datetime_time.min)
-            day_to = datetime.combine(fields.Date.from_string(line.date_to), datetime_time.max)
+            # day_from = datetime.combine(fields.Date.from_string(line.date_from), datetime_time.min)
+            # day_to = datetime.combine(fields.Date.from_string(line.date_to), datetime_time.max)
             # leave_days = line.employee_id.get_leaves_day_count(day_from, day_to,
             #                                                    calendar=line.employee_id.resource_calendar_id)
             leave_days = sum(line.worked_days_line_ids.filtered(lambda record: record.code == 'unpaid_leave').mapped(
@@ -56,6 +59,8 @@ class HrPayslip(models.Model):
             day_from = datetime.strptime(str(line.date_from), DEFAULT_SERVER_DATE_FORMAT)
             day_to = datetime.strptime(str(line.date_to), DEFAULT_SERVER_DATE_FORMAT)
             nb_of_days = (day_to - day_from).days + 1
+            _logger.critical('====================================')
+            _logger.critical(nb_of_days)
             line.month_days = nb_of_days
             line.leave_days = leave_days
             line.annual_leaves = annual_leaves
@@ -71,7 +76,7 @@ class HrPayslip(models.Model):
     vacation_pay = fields.Float(string='Vacation Pay')
     department_id = fields.Many2one('hr.department', string="Department", related='employee_id.department_id',
                                     store=True)
-
+    
     @api.onchange('month_days', 'annual_leaves', 'line_ids')
     def onchange_vacation_pay(self):
         for line in self:
