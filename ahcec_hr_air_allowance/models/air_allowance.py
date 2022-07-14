@@ -116,7 +116,7 @@ class HrContract(models.Model):
     company_pay_children = fields.Integer('Company Pay (Children)')
     company_pay_adult = fields.Integer('Company Pay (Adult)')
     reentry_cost = fields.Float('Re-Entry Cost')
-    ticket_total = fields.Float('Ticket Total', compute='onchange_ticket', store=1)
+    ticket_total = fields.Float('Ticket Total', compute='compute_onchange_ticket', store=1)
     company_id = fields.Many2one('res.company', string='Company', readonly=True,
                                  default=lambda self: self.env.user.company_id)
 
@@ -140,7 +140,7 @@ class HrContract(models.Model):
 
     # @api.onchange('air_destination', 'air_allowance', 'reentry_cost', 'company_pay_children', 'company_pay_adult')
     @api.depends('air_destination', 'air_allowance', 'reentry_cost', 'company_pay_children', 'company_pay_adult')
-    def onchange_ticket(self):
+    def compute_onchange_ticket(self):
         for contract in self:
             if self.air_allowance:
                 contract.ticket_total = ((contract.employee_ticket * contract.air_destination.adult_fare) + (
