@@ -46,8 +46,8 @@ class HrPayslip(models.Model):
         for line in self:
             day_from = datetime.combine(fields.Date.from_string(line.date_from), datetime_time.min)
             day_to = datetime.combine(fields.Date.from_string(line.date_to), datetime_time.max)
-            leave_days = line.employee_id.get_leaves_day_count(day_from, day_to,
-                                                               calendar=line.employee_id.resource_calendar_id)
+            # leave_days = line.employee_id.get_leaves_day_count(day_from, day_to,
+            #                                                    calendar=line.employee_id.resource_calendar_id)
             leave_days = sum(line.worked_days_line_ids.filtered(lambda record: record.code == 'unpaid_leave').mapped(
                 'number_of_days'))
 
