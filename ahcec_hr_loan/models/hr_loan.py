@@ -71,7 +71,8 @@ class HrLoan(models.Model):
             if res.employee_id.user_id:
                 partner.append(res.employee_id.user_id.partner_id.id)
         channel_id = self.env.ref('ahcec_hr.manager_channel').id
-        res.message_subscribe(partner_ids=partner, channel_ids=[channel_id])
+        # res.message_subscribe(partner_ids=partner, channel_ids=[channel_id])
+        res.message_subscribe(partner_ids=partner)
         return res
 
     def write(self, values):
