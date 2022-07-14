@@ -142,7 +142,7 @@ class HrContract(models.Model):
     @api.depends('air_destination', 'air_allowance', 'reentry_cost', 'company_pay_children', 'company_pay_adult')
     def compute_onchange_ticket(self):
         for contract in self:
-            if self.air_allowance:
+            if contract.air_allowance:
                 contract.ticket_total = ((contract.employee_ticket * contract.air_destination.adult_fare) + (
                             contract.company_pay_adult * contract.air_destination.adult_fare) + (
                                                      contract.company_pay_children * contract.air_destination.child_fare) + contract.reentry_cost)
