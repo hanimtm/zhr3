@@ -61,7 +61,7 @@
             <group name="other_allowance" position="inside">
                 <group name="Ticket Allowance" string="Ticket Allowance" col="2">
                     <field name="air_allowance" string="Ticket Allowance"/>
-                    <field name="employee_ticket" invisible="1" attrs="{'required': [('air_allowance','=',True)]}"/>
+                    <field name="employee_ticket" invisible="0" attrs="{'required': [('air_allowance','=',True)]}"/>
                     <field name="adults"
                            attrs="{'invisible': [('air_allowance','!=',True)],'required': [('air_allowance','=',True)]}"/>
                     <field name="children"
