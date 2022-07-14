@@ -41,8 +41,8 @@ class CityAirfare(models.Model):
             rec.child_fare = 0.0
             rec.infant_fare = 0.0
             if rec.adult_fare > 0:
-                #rec.child_fare = (rec.adult_fare * 80) / 100
-                #rec.infant_fare = (rec.adult_fare * 12.5) / 100
+                # rec.child_fare = (rec.adult_fare * 80) / 100
+                # rec.infant_fare = (rec.adult_fare * 12.5) / 100
                 rec.child_fare = (rec.adult_fare)
                 rec.infant_fare = (rec.adult_fare)
 
@@ -73,7 +73,7 @@ class HrContract(models.Model):
             calculate the adults, children and infant
         """
         for rec in self:
-            #rec.adults = 1
+            # rec.adults = 1
             rec.adults = 0
             rec.children = 0
             rec.infant = 0
@@ -107,7 +107,7 @@ class HrContract(models.Model):
     air_allowance = fields.Boolean('Eligible for Ticket Allowance')
     air_destination = fields.Many2one('city.airfare', 'Vacation Destination',
                                       help="Return ticket fare from employees home town")
-    employee_ticket = fields.Integer('Employee',default=1,readonly=True)
+    employee_ticket = fields.Integer('Employee', default=1, readonly=True)
     adults = fields.Integer('Adult(s)', compute='_get_total_members', help='Employee and Spouse')
     children = fields.Integer('Children', compute='_get_total_members',
                               help='Maximum two children, if no infants(Age must be between 2 to 18)')
@@ -116,17 +116,20 @@ class HrContract(models.Model):
     company_pay_children = fields.Integer('Company Pay (Children)')
     company_pay_adult = fields.Integer('Company Pay (Adult)')
     reentry_cost = fields.Float('Re-Entry Cost')
-    ticket_total = fields.Float('Ticket Total')
-    company_id = fields.Many2one('res.company', string='Company', readonly=True, default=lambda self: self.env.user.company_id)
+    ticket_total = fields.Float('Ticket Total', compute='onchange_ticket', store=1)
+    company_id = fields.Many2one('res.company', string='Company', readonly=True,
+                                 default=lambda self: self.env.user.company_id)
 
-    @api.onchange('infant', 'children', 'adults','air_destination','air_allowance')
+    @api.onchange('infant', 'children', 'adults', 'air_destination', 'air_allowance')
     def onchange_data(self):
         for contract in self:
-            destination = self.env['city.airfare'].search([('country_id','=',contract.employee_id.country_id.id)],limit=1).id
-            contract.air_destination = self.env['city.airfare'].search([('country_id','=',contract.employee_id.country_id.id)],limit=1)
-            print('%s',destination)
+            destination = self.env['city.airfare'].search([('country_id', '=', contract.employee_id.country_id.id)],
+                                                          limit=1).id
+            contract.air_destination = self.env['city.airfare'].search(
+                [('country_id', '=', contract.employee_id.country_id.id)], limit=1)
+            print('%s', destination)
             contract.company_pay_adult = 0
-            if contract.adults > 0 :
+            if contract.adults > 0:
                 contract.company_pay_adult = 1
 
             contract.company_pay_children = 0
@@ -135,8 +138,11 @@ class HrContract(models.Model):
             elif contract.children > 2:
                 contract.company_pay_children = 2
 
-    @api.onchange('air_destination','air_allowance','reentry_cost','company_pay_children','company_pay_adult')
+    # @api.onchange('air_destination', 'air_allowance', 'reentry_cost', 'company_pay_children', 'company_pay_adult')
+    @api.depends('air_destination', 'air_allowance', 'reentry_cost', 'company_pay_children', 'company_pay_adult')
     def onchange_ticket(self):
         for contract in self:
             if self.air_allowance:
-                contract.ticket_total = ((contract.employee_ticket*contract.air_destination.adult_fare)+(contract.company_pay_adult*contract.air_destination.adult_fare)+(contract.company_pay_children*contract.air_destination.child_fare) + contract.reentry_cost)
+                contract.ticket_total = ((contract.employee_ticket * contract.air_destination.adult_fare) + (
+                            contract.company_pay_adult * contract.air_destination.adult_fare) + (
+                                                     contract.company_pay_children * contract.air_destination.child_fare) + contract.reentry_cost)
