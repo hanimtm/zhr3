@@ -16,7 +16,7 @@
     'data': [
         'security/ir.model.access.csv',
         'security/security.xml',
-        'data/gr_operation_data.xml',
+        # 'data/gr_operation_data.xml',
         'views/hr_visa_view.xml',
         'menuitem.xml',
         'report/visit_visa.xml',
