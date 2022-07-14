@@ -12,7 +12,7 @@
     'website': 'http://www.ahcec.com',
     'category': 'Generic Modules/Human Resources',
     'version': '1.0',
-    'depends': ['hr_expense_payment', 'res_documents', 'ahcec_hr_grade'],
+    'depends': ['hr_expense_payment', 'res_documents'],
     'data': [
         'security/ir.model.access.csv',
         'security/security.xml',
