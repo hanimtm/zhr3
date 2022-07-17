@@ -164,7 +164,7 @@ class AccrualWizard(models.TransientModel):
                             debit_account = int(self.env['ir.config_parameter'].sudo().get_param('vacation_debit_pjt_account'))
                         else:
                             raise ValidationError('Please go to employee and put type of employee')
-                        
+
                         if debit_account and credit_account:
                             adjust_credit = (0, 0, {
                                 'name': 'Vacation Accrual',
