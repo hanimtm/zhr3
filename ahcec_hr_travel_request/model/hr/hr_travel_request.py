@@ -179,7 +179,6 @@ class hr_travel_request(models.Model):
             if travel.request_type == 'reentry':
                 travel.ticket_price = 0
 
-
     @api.constrains('start_date', 'end_date')
     def _check_dates(self):
         """
@@ -251,8 +250,12 @@ class hr_travel_request(models.Model):
             'date': fields.Date.today(),
         }
         line_ids = []
-        credit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_debit_account'))
-        debit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_credit_account'))
+        if self.employee_id.employee_type == 'employee':
+            credit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_debit_account'))
+            debit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_credit_account'))
+        elif self.employee_id.employee_type == 'operator':
+            credit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_debit_pjt_account'))
+            debit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_credit_pjt_account'))
 
         if debit_account and credit_account:
             adjust_credit = (0, 0, {

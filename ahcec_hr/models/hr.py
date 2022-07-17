@@ -99,6 +99,9 @@ class HrEmployee(models.Model):
         return recs.name_get()
 
     # ================Fields of HR employee=======================
+    employee_type = fields.Selection([('employee', 'Employee'), ('operation', 'Operation')],
+                                     string='Employee Type', )
+
     arabic_name = fields.Char('Arabic Name', size=120)
     joining_date = fields.Date('Joining Date', track_visibility='onchange')
     date_of_leave = fields.Date('Leaving Date')
