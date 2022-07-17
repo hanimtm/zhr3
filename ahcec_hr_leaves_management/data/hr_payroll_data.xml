@@ -40,7 +40,7 @@
         <field name="name">Vacation Pay</field>
         <field name="category_id" ref="ahcec_hr_leaves_management.worth_leave"/>
         <field name="code">VAC_PAY</field>
-        <field name="struct_id">Salary Employee Structure</field>
+<!--        <field name="struct_id">Salary Employee Structure</field>-->
         <field name="condition_select">none</field>
         <field name="sequence" eval="1"/>
         <field name="amount_select">code</field>
