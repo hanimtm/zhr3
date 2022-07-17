@@ -102,7 +102,7 @@ class HrEmployee(models.Model):
 
     # ================Fields of HR employee=======================
     type_of_employee = fields.Selection(
-        [('employee', 'Employee'), ('operation', 'Operation')],
+        [('employee', 'Employee'), ('operator', 'Operator')],
         string='Employee Type', default='employee')
 
     arabic_name = fields.Char('Arabic Name', size=120)

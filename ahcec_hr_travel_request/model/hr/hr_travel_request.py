@@ -258,8 +258,9 @@ class hr_travel_request(models.Model):
         credit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_debit_account'))
         debit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_credit_account'))
         if self.employee_id.type_of_employee == 'operator':
-            credit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_debit_pjt_account'))
-            debit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_credit_pjt_account'))
+            _logger.critical('****************************************')
+            credit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_credit_pjt_account'))
+            debit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_debit_pjt_account'))
         _logger.critical('===========================================')
         _logger.critical(credit_account)
         _logger.critical(debit_account)
