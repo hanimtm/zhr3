@@ -99,7 +99,7 @@ class HrEmployee(models.Model):
         return recs.name_get()
 
     # ================Fields of HR employee=======================
-    employee_type = fields.Selection([('employee', 'Employee'), ('operation', 'Operation')],
+    type_of_employee = fields.Selection([('employee', 'Employee'), ('operation', 'Operation')],
                                      string='Employee Type', )
 
     arabic_name = fields.Char('Arabic Name', size=120)
