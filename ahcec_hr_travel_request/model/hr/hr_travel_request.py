@@ -282,7 +282,7 @@ class hr_travel_request(models.Model):
             accrual = {
                 'move_id': move_id.id,
                 'employee_id': self.employee_id.id,
-                'date': fields.Date.today(),
+                # 'date': fields.Date.today(),
                 'type': 'reverse',
             }
             self.env['employee.accrual.move'].sudo().create(accrual)
