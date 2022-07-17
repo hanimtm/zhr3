@@ -270,7 +270,7 @@ class hr_travel_request(models.Model):
                 'partner_id': self.employee_id.address_home_id.id,
                 'account_id': debit_account,
                 'journal_id': self.company_id.accrual_journal.id,
-                'analytic_account_id': self.analytic_account_id.id or False,
+                # 'analytic_account_id': self.analytic_account_id.id or False,
                 'date': fields.Date.today(),
                 'credit': self.ticket_price + self.visa_cost,
                 'debit': 0.0,
