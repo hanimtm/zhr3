@@ -113,6 +113,7 @@ class hr_travel_request(models.Model):
 
     leave_id = fields.Many2one('hr.holidays','Leave')
 
+    company_id = fields.Many2one('res.company', default=lambda self: self.env.company)
     # @api.onchange('travellers','employee_id')
     # def onchange_travellers(self):
     #     for travel in self:
