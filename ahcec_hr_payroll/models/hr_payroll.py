@@ -59,8 +59,6 @@ class HrPayslip(models.Model):
             day_from = datetime.strptime(str(line.date_from), DEFAULT_SERVER_DATE_FORMAT)
             day_to = datetime.strptime(str(line.date_to), DEFAULT_SERVER_DATE_FORMAT)
             nb_of_days = (day_to - day_from).days + 1
-            _logger.critical('====================================')
-            _logger.critical(nb_of_days)
             line.month_days = nb_of_days
             line.leave_days = leave_days
             line.annual_leaves = annual_leaves
@@ -76,7 +74,7 @@ class HrPayslip(models.Model):
     vacation_pay = fields.Float(string='Vacation Pay')
     department_id = fields.Many2one('hr.department', string="Department", related='employee_id.department_id',
                                     store=True)
-    
+
     @api.onchange('month_days', 'annual_leaves', 'line_ids')
     def onchange_vacation_pay(self):
         for line in self:
