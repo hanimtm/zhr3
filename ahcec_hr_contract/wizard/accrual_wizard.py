@@ -3,6 +3,7 @@
 from odoo import models, api, _, fields
 from datetime import date as dt, datetime
 import calendar
+from odoo.exceptions import ValidationError
 
 
 class AccrualWizard(models.TransientModel):
@@ -70,8 +71,14 @@ class AccrualWizard(models.TransientModel):
                             'journal_id': cont.company_id.accrual_journal.id,
                             'date': self.date_to,
                         }
-                        debit_account = int(self.env['ir.config_parameter'].sudo().get_param('eos_debit_account'))
-                        credit_account = int(self.env['ir.config_parameter'].sudo().get_param('eos_credit_account'))
+                        if self.employee_id.type_of_employee == 'employee':
+                            debit_account = int(self.env['ir.config_parameter'].sudo().get_param('eos_debit_account'))
+                            credit_account = int(self.env['ir.config_parameter'].sudo().get_param('eos_credit_account'))
+                        elif self.employee_id.type_of_employee == 'operator':
+                            credit_account = int(self.env['ir.config_parameter'].sudo().get_param('eos_credit_pjt_account'))
+                            debit_account = int(self.env['ir.config_parameter'].sudo().get_param('eos_debit_pjt_account'))
+                        else:
+                            raise ValidationError('Please go to employee and put type of employee')
 
                         if debit_account and credit_account:
                             adjust_credit = (0, 0, {
@@ -147,11 +154,17 @@ class AccrualWizard(models.TransientModel):
                             'journal_id': cont.company_id.accrual_journal.id,
                             'date': self.date_to,
                         }
-
-                        debit_account = int(self.env['ir.config_parameter'].sudo().get_param('vacation_debit_account'))
-                        credit_account = int(
-                            self.env['ir.config_parameter'].sudo().get_param('vacation_credit_account'))
-
+                        if self.employee_id.type_of_employee == 'employee':
+                            debit_account = int(
+                                self.env['ir.config_parameter'].sudo().get_param('vacation_debit_account'))
+                            credit_account = int(
+                                self.env['ir.config_parameter'].sudo().get_param('vacation_credit_account'))
+                        elif self.employee_id.type_of_employee == 'operator':
+                            credit_account = int(self.env['ir.config_parameter'].sudo().get_param('vacation_credit_pjt_account'))
+                            debit_account = int(self.env['ir.config_parameter'].sudo().get_param('vacation_debit_pjt_account'))
+                        else:
+                            raise ValidationError('Please go to employee and put type of employee')
+                        
                         if debit_account and credit_account:
                             adjust_credit = (0, 0, {
                                 'name': 'Vacation Accrual',
