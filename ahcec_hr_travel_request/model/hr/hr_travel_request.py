@@ -8,6 +8,12 @@ from odoo.tools import DEFAULT_SERVER_DATE_FORMAT as DF
 from odoo.tools.translate import _
 
 
+class ResCompany(models.Model):
+    _inherit = 'res.company'
+
+    accrual_journal = fields.Many2one('account.journal', string="Accrual Journal")
+
+
 class hr_travel_request(models.Model):
     _name = 'hr.travel.request'
     _inherit = ['mail.thread']
