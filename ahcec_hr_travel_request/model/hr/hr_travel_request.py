@@ -411,8 +411,8 @@ class hr_travel_request(models.Model):
         #     return 0
 
         duration = 0
-        dt_start_date = datetime.strptime(start_date, DF)
-        dt_end_date = datetime.strptime(end_date, DF)
+        dt_start_date = datetime.strptime(str(start_date), DF)
+        dt_end_date = datetime.strptime(str(end_date), DF)
         delta = dt_end_date - dt_start_date
         work_days = []
         # rca_obj = self.env['resource.calendar.attendance']
