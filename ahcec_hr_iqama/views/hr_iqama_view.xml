@@ -211,6 +211,6 @@
         </field>
     </record>
 
-    <menuitem id="menu_gr_iqama" name="Employee IQAMA" parent="hr.menu_hr_main" sequence="7"
+    <menuitem id="menu_gr_iqama" name="Employee IQAMA" parent="hr.menu_hr_employee_payroll" sequence="7"
               action="action_hr_iqama_view" groups="base.group_user"/>
 </odoo>
