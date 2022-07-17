@@ -71,7 +71,7 @@
 <!--                  sequence="-6"-->
 <!--                  groups="base.group_user" web_icon="hr_resignation,static/description/resignation_web.png"/>-->
 
-                <menuitem id="employee_resignation" name="Resignation" parent="hr.menu_hr_main"
+                <menuitem id="employee_resignation" name="Resignation" parent="hr.menu_hr_employee_payroll"
                   sequence="10"
                   groups="base.group_user"/>
 
