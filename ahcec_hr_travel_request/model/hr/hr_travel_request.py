@@ -250,6 +250,8 @@ class hr_travel_request(models.Model):
             'date': fields.Date.today(),
         }
         line_ids = []
+        credit_account = 0
+        debit_account = 0
         if self.employee_id.type_of_employee == 'employee':
             credit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_debit_account'))
             debit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_credit_account'))
