@@ -112,7 +112,7 @@ class HrIqama(models.Model):
             Create a new record
             :return: Newly created record ID
         """
-        partner=[]
+        partner = []
         if values.get('employee_id', False):
             employee_id = self.env['hr.employee'].browse(values['employee_id'])
             values.update({'job_id': employee_id.job_id.id,
@@ -125,8 +125,8 @@ class HrIqama(models.Model):
             partner.append(res.employee_id.parent_id.user_id.partner_id.id)
         if res.employee_id.user_id:
             partner.append(res.employee_id.user_id.partner_id.id)
-        channel_id=self.env.ref('ahcec_hr.manager_channel').id
-        res.message_subscribe(partner_ids=partner, channel_ids=[channel_id])
+        channel_id = self.env.ref('ahcec_hr.manager_channel').id
+        res.message_subscribe(partner_ids=partner)
         return res
 
     def write(self, values):
@@ -186,8 +186,10 @@ class HrIqama(models.Model):
         gr_groups_config_obj = self.env['hr.groups.configuration']
         for iqama in self:
             iqama.state = 'confirm'
-            gr_groups_config_ids = gr_groups_config_obj.search([('branch_id', '=', iqama.employee_id.branch_id.id or False), ('gr_ids', '!=', False)])
-            user_ids = gr_groups_config_ids and [employee.user_id.id for employee in gr_groups_config_ids.gr_ids if employee.user_id] or []
+            gr_groups_config_ids = gr_groups_config_obj.search(
+                [('branch_id', '=', iqama.employee_id.branch_id.id or False), ('gr_ids', '!=', False)])
+            user_ids = gr_groups_config_ids and [employee.user_id.id for employee in gr_groups_config_ids.gr_ids if
+                                                 employee.user_id] or []
             iqama.sudo().message_subscribe_users(user_ids=user_ids)
 
     def iqama_inprogress(self):
@@ -254,7 +256,6 @@ class EmployeeDependent(models.Model):
     expiry_date = fields.Date('Date of Expiry')
     serial_number = fields.Char('Serial Number')
     place_of_issue = fields.Char('Place of Issue')
-
 
 # class one2many_mod_family(fields.One2many):
 
