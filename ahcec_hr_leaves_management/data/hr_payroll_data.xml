@@ -43,8 +43,8 @@
 <!--        <field name="struct_id">Salary Employee Structure</field>-->
         <field name="condition_select">none</field>
         <field name="sequence" eval="1"/>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">result=payslip.vacation_pay</field>
+<!--        <field name="amount_select">code</field>-->
+<!--        <field name="amount_python_compute">result=payslip.vacation_pay</field>-->
     </record>
 
 
