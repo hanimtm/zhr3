@@ -3,11 +3,10 @@
 from odoo import models, fields, api,exceptions
 from datetime import datetime, timedelta
 import odoo.addons.decimal_precision as dp
-from odoo.exceptions import Warning
+from odoo.exceptions import Warning, ValidationError
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT as DF
 from odoo.tools.translate import _
-import logging
-_logger = logging.getLogger(__name__)
+
 
 
 class ResCompany(models.Model):
@@ -252,18 +251,20 @@ class hr_travel_request(models.Model):
             'date': fields.Date.today(),
         }
         line_ids = []
-        # credit_account
-        # debit_account
-        # if self.employee_id.type_of_employee == 'employee':
-        credit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_debit_account'))
-        debit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_credit_account'))
-        if self.employee_id.type_of_employee == 'operator':
-            _logger.critical('****************************************')
+        # credit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_debit_account'))
+        # debit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_credit_account'))
+
+        if self.employee_id.type_of_employee == 'employee':
+            credit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_debit_account'))
+            debit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_credit_account'))
+        elif self.employee_id.type_of_employee == 'operator':
             credit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_credit_pjt_account'))
             debit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_debit_pjt_account'))
-        _logger.critical('===========================================')
-        _logger.critical(credit_account)
-        _logger.critical(debit_account)
+        else:
+            raise ValidationError('Please go to employee and put type of employee')
+        # _logger.critical('===========================================')
+        # _logger.critical(credit_account)
+        # _logger.critical(debit_account)
         if debit_account and credit_account:
             adjust_credit = (0, 0, {
                 'name': self.employee_id.name or '/ ' + 'Ticket Reverse Accrual',
