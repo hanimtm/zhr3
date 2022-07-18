@@ -14,11 +14,13 @@ class HrPayslip(models.Model):
 
     def action_payslip_done(self):
         res = super(HrPayslip, self).action_payslip_done()
+        _logger.critical('000000000000000000000000000000000000')
         loan_obj = self.env['hr.loan']
         skip_installment_obj = self.env['hr.skip.installment']
         slip_line_obj = self.env['hr.payslip.line']
         installment_obj = self.env['installment.line']
         for payslip in self:
+            _logger.critical('{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{[[')
             loan_ids = loan_obj.search(
                 ['|', '&', ('start_date', '>=', payslip.date_from), ('start_date', '<=', payslip.date_to),
                  ('start_date', '<=', payslip.date_from), ('employee_id', '=', payslip.employee_id.id),
