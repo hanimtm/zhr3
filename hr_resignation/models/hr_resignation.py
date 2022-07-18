@@ -4,6 +4,8 @@ import datetime
 from datetime import datetime
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
+import logging
+_logger = logging.getLogger(__name__)
 date_format = "%Y-%m-%d"
 
 
@@ -74,6 +76,10 @@ class HrResignation(models.Model):
                 approved_date = datetime.strptime(rec.approved_revealing_date, date_format)
                 confirmed_date = datetime.strptime(rec.resign_confirm_date, date_format)
                 notice_period = approved_date - confirmed_date
+                _logger.critical('=========================')
+                _logger.critical(notice_period)
+                _logger.critical(notice_period.days)
+
                 rec.notice_period = notice_period.days
 
     @api.constrains('joined_date', 'expected_revealing_date')
