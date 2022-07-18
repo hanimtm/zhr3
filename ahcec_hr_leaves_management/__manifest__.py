@@ -9,7 +9,7 @@
     'website': 'http://www.ahcec.com',
     'images': [],
     'depends': [
-        'hr_attendance', 'ahcec_hr', 'ahcec_hr_contract', 'hr_payroll','hr'],
+        'hr_attendance', 'ahcec_hr', 'ahcec_hr_contract', 'hr_payroll', 'hr', 'ahcec_hr_contract_amendment'],
     'data': [
         'security/ir.model.access.csv',
         'security/ir_rule.xml',
