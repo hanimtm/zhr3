@@ -6,11 +6,11 @@
             <field name="model">accrual.wizard</field>
             <field name="arch" type="xml">
                 <form string="Employee Ledger">
-                    <group>
-                        <label colspan="4" nolabel="1" string="
-                        Please select the Month Start Date and End Date, If you select other dates,
-                        System will automatically select the start and end dates."/>
-                    </group>
+<!--                    <group>-->
+<!--                        <label colspan="4" nolabel="1" string="-->
+<!--                        Please select the Month Start Date and End Date, If you select other dates,-->
+<!--                        System will automatically select the start and end dates."/>-->
+<!--                    </group>-->
                     <group>
                         <group>
                             <field name="date_from"/>
