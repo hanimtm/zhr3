@@ -31,8 +31,8 @@ class HrPayslip(models.Model):
 
     def _get_payment_days(self):
         for line in self:
-            day_from = datetime.strptime(line.date_from, DEFAULT_SERVER_DATE_FORMAT)
-            day_to = datetime.strptime(line.date_to, DEFAULT_SERVER_DATE_FORMAT)
+            day_from = datetime.strptime(str(line.date_from), DEFAULT_SERVER_DATE_FORMAT)
+            day_to = datetime.strptime(str(line.date_to), DEFAULT_SERVER_DATE_FORMAT)
             nb_of_days = (day_to - day_from).days + 1
             # We will set it to 30 as our calculation is based on 30 days for your company
             month = datetime.strptime(str(line.date_from), DEFAULT_SERVER_DATE_FORMAT).month
