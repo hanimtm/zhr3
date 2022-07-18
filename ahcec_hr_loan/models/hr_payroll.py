@@ -24,13 +24,17 @@ class HrPayslip(models.Model):
                  ('start_date', '<=', payslip.date_from), ('employee_id', '=', payslip.employee_id.id),
                  ('state', '=', 'approve')])
             for loan in loan_ids:
+                _logger.critical('//////////////////////////////////////')
+                _logger.critical(loan)
                 skip_installment_ids = skip_installment_obj.search(
                     [('loan_id', '=', loan.id), ('state', '=', 'approve'), ('date', '>=', payslip.date_from),
                      ('date', '<=', payslip.date_to)])
                 if skip_installment_ids:
+                    _logger.critical('1111111111111111111')
                     due_date = datetime.strptime(loan.due_date, '%Y-%m-%d') + relativedelta(months=1)
                     loan.write({'due_date': due_date})
                 else:
+                    _logger.critical('2222222222222222222222')
                     slip_line_ids = slip_line_obj.search(
                         [('slip_id', '=', payslip.id), ('code', '=', 'LOAN' + str(loan.id))])
                     if slip_line_ids:
