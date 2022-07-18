@@ -9,7 +9,7 @@
     'category': 'HR',
     'version': '1.5',
     'sequence': 20,
-    'depends': ['account', 'hr_contract', 'hr_payroll'],
+    'depends': ['account', 'hr_contract', 'hr_payroll', 'hr'],
     'data': [
         'security/ir.model.access.csv',
         'security/ir_rule.xml',
