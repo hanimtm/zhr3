@@ -70,7 +70,7 @@ class HrPayslip(models.Model):
                             'category_id': rule.category_id.id,
                             'sequence': rule.sequence + loan.id,
                             'appears_on_payslip': rule.appears_on_payslip,
-                            'condition_select': rule.condition_select,
+                            # 'condition_select': rule.condition_select,
                             'condition_python': rule.condition_python,
                             'condition_range': rule.condition_range,
                             'condition_range_min': rule.condition_range_min,
@@ -80,7 +80,7 @@ class HrPayslip(models.Model):
                             'amount_python_compute': rule.amount_python_compute,
                             'amount_percentage': rule.amount_percentage,
                             'amount_percentage_base': rule.amount_percentage_base,
-                            
+                            # 'register_id': rule.register_id.id,
                             'amount': -(loan.deduction_amount),
                             'employee_id': payslip.employee_id.id,
                         }
