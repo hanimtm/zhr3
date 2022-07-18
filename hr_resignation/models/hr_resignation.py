@@ -66,6 +66,7 @@ class HrResignation(models.Model):
                     raise ValidationError(_('There is a resignation request in confirmed or'
                                             ' approved state for this employee'))
 
+    @api.depends('approved_revealing_date', 'resign_confirm_date')
     def _notice_period(self):
         # calculating the notice period for the employee
         for rec in self:
