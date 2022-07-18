@@ -75,8 +75,8 @@ class HrResignation(models.Model):
             rec.notice_period = 0
             # _logger.critical('******************')
             if rec.approved_revealing_date and rec.resign_confirm_date:
-                approved_date = datetime.strptime(rec.approved_revealing_date, date_format)
-                confirmed_date = datetime.strptime(rec.resign_confirm_date, date_format)
+                approved_date = datetime.strptime(str(rec.approved_revealing_date), date_format)
+                confirmed_date = datetime.strptime(str(rec.resign_confirm_date), date_format)
                 notice_period = approved_date - confirmed_date
                 # _logger.critical('=========================')
                 # _logger.critical(notice_period)
