@@ -2,9 +2,11 @@
 <odoo>
     <menuitem action="hr_contract.action_hr_contract" id="hr_contract.hr_menu_contract" parent="hr.menu_hr_main"
               name="Contracts" sequence="4" groups="hr.group_hr_manager"/>
+<!--    parent="account.menu_finance"-->
     <menuitem id="menu_employee_accrual"
               name="Employee Accruals"
-              parent="account.menu_finance"
+              parent="hr_contract.hr_menu_contract"
+
               groups="base.group_user"
               sequence="99"/>
     <menuitem action="open_accrual_wizard_action"
