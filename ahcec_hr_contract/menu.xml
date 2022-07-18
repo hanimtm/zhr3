@@ -3,7 +3,7 @@
 
 
     <menuitem action="open_accrual_wizard_action"
-              id="menu_generate_accrual"
+              id="id_menu_generate_accrual"
               name="Generate Accruals"
               parent="hr.menu_hr_employee_payroll"
               groups="base.group_user"
