@@ -46,9 +46,9 @@
 <!--                            <field name="is_shift_allow"/>-->
 <!--                            <field name="shift_allow"-->
 <!--                                   attrs="{'invisible': [('is_shift_allow','!=',True)], 'required': [('is_shift_allow','=',True)]}"/>-->
-                            <separator string="Remote Area Allowance"/>
-                            <field name="is_remote_allow"/>
-                            <field name="remote_allow"
+                            <separator string="Remote Area Allowance" invisible="1"/>
+                            <field name="is_remote_allow" invisible="1"/>
+                            <field name="remote_allow" invisible="1"
                                    attrs="{'invisible': [('is_remote_allow','!=',True)], 'required': [('is_remote_allow','=',True)]}"/>
                             <separator string="Other Allowance"/>
                             <field name="is_other_allow"/>
