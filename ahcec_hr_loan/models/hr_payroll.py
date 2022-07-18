@@ -5,6 +5,8 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class HrPayslip(models.Model):
@@ -17,15 +19,24 @@ class HrPayslip(models.Model):
         slip_line_obj = self.env['hr.payslip.line']
         installment_obj = self.env['installment.line']
         for payslip in self:
-            loan_ids = loan_obj.search(['|','&',('start_date','>=',payslip.date_from),('start_date','<=',payslip.date_to),('start_date','<=',payslip.date_from),('employee_id', '=', payslip.employee_id.id), ('state', '=', 'approve')])
+            loan_ids = loan_obj.search(
+                ['|', '&', ('start_date', '>=', payslip.date_from), ('start_date', '<=', payslip.date_to),
+                 ('start_date', '<=', payslip.date_from), ('employee_id', '=', payslip.employee_id.id),
+                 ('state', '=', 'approve')])
             for loan in loan_ids:
-                skip_installment_ids = skip_installment_obj.search([('loan_id','=',loan.id),('state','=','approve'),('date','>=',payslip.date_from),('date','<=',payslip.date_to)])
+                skip_installment_ids = skip_installment_obj.search(
+                    [('loan_id', '=', loan.id), ('state', '=', 'approve'), ('date', '>=', payslip.date_from),
+                     ('date', '<=', payslip.date_to)])
                 if skip_installment_ids:
                     due_date = datetime.strptime(loan.due_date, '%Y-%m-%d') + relativedelta(months=1)
                     loan.write({'due_date': due_date})
                 else:
-                    slip_line_ids = slip_line_obj.search([('slip_id', '=', payslip.id), ('code', '=', 'LOAN' + str(loan.id))])
+                    slip_line_ids = slip_line_obj.search(
+                        [('slip_id', '=', payslip.id), ('code', '=', 'LOAN' + str(loan.id))])
                     if slip_line_ids:
+                        _logger.critical('======================')
+                        _logger.critical('**********************')
+                        _logger.critical('======================')
                         amount = slip_line_ids.read(['total'])[0]['total']
                         installment_data = {
                             'loan_id': loan.id,
@@ -59,7 +70,9 @@ class HrPayslip(models.Model):
                 if oids:
                     oids.unlink()
                 for loan in loan_ids:
-                    skip_installment_ids = skip_installment_obj.search([('loan_id','=',loan.id),('state','=','approve'),('date','>=',payslip.date_from),('date','<=',payslip.date_to)])
+                    skip_installment_ids = skip_installment_obj.search(
+                        [('loan_id', '=', loan.id), ('state', '=', 'approve'), ('date', '>=', payslip.date_from),
+                         ('date', '<=', payslip.date_to)])
                     if not skip_installment_ids:
                         slip_line_data = {
                             'slip_id': payslip.id,
