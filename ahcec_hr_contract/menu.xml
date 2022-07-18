@@ -4,7 +4,7 @@
 <!--    <menuitem action="hr_contract.action_hr_contract"-->
 <!--              id="hr_contract.hr_menu_contract"-->
 <!--              parent="hr.menu_hr_main"-->
-<!--              name="Contracts 111111"-->
+<!--              name="Contracts"-->
 <!--              sequence="4"-->
 <!--              groups="hr.group_hr_manager"/>-->
 <!--    parent="account.menu_finance"-->
