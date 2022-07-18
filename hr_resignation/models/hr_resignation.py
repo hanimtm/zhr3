@@ -72,18 +72,19 @@ class HrResignation(models.Model):
     def _notice_period(self):
         # calculating the notice period for the employee
         for rec in self:
-            _logger.critical('******************')
+            rec.notice_period = 0
+            # _logger.critical('******************')
             if rec.approved_revealing_date and rec.resign_confirm_date:
                 approved_date = datetime.strptime(rec.approved_revealing_date, date_format)
                 confirmed_date = datetime.strptime(rec.resign_confirm_date, date_format)
                 notice_period = approved_date - confirmed_date
-                _logger.critical('=========================')
-                _logger.critical(notice_period)
-                _logger.critical(notice_period.days)
+                # _logger.critical('=========================')
+                # _logger.critical(notice_period)
+                # _logger.critical(notice_period.days)
 
                 rec.notice_period = notice_period.days
-            else:
-                _logger.critical('------- INSIDE ELSE ---------------')
+            # else:
+            #     _logger.critical('------- INSIDE ELSE ---------------')
 
     @api.constrains('joined_date', 'expected_revealing_date')
     def _check_dates(self):
