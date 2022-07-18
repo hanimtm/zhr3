@@ -79,7 +79,7 @@ class HrPayslip(models.Model):
                             'amount_fix': rule.amount_fix,
                             # 'amount_python_compute': rule.amount_python_compute,
                             'amount_percentage': rule.amount_percentage,
-                            'amount_percentage_base': rule.amount_percentage_base,
+                            # 'amount_percentage_base': rule.amount_percentage_base,
                             # 'register_id': rule.register_id.id,
                             'amount': -(loan.deduction_amount),
                             'employee_id': payslip.employee_id.id,
