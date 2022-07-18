@@ -9,7 +9,7 @@
               parent="hr_contract.hr_menu_contract"
               groups="base.group_user"
               sequence="99"/>
-<!--    parent="menu_employee_accrual"-->
+
     <menuitem action="open_accrual_wizard_action"
               id="menu_generate_accrual"
               name="Generate Accruals"
