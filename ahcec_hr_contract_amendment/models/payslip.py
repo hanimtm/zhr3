@@ -90,7 +90,7 @@ class Contract(models.Model):
         amount += (amt * payment_days) / month_days
         return amount
 
-    @api.model
+    # @api.model
     def get_worked_day_lines(self, contracts, date_from, date_to):
         """
         @param contract: Browse record of contracts
