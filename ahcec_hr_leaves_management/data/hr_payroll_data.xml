@@ -36,16 +36,16 @@
 <!--        <field name="amount_select">code</field>-->
 <!--        <field name="amount_python_compute">result=(categories.BASIC - payslip.vacation_pay)</field>-->
 <!--    </record>-->
-    <record id="hr_salary_rule_new_annual_leave" model="hr.salary.rule">
-        <field name="name">Vacation Pay</field>
-        <field name="category_id" ref="ahcec_hr_leaves_management.worth_leave"/>
-        <field name="code">VAC_PAY</field>
-<!--        <field name="struct_id">Salary Employee Structure</field>-->
-        <field name="condition_select">none</field>
-        <field name="sequence" eval="1"/>
-<!--        <field name="amount_select">code</field>-->
-<!--        <field name="amount_python_compute">result=payslip.vacation_pay</field>-->
-    </record>
+<!--    <record id="hr_salary_rule_new_annual_leave" model="hr.salary.rule">-->
+<!--        <field name="name">Vacation Pay</field>-->
+<!--        <field name="category_id" ref="ahcec_hr_leaves_management.worth_leave"/>-->
+<!--        <field name="code">VAC_PAY</field>-->
+<!--&lt;!&ndash;        <field name="struct_id">Salary Employee Structure</field>&ndash;&gt;-->
+<!--        <field name="condition_select">none</field>-->
+<!--        <field name="sequence" eval="1"/>-->
+<!--&lt;!&ndash;        <field name="amount_select">code</field>&ndash;&gt;-->
+<!--&lt;!&ndash;        <field name="amount_python_compute">result=payslip.vacation_pay</field>&ndash;&gt;-->
+<!--    </record>-->
 
 
     <!--     Salary Structure-->
