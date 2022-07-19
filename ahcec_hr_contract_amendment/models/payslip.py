@@ -286,7 +286,7 @@ class Payslip(models.Model):
                             self.env['employee.accrual.move'].sudo().create(accrual)
                     if cont.is_vacation:
                         line_ids = []
-                        date = datetime.strptime(self.date_to, '%Y-%m-%d')
+                        date = datetime.strptime(str(self.date_to), '%Y-%m-%d')
                         month_days = calendar.monthrange(date.year, date.month)[1]
                         amount = ((cont.vacation / 12) / 30) * month_days
 
@@ -344,7 +344,7 @@ class Payslip(models.Model):
 
                     if cont.air_allowance:
                         line_ids = []
-                        date = datetime.strptime(self.date_to, '%Y-%m-%d')
+                        date = datetime.strptime(str(self.date_to), '%Y-%m-%d')
                         month_days = calendar.monthrange(date.year, date.month)[1]
                         amount = ((cont.ticket_total / 12) / 30) * month_days
 
