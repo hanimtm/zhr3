@@ -222,7 +222,7 @@ class Payslip(models.Model):
             contracts = payslip.contract_id
             month = datetime.strptime(str(self.date_from), '%Y-%m-%d').month
             year = datetime.strptime(str(self.date_from), '%Y-%m-%d').year
-            sdate = dt(year, month, 1)
+            # sdate = dt(year, month, 1)
             # edate = dt(year, month, calendar.monthrange(year, month)[1])
 
             for cont in contracts:
@@ -391,7 +391,7 @@ class Payslip(models.Model):
                                 'type': 'ticket',
                             }
                             self.env['employee.accrual.move'].sudo().create(accrual)
-                            
+
     def action_payslip_done(self):
         res = super(Payslip, self).action_payslip_done()
         # self.hr_accrual_entry(self.employee_id, self.date_from, self.date_to)
