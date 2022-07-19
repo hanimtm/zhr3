@@ -2,7 +2,7 @@
 
 {
     'name': "Middle East Human Resource contract",
-    'summary': """ Employee Contract """,
+    'summary': """ Employee Contract ZHR *********""",
     'description': """ Additional features for hr_contract module according to SaudiArabia """,
     'author': 'ahcec',
     'website': "http://www.ahcec.com",

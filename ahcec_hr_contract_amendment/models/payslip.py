@@ -5,7 +5,6 @@ from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMA
 from odoo.exceptions import UserError
 from itertools import groupby
 import pytz
-
 from datetime import datetime
 
 
@@ -385,7 +384,7 @@ class Payslip(models.Model):
                 move = self.env['account.move'].create(move_dict)
                 slip.write({'move_id': move.id, 'date': date})
                 move.post()
-                # self.hr_accrual_entry(self.employee_id, self.date_from, self.date_to)
+                self.hr_accrual_entry(self.employee_id, self.date_from, self.date_to)
             for line in slip.timesheet_ids:
                 line.with_context(skip_warning=True).write({'is_payroll_paid': True, 'custom_payslip_id': slip.id})
                 # Gosi Employee Pay
