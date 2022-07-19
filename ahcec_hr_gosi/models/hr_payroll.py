@@ -1,10 +1,10 @@
-# Part of Odoo. See COPYRIGHT & LICENSE files for full copyright and licensing details.
-
 from odoo import api, fields, models, tools, _
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import time
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class HrPayslip(models.Model):
@@ -38,6 +38,7 @@ class HrPayslip(models.Model):
             Overwrite the add gosi_id,payslip_id,employee_id,date,amount when payslip done.
         """
         res = super(HrPayslip, self).action_payslip_done()
+        _logger.critical('=== HR GOSI ===========')
         slip_line_obj = self.env['hr.payslip.line']
         gosi_payslip_line_obj = self.env['gosi.payslip.line']
         hadaf_payslip_line_obj = self.env['hadaf.payslip.line']
@@ -76,5 +77,3 @@ class HrPayslip(models.Model):
                 'employee_id': employee.id,
             })
         return res
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
