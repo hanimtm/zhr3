@@ -221,11 +221,11 @@ class Payslip(models.Model):
         # try:
         for slip in self:
 
-            work_data = self.get_work_days_data(datetime.strptime(str(self.date_from), '%Y-%m-%d'),
-                                                datetime.strptime(str(self.date_to), '%Y-%m-%d'),
-                                                calendar=self.contract_id.resource_calendar_id)
-            if round(work_data['hours']) < slip.total_timesheet_hours:
-                work_data['hours'] = slip.total_timesheet_hours
+            # work_data = self.get_work_days_data(datetime.strptime(str(self.date_from), '%Y-%m-%d'),
+            #                                     datetime.strptime(str(self.date_to), '%Y-%m-%d'),
+            #                                     calendar=self.contract_id.resource_calendar_id)
+            # if round(work_data['hours']) < slip.total_timesheet_hours:
+            #     work_data['hours'] = slip.total_timesheet_hours
 
             if not self.move_id:
                 precision = self.env['decimal.precision'].precision_get('Payroll')
@@ -253,113 +253,113 @@ class Payslip(models.Model):
 
                         amount = slip.credit_note and -line.total or line.total
                         total_sheet = 0.0
-                        if self.timesheet_ids:
-                            for sheet in self.timesheet_ids:
-                                if not sheet.name.isdepartment:
-                                    if line.dummy_account:
-                                        debit_account_id = line.dummy_account.id
-                                        credit_account_id = line.dummy_account.id
-                                    else:
-                                        debit_account_id = line.salary_rule_id.project_account_debit.id
-                                        credit_account_id = line.salary_rule_id.project_account_credit.id
-                                amt = ((amount / (work_data['hours'])) * sheet.total_hours)
-                                total_sheet = total_sheet + amt
-                                if line.category_id.code in ('DED', 'GOSI'):
-                                    adjust_debit = (0, 0, {
-                                        'name': slip.employee_id.name or '/ ' + line.names,
-                                        'partner_id': slip.employee_id.address_home_id.id,
-                                        'account_id': debit_account_id,
-                                        'journal_id': slip.company_id.accrual_journal.id,
-                                        'analytic_account_id': sheet.name.id or False,
-                                        'date': self.date_to,
-                                        'credit': round(abs(amt), 2),
-                                        'debit': 0.0,
-                                    })
-                                    total_debit -= round(abs(amt), 2)
-                                    line_ids.append(adjust_debit)
-                                else:
-                                    adjust_debit = (0, 0, {
-                                        'name': slip.employee_id.name or '/ ' + line.names,
-                                        'partner_id': slip.employee_id.address_home_id.id,
-                                        'account_id': debit_account_id,
-                                        'journal_id': slip.company_id.accrual_journal.id,
-                                        'analytic_account_id': sheet.name.id or False,
-                                        'date': self.date_to,
-                                        'debit': amt > 0.0 and round(amt, 2) or 0.0,
-                                        'credit': amt < 0.0 and -round(amt, 2) or 0.0,
-                                    })
-                                    total_debit += round(amt, 2)
-                                    line_ids.append(adjust_debit)
-                            amount = amount - total_sheet
-                            if amount != 0:
-                                if line.category_id.code in ('DED', 'GOSI'):
-                                    adjust_debit = (0, 0, {
-                                        'name': self.employee_id.name or '/ ' + self.name,
-                                        'partner_id': self.employee_id.address_home_id.id,
-                                        'account_id': debit_account_id,
-                                        'journal_id': self.company_id.accrual_journal.id,
-                                        'analytic_account_id': self.contract_id.analytic_account_id.id or False,
-                                        'date': self.date_to,
-                                        'credit': round(abs(amount), 2),
-                                        'debit': 0.0,
-                                    })
-                                    total_debit -= round(abs(amount), 2)
-                                    line_ids.append(adjust_debit)
-                                else:
-                                    adjust_debit = (0, 0, {
-                                        'name': self.employee_id.name or '/ ' + self.name,
-                                        'partner_id': self.employee_id.address_home_id.id,
-                                        'account_id': debit_account_id,
-                                        'journal_id': self.company_id.accrual_journal.id,
-                                        'analytic_account_id': self.contract_id.analytic_account_id.id or False,
-                                        'date': self.date_to,
-                                        # 'debit': round(abs(amount), 2),
-                                        'debit': amount > 0.0 and round(amount, 2) or 0.0,
-                                        'credit': amount < 0.0 and -round(amount, 2) or 0.0,
-                                        # 'credit': 0.0,
-                                    })
-                                    total_debit += round(amount, 2)
-                                    line_ids.append(adjust_debit)
+                        # if self.timesheet_ids:
+                        #     for sheet in self.timesheet_ids:
+                        #         if not sheet.name.isdepartment:
+                        #             if line.dummy_account:
+                        #                 debit_account_id = line.dummy_account.id
+                        #                 credit_account_id = line.dummy_account.id
+                        #             else:
+                        #                 debit_account_id = line.salary_rule_id.project_account_debit.id
+                        #                 credit_account_id = line.salary_rule_id.project_account_credit.id
+                        #         amt = ((amount / (work_data['hours'])) * sheet.total_hours)
+                        #         total_sheet = total_sheet + amt
+                        #         if line.category_id.code in ('DED', 'GOSI'):
+                        #             adjust_debit = (0, 0, {
+                        #                 'name': slip.employee_id.name or '/ ' + line.names,
+                        #                 'partner_id': slip.employee_id.address_home_id.id,
+                        #                 'account_id': debit_account_id,
+                        #                 'journal_id': slip.company_id.accrual_journal.id,
+                        #                 'analytic_account_id': sheet.name.id or False,
+                        #                 'date': self.date_to,
+                        #                 'credit': round(abs(amt), 2),
+                        #                 'debit': 0.0,
+                        #             })
+                        #             total_debit -= round(abs(amt), 2)
+                        #             line_ids.append(adjust_debit)
+                        #         else:
+                        #             adjust_debit = (0, 0, {
+                        #                 'name': slip.employee_id.name or '/ ' + line.names,
+                        #                 'partner_id': slip.employee_id.address_home_id.id,
+                        #                 'account_id': debit_account_id,
+                        #                 'journal_id': slip.company_id.accrual_journal.id,
+                        #                 'analytic_account_id': sheet.name.id or False,
+                        #                 'date': self.date_to,
+                        #                 'debit': amt > 0.0 and round(amt, 2) or 0.0,
+                        #                 'credit': amt < 0.0 and -round(amt, 2) or 0.0,
+                        #             })
+                        #             total_debit += round(amt, 2)
+                        #             line_ids.append(adjust_debit)
+                        #     amount = amount - total_sheet
+                        #     if amount != 0:
+                        #         if line.category_id.code in ('DED', 'GOSI'):
+                        #             adjust_debit = (0, 0, {
+                        #                 'name': self.employee_id.name or '/ ' + self.name,
+                        #                 'partner_id': self.employee_id.address_home_id.id,
+                        #                 'account_id': debit_account_id,
+                        #                 'journal_id': self.company_id.accrual_journal.id,
+                        #                 'analytic_account_id': self.contract_id.analytic_account_id.id or False,
+                        #                 'date': self.date_to,
+                        #                 'credit': round(abs(amount), 2),
+                        #                 'debit': 0.0,
+                        #             })
+                        #             total_debit -= round(abs(amount), 2)
+                        #             line_ids.append(adjust_debit)
+                        #         else:
+                        #             adjust_debit = (0, 0, {
+                        #                 'name': self.employee_id.name or '/ ' + self.name,
+                        #                 'partner_id': self.employee_id.address_home_id.id,
+                        #                 'account_id': debit_account_id,
+                        #                 'journal_id': self.company_id.accrual_journal.id,
+                        #                 'analytic_account_id': self.contract_id.analytic_account_id.id or False,
+                        #                 'date': self.date_to,
+                        #                 # 'debit': round(abs(amount), 2),
+                        #                 'debit': amount > 0.0 and round(amount, 2) or 0.0,
+                        #                 'credit': amount < 0.0 and -round(amount, 2) or 0.0,
+                        #                 # 'credit': 0.0,
+                        #             })
+                        #             total_debit += round(amount, 2)
+                        #             line_ids.append(adjust_debit)
+                        # else:
+                        amount = slip.credit_note and -line.total or line.total
+                        if line.dummy_account:
+                            debit_account_id = line.dummy_account.id
+                            credit_account_id = line.dummy_account.id
                         else:
-                            amount = slip.credit_note and -line.total or line.total
-                            if line.dummy_account:
-                                debit_account_id = line.dummy_account.id
-                                credit_account_id = line.dummy_account.id
+                            if self.contract_id.analytic_account_id.isdepartment:
+                                debit_account_id = line.salary_rule_id.account_debit.id
+                                credit_account_id = line.salary_rule_id.account_credit.id
                             else:
-                                if self.contract_id.analytic_account_id.isdepartment:
-                                    debit_account_id = line.salary_rule_id.account_debit.id
-                                    credit_account_id = line.salary_rule_id.account_credit.id
-                                else:
-                                    debit_account_id = line.salary_rule_id.project_account_debit.id
-                                    credit_account_id = line.salary_rule_id.project_account_credit.id
-                            if line.category_id.code in ('DED', 'GOSI'):
-                                adjust_debit = (0, 0, {
-                                    'name': slip.employee_id.name or '/ ' + line.names,
-                                    'partner_id': slip.employee_id.address_home_id.id,
-                                    'account_id': debit_account_id,
-                                    'journal_id': slip.company_id.accrual_journal.id,
-                                    'analytic_account_id': self.contract_id.analytic_account_id.id or False,
-                                    'date': self.date_to,
-                                    'credit': round(abs(amount), 2),
-                                    'debit': 0.0,
-                                })
-                                total_debit -= round(abs(amount), 2)
-                                line_ids.append(adjust_debit)
-                            else:
-                                adjust_debit = (0, 0, {
-                                    'name': slip.employee_id.name or '/ ' + line.names,
-                                    'partner_id': slip.employee_id.address_home_id.id,
-                                    'account_id': debit_account_id,
-                                    'journal_id': slip.company_id.accrual_journal.id,
-                                    'analytic_account_id': self.contract_id.analytic_account_id.id or False,
-                                    'date': self.date_to,
-                                    # 'debit': round(abs(amount), 2),
-                                    # 'credit': 0.0,
-                                    'debit': amount > 0.0 and round(amount, 2) or 0.0,
-                                    'credit': amount < 0.0 and -round(amount, 2) or 0.0,
-                                })
-                                total_debit += round(amount, 2)
-                                line_ids.append(adjust_debit)
+                                debit_account_id = line.salary_rule_id.project_account_debit.id
+                                credit_account_id = line.salary_rule_id.project_account_credit.id
+                        if line.category_id.code in ('DED', 'GOSI'):
+                            adjust_debit = (0, 0, {
+                                'name': slip.employee_id.name or '/ ' + line.names,
+                                'partner_id': slip.employee_id.address_home_id.id,
+                                'account_id': debit_account_id,
+                                'journal_id': slip.company_id.accrual_journal.id,
+                                'analytic_account_id': self.contract_id.analytic_account_id.id or False,
+                                'date': self.date_to,
+                                'credit': round(abs(amount), 2),
+                                'debit': 0.0,
+                            })
+                            total_debit -= round(abs(amount), 2)
+                            line_ids.append(adjust_debit)
+                        else:
+                            adjust_debit = (0, 0, {
+                                'name': slip.employee_id.name or '/ ' + line.names,
+                                'partner_id': slip.employee_id.address_home_id.id,
+                                'account_id': debit_account_id,
+                                'journal_id': slip.company_id.accrual_journal.id,
+                                'analytic_account_id': self.contract_id.analytic_account_id.id or False,
+                                'date': self.date_to,
+                                # 'debit': round(abs(amount), 2),
+                                # 'credit': 0.0,
+                                'debit': amount > 0.0 and round(amount, 2) or 0.0,
+                                'credit': amount < 0.0 and -round(amount, 2) or 0.0,
+                            })
+                            total_debit += round(amount, 2)
+                            line_ids.append(adjust_debit)
                     if line.code == 'NET':
                         debit_account_id = line.salary_rule_id.account_debit.id
                         credit_account_id = line.salary_rule_id.account_credit.id
