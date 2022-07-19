@@ -217,20 +217,15 @@ class Payslip(models.Model):
     gosi_for_employee = fields.Float('Gosi - Employee')
 
     def hr_accrual_entry(self):
-        for employee in self.env['hr.employee'].search([('active', '=', True)]):
-            contracts = employee.get_active_contracts(date=self.date_to)
+        for payslip in self:
+            employee = payslip.employee_id
+            contracts = payslip.contract_id
             month = datetime.strptime(str(self.date_from), '%Y-%m-%d').month
             year = datetime.strptime(str(self.date_from), '%Y-%m-%d').year
-            # sdate = dt(year, month, 1)
+            sdate = dt(year, month, 1)
             # edate = dt(year, month, calendar.monthrange(year, month)[1])
 
             for cont in contracts:
-                timesheets = self.get_timesheet(employee.id, self.date_from, self.date_to)
-
-                work_data = cont.employee_id.get_work_days_data(datetime.strptime(str(self.date_from), '%Y-%m-%d'),
-                                                                datetime.strptime(str(self.date_to), '%Y-%m-%d'),
-                                                                calendar=cont.resource_calendar_id)
-
                 if cont.state in ('open', 'pending'):
                     # end of service accrual entry
                     if cont.is_eos_amount:
@@ -266,45 +261,17 @@ class Payslip(models.Model):
                             })
                             print('adjust_credit Amount ::: %s ', amount)
                             line_ids.append(adjust_credit)
-                            total_sheet = 0
-                            if timesheets:
-                                for sheet in timesheets:
-                                    if sheet.get('account_id'):
-                                        isdepartment = self.env['account.analytic.account'].browse(
-                                            sheet.get('account_id')).isdepartment
-                                        if isdepartment:
-                                            debit_account = int(
-                                                self.env['ir.config_parameter'].sudo().get_param(
-                                                    'eos_debit_pjt_account'))
-                                    amt = abs((amount / work_data['hours']) * sheet.get('hours'))
-                                    total_sheet = total_sheet + amt
-                                    print('Amount ::: %s ', total_sheet)
-                                    adjust_debit = (0, 0, {
-                                        'name': cont.employee_id.name or '/ ' + 'EOS Accrual',
-                                        'partner_id': cont.employee_id.address_home_id.id,
-                                        'account_id': debit_account,
-                                        'journal_id': cont.company_id.accrual_journal.id,
-                                        'analytic_account_id': sheet.get('account_id') or False,
-                                        'date': self.date_to,
-                                        'debit': amt,
-                                        'credit': 0.0,
-                                    })
-                                    line_ids.append(adjust_debit)
-                            print('First Amount ::: %s ', total_sheet)
-                            amount = amount - total_sheet
-                            if amount != 0:
-                                print('Amount ::: %s ', amount)
-                                adjust_debit = (0, 0, {
-                                    'name': cont.employee_id.name or '/ ' + 'EOS Accrual',
-                                    'partner_id': cont.employee_id.address_home_id.id,
-                                    'account_id': debit_account,
-                                    'journal_id': cont.company_id.accrual_journal.id,
-                                    'analytic_account_id': cont.analytic_account_id.id or False,
-                                    'date': self.date_to,
-                                    'debit': abs(amount),
-                                    'credit': 0.0,
-                                })
-                                line_ids.append(adjust_debit)
+                            adjust_debit = (0, 0, {
+                                'name': cont.employee_id.name or '/ ' + 'EOS Accrual',
+                                'partner_id': cont.employee_id.address_home_id.id,
+                                'account_id': debit_account,
+                                'journal_id': cont.company_id.accrual_journal.id,
+                                'analytic_account_id': cont.analytic_account_id.id or False,
+                                'date': self.date_to,
+                                'debit': abs(amount),
+                                'credit': 0.0,
+                            })
+                            line_ids.append(adjust_debit)
 
                             move['line_ids'] = line_ids
                             move_id = self.env['account.move'].create(move)
@@ -352,45 +319,17 @@ class Payslip(models.Model):
                                 'debit': 0.0,
                             })
                             line_ids.append(adjust_credit)
-                            total_sheet = 0
-                            if timesheets:
-                                for sheet in timesheets:
-                                    if sheet.get('account_id'):
-                                        isdepartment = self.env['account.analytic.account'].browse(
-                                            sheet.get('account_id')).isdepartment
-                                        if isdepartment:
-                                            debit_account = int(
-                                                self.env['ir.config_parameter'].sudo().get_param(
-                                                    'vacation_debit_pjt_account'))
-                                    amt = (amount / work_data['hours']) * sheet.get('hours')
-                                    total_sheet = total_sheet + amt
-                                    print('Amount ::: %s ', total_sheet)
-                                    adjust_debit = (0, 0, {
-                                        'name': 'Vacation Accrual',
-                                        'partner_id': cont.employee_id.address_home_id.id,
-                                        'account_id': debit_account,
-                                        'journal_id': cont.company_id.accrual_journal.id,
-                                        'analytic_account_id': sheet.get('account_id') or False,
-                                        'date': self.date_to,
-                                        'debit': amt,
-                                        'credit': 0.0,
-                                    })
-                                    line_ids.append(adjust_debit)
-                            print('First Amount ::: %s ', total_sheet)
-                            amount = amount - total_sheet
-                            if amount != 0:
-                                print('Amount ::: %s ', amount)
-                                adjust_debit = (0, 0, {
-                                    'name': 'Vacation Accrual',
-                                    'partner_id': cont.employee_id.address_home_id.id,
-                                    'account_id': debit_account,
-                                    'journal_id': cont.company_id.accrual_journal.id,
-                                    'analytic_account_id': cont.analytic_account_id.id or False,
-                                    'date': self.date_to,
-                                    'debit': abs(amount),
-                                    'credit': 0.0,
-                                })
-                                line_ids.append(adjust_debit)
+                            adjust_debit = (0, 0, {
+                                'name': 'Vacation Accrual',
+                                'partner_id': cont.employee_id.address_home_id.id,
+                                'account_id': debit_account,
+                                'journal_id': cont.company_id.accrual_journal.id,
+                                'analytic_account_id': cont.analytic_account_id.id or False,
+                                'date': self.date_to,
+                                'debit': abs(amount),
+                                'credit': 0.0,
+                            })
+                            line_ids.append(adjust_debit)
 
                             move['line_ids'] = line_ids
                             move_id = self.env['account.move'].create(move)
@@ -430,45 +369,17 @@ class Payslip(models.Model):
                                 'debit': 0.0,
                             })
                             line_ids.append(adjust_credit)
-                            total_sheet = 0
-                            if timesheets:
-                                for sheet in timesheets:
-                                    if sheet.get('account_id'):
-                                        isdepartment = self.env['account.analytic.account'].browse(
-                                            sheet.get('account_id')).isdepartment
-                                        if isdepartment:
-                                            debit_account = int(
-                                                self.env['ir.config_parameter'].sudo().get_param(
-                                                    'ticket_debit_pjt_account'))
-                                    amt = (amount / work_data['hours']) * sheet.get('hours')
-                                    total_sheet = total_sheet + amt
-                                    print('Amount ::: %s ', total_sheet)
-                                    adjust_debit = (0, 0, {
-                                        'name': 'Ticket Accrual',
-                                        'partner_id': cont.employee_id.address_home_id.id,
-                                        'account_id': debit_account,
-                                        'journal_id': cont.company_id.accrual_journal.id,
-                                        'analytic_account_id': sheet.get('account_id') or False,
-                                        'date': self.date_to,
-                                        'debit': amt,
-                                        'credit': 0.0,
-                                    })
-                                    line_ids.append(adjust_debit)
-                            print('First Amount ::: %s ', total_sheet)
-                            amount = amount - total_sheet
-                            if amount != 0:
-                                print('Amount ::: %s ', amount)
-                                adjust_debit = (0, 0, {
-                                    'name': 'Ticket Accrual',
-                                    'partner_id': cont.employee_id.address_home_id.id,
-                                    'account_id': debit_account,
-                                    'journal_id': cont.company_id.accrual_journal.id,
-                                    'analytic_account_id': cont.analytic_account_id.id or False,
-                                    'date': self.date_to,
-                                    'debit': abs(amount),
-                                    'credit': 0.0,
-                                })
-                                line_ids.append(adjust_debit)
+                            adjust_debit = (0, 0, {
+                                'name': 'Ticket Accrual',
+                                'partner_id': cont.employee_id.address_home_id.id,
+                                'account_id': debit_account,
+                                'journal_id': cont.company_id.accrual_journal.id,
+                                'analytic_account_id': cont.analytic_account_id.id or False,
+                                'date': self.date_to,
+                                'debit': abs(amount),
+                                'credit': 0.0,
+                            })
+                            line_ids.append(adjust_debit)
 
                             move['line_ids'] = line_ids
                             move_id = self.env['account.move'].create(move)
@@ -480,7 +391,7 @@ class Payslip(models.Model):
                                 'type': 'ticket',
                             }
                             self.env['employee.accrual.move'].sudo().create(accrual)
-
+                            
     def action_payslip_done(self):
         res = super(Payslip, self).action_payslip_done()
         # self.hr_accrual_entry(self.employee_id, self.date_from, self.date_to)
