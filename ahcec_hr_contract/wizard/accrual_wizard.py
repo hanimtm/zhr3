@@ -33,13 +33,13 @@ class AccrualWizard(models.TransientModel):
             self.date_to = edate
 
     def get_timesheet(self, employee, date_from, date_to):
-        self.env.cr.execute("""SELECT sum(unit_amount) as hours,account_id FROM account_analytic_line
-                                                                   WHERE employee_id = %s and
-                                                                   date >= %s and
-                                                                   date <= %s and 
-                                                                   sheet_id is not Null
-                                                                   group by account_id
-                                                                        """, (
+        self.env.cr.execute("""
+        SELECT sum(unit_amount) as hours,account_id FROM account_analytic_line
+        WHERE employee_id = %s and
+        date >= %s and
+        date <= %s 
+        group by account_id
+            """, (
             employee, date_from, date_to,))
         data = self.env.cr.dictfetchall()
         return data
