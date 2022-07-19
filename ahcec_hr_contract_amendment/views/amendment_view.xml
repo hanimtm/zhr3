@@ -220,9 +220,9 @@
 <!--            <xpath expr="//button[@name='compute_sheet']" position="attributes">-->
 <!--                <attribute name="name">compute_sheet_ahcec</attribute>-->
 <!--           </xpath>-->
-            <xpath expr="//button[@name='action_payslip_done']" position="attributes">
-                <attribute name="name">action_payslip_done_new</attribute>
-           </xpath>
+<!--            <xpath expr="//button[@name='action_payslip_done']" position="attributes">-->
+<!--                <attribute name="name">action_payslip_done_new</attribute>-->
+<!--           </xpath>-->
             <xpath expr="//field[@name='company_id']" position="after">
                <field name="gosi_for_employee"/>
            </xpath>
