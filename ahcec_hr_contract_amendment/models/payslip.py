@@ -221,7 +221,7 @@ class Payslip(models.Model):
             contracts = employee.get_active_contracts(date=self.date_to)
             month = datetime.strptime(str(self.date_from), '%Y-%m-%d').month
             year = datetime.strptime(str(self.date_from), '%Y-%m-%d').year
-            sdate = dt(year, month, 1)
+            # sdate = dt(year, month, 1)
             # edate = dt(year, month, calendar.monthrange(year, month)[1])
 
             for cont in contracts:
