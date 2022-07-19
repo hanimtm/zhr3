@@ -232,7 +232,7 @@ class Payslip(models.Model):
                         line_ids = []
                         amount = cont.eos_amount
                         if cont.eos_accrual_move_id:
-                            amount = amount - cont.eos_accrual_move_id.amount
+                            amount = amount - cont.eos_accrual_move_id.amount_total
                         move = {
                             'name': '/',
                             'journal_id': cont.company_id.accrual_journal.id,
