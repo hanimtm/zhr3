@@ -35,7 +35,7 @@ class ImportEmployee(models.TransientModel):
 	_name = 'import.employee.contract'
 	_description = 'Import Employee Contract'
 
-	file_type = fields.Selection([('XLS', 'XLS File')],string='File Type', default='XLS')
+	file_type = fields.Selection([('XLS', 'XLS File')], string='File Type', default='XLS')
 	file = fields.Binary(string="Upload File")
 
 	def import_employee_contract(self):
@@ -56,10 +56,10 @@ class ImportEmployee(models.TransientModel):
 			for row_no in range(sheet.nrows):
 				val = {}
 				if row_no <= 0:
-					fields = list(map(lambda row:row.value.encode('utf-8'), sheet.row(row_no)))
+					fields = list(map(lambda row: row.value.encode('utf-8'), sheet.row(row_no)))
 				else:
-					line = list(map(lambda row:isinstance(row.value, bytes) and row.value.encode('utf-8') or str(row.value), sheet.row(row_no)))
-					values.update( {
+					line = list(map(lambda row: isinstance(row.value, bytes) and row.value.encode('utf-8') or str(row.value), sheet.row(row_no)))
+					values.update({
 							'employee_code': line[0],
 							'struct_id': line[1],
 							'wage': line[2],

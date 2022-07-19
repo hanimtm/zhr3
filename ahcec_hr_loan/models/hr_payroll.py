@@ -12,6 +12,14 @@ _logger = logging.getLogger(__name__)
 class HrPayslip(models.Model):
     _inherit = "hr.payslip"
 
+    _logger.critical("""
+        ++++++++++++++++++++++++++++++++++++++
+        ++++++++++++++++++++++++++++++++++++++
+        ++++++++++++++++++++++++++++++++++++++
+        ++++++++++++++++++++++++++++++++++++++
+        ++++++++++++++++++++++++++++++++++++++
+    """)
+
     def action_payslip_done(self):
         _logger.critical('-11111111111111111111111111111111')
         res = super(HrPayslip, self).action_payslip_done()
