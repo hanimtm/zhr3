@@ -483,7 +483,8 @@ class Payslip(models.Model):
 
     def action_payslip_done(self):
         res = super(Payslip, self).action_payslip_done()
-        self.hr_accrual_entry(self.employee_id, self.date_from, self.date_to)
+        # self.hr_accrual_entry(self.employee_id, self.date_from, self.date_to)
+        self.hr_accrual_entry()
         return res
         # ctx = self._context.copy()
         # # res = super(HrPayslip, self).action_payslip_done()
