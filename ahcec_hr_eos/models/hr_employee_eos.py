@@ -106,17 +106,17 @@ class HrEmployeeEos(models.Model):
             user_valid=False)
         return super(HrEmployeeEos, self).copy(default=default)
 
-    @api.model
-    def create(self, vals):
-        """
-            Create a new Record
-        """
-        if vals.get('employee_id'):
-            employee = self.env['hr.employee'].browse(vals['employee_id'])
-            vals.update({'job_id': employee.job_id.id,
-                         'department_id': employee.department_id.id,
-                         })
-        return super(HrEmployeeEos,self).create(vals)
+    # @api.model
+    # def create(self, vals):
+    #     """
+    #         Create a new Record
+    #     """
+    #     if vals.get('employee_id'):
+    #         employee = self.env['hr.employee'].browse(vals['employee_id'])
+    #         vals.update({'job_id': employee.job_id.id,
+    #                      'department_id': employee.department_id.id,
+    #                      })
+    #     return super(HrEmployeeEos,self).create(vals)
 
     def write(self, vals):
         """
@@ -290,7 +290,7 @@ class HrEmployeeEos(models.Model):
         """
         self.ensure_one()
         self.write({'state':'confirm', 'date_confirm':time.strftime('%Y-%m-%d')})
-        self.message_post(message_type="email", subtype='mail.mt_comment', body=_('EOS Confirmed.'))
+        # self.message_post(message_type="email", subtype='mail.mt_comment', body=_('EOS Confirmed.'))
 
     def eos_validate(self):
         """
@@ -309,7 +309,7 @@ class HrEmployeeEos(models.Model):
             if eos.employee_id.parent_id.user_id:
                 eos.message_subscribe_users(user_ids=[eos.employee_id.parent_id.user_id.id])
         self.write({'state': 'validate', 'date_valid': time.strftime('%Y-%m-%d'), 'user_valid': self.env.uid})
-        self.message_post(message_type="email", subtype='mail.mt_comment', body=_('EOS Validated.'))
+        # self.message_post(message_type="email", subtype='mail.mt_comment', body=_('EOS Validated.'))
 
     def eos_accept(self):
         """
@@ -317,7 +317,7 @@ class HrEmployeeEos(models.Model):
         """
         self.ensure_one()
         self.write({'state': 'accepted', 'date_approve': time.strftime('%Y-%m-%d'), 'user_approve': self.env.uid})
-        self.message_post(message_type="email", subtype='mail.mt_comment', body=_('EOS Approved.'))
+        # self.message_post(message_type="email", subtype='mail.mt_comment', body=_('EOS Approved.'))
 
     def eos_canceled(self):
         """
@@ -325,7 +325,7 @@ class HrEmployeeEos(models.Model):
         """
         self.ensure_one()
         self.state = 'cancelled'
-        self.message_post(message_type="email", subtype='mail.mt_comment', body=_('EOS Cancelled.'))
+        # self.message_post(message_type="email", subtype='mail.mt_comment', body=_('EOS Cancelled.'))
 
     def eos_draft(self):
         """
@@ -333,7 +333,7 @@ class HrEmployeeEos(models.Model):
         """
         self.ensure_one()
         self.state = 'draft'
-        self.message_post(message_type="email", subtype='mail.mt_comment', body=_('EOS Draft.'))
+        # self.message_post(message_type="email", subtype='mail.mt_comment', body=_('EOS Draft.'))
 
     def account_move_get(self):
         """
