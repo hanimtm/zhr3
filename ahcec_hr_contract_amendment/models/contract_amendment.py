@@ -58,15 +58,15 @@ class ContractAmendment(models.Model):
     validated_date = fields.Datetime('Validated Date', readonly=True, copy=False)
     package_id = fields.One2many('contract.package.line','amendment_id','Packages',track_visibility='onchange')
 
-    # @api.onchange('employee_id')
-    # def onchange_employee_id(self):
-    #     effective_date = time.strftime('%Y-%m-%d')
-    #     payslip_obj = self.env['hr.payslip']
-    #     contract_ids = payslip_obj.get_contract(self.employee_id, effective_date, effective_date)
-    #     contract = payslip_obj.browse(contract_ids)
-    #     self.department_id = self.employee_id.department_id.id or False
-    #     self.job_id = self.employee_id.job_id.id or False
-    #     self.hr_contract_id = contract and contract[0].id or False
+    @api.onchange('employee_id')
+    def onchange_employee_id(self):
+        effective_date = time.strftime('%Y-%m-%d')
+        payslip_obj = self.env['hr.payslip']
+        contract_ids = payslip_obj.get_contract(self.employee_id, effective_date, effective_date)
+        contract = payslip_obj.browse(contract_ids)
+        self.department_id = self.employee_id.department_id.id or False
+        self.job_id = self.employee_id.job_id.id or False
+        self.hr_contract_id = contract and contract[0].id or False
 
     @api.onchange('hr_contract_id')
     def onchange_hr_contract_id(self):
