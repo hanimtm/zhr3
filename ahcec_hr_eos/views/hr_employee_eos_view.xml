@@ -166,7 +166,7 @@
     <record id="eos_all" model="ir.actions.act_window">
         <field name="name">End of Service Indemnity (EOS)</field>
         <field name="res_model">hr.employee.eos</field>
-        <field name="search_view_id" ref="view_hr_employee_eos_filter"/>
+<!--        <field name="search_view_id" ref="view_hr_employee_eos_filter"/>-->
         <field name="view_id" ref="view_employee_eos_tree"/>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">
