@@ -148,6 +148,7 @@ class HrEmployeeEos(models.Model):
     #     if journal_ids:
     #         self.journal_id = journal_ids[0].id
 
+    # button
     def calc_eos(self):
         """
             Calculate eos
@@ -251,40 +252,41 @@ class HrEmployeeEos(models.Model):
             #     eos.write({'total_eos':payable_eos,'annual_leave_amount':annual_leave_amount,'remaining_leave': remaining_leaves})
             return True
 
-    @api.onchange('employee_id', 'eos_date')
-    def onchange_employee_id(self):
-        """
-            Calculate total no of year, month, days, etc depends on employee
-        """
-        payslip_obj = self.env['hr.payslip']
-        contract_ids = False
-        if self.employee_id:
-            if not self.employee_id.date_of_leave:
-                raise UserError(_('Please define employee date of leaving!'))
-            if not self.employee_id.joining_date:
-                raise UserError(_('Please define employee date of join!'))
-            selected_date = datetime.strptime(self.employee_id.date_of_leave,DEFAULT_SERVER_DATE_FORMAT)
-            date_from = date(selected_date.year,selected_date.month, 1)
-            l_d = date_from + relativedelta.relativedelta(day=selected_date.day)
-            date_to = datetime.strftime(l_d,'%Y-%m-%d')
-            contract_ids = self.payslip_id.get_contract(self.employee_id, date_from, date_to)
-            if not contract_ids:
-                raise UserError(_('Please define contract for selected Employee!'))
-            join_date = datetime.strptime(self.employee_id.joining_date, DEFAULT_SERVER_DATE_FORMAT)
-            leave_date = datetime.strptime(self.employee_id.date_of_leave, DEFAULT_SERVER_DATE_FORMAT)
-            calc_years = round(((leave_date - join_date).days / 365.0),2)
-            diff = relativedelta.relativedelta(leave_date, join_date)
-            self.contract_id = contract_ids[0]
-            self.date_of_leave = self.employee_id.date_of_leave
-            self.date_of_join = self.employee_id.joining_date
-            self.calc_year = calc_years
-            self.department_id = self.employee_id.department_id.id or False
-            self.company_id = self.employee_id.company_id.id or False
-            self.job_id = self.employee_id.job_id.id or False
-            self.duration_years = diff.years or 0
-            self.duration_months = diff.months or 0
-            self.duration_days = diff.days or 0
+    # @api.onchange('employee_id', 'eos_date')
+    # def onchange_employee_id(self):
+    #     """
+    #         Calculate total no of year, month, days, etc depends on employee
+    #     """
+    #     payslip_obj = self.env['hr.payslip']
+    #     contract_ids = False
+    #     if self.employee_id:
+    #         if not self.employee_id.date_of_leave:
+    #             raise UserError(_('Please define employee date of leaving!'))
+    #         if not self.employee_id.joining_date:
+    #             raise UserError(_('Please define employee date of join!'))
+    #         selected_date = datetime.strptime(self.employee_id.date_of_leave,DEFAULT_SERVER_DATE_FORMAT)
+    #         date_from = date(selected_date.year,selected_date.month, 1)
+    #         l_d = date_from + relativedelta.relativedelta(day=selected_date.day)
+    #         date_to = datetime.strftime(l_d,'%Y-%m-%d')
+    #         contract_ids = self.payslip_id.get_contract(self.employee_id, date_from, date_to)
+    #         if not contract_ids:
+    #             raise UserError(_('Please define contract for selected Employee!'))
+    #         join_date = datetime.strptime(self.employee_id.joining_date, DEFAULT_SERVER_DATE_FORMAT)
+    #         leave_date = datetime.strptime(self.employee_id.date_of_leave, DEFAULT_SERVER_DATE_FORMAT)
+    #         calc_years = round(((leave_date - join_date).days / 365.0),2)
+    #         diff = relativedelta.relativedelta(leave_date, join_date)
+    #         self.contract_id = contract_ids[0]
+    #         self.date_of_leave = self.employee_id.date_of_leave
+    #         self.date_of_join = self.employee_id.joining_date
+    #         self.calc_year = calc_years
+    #         self.department_id = self.employee_id.department_id.id or False
+    #         self.company_id = self.employee_id.company_id.id or False
+    #         self.job_id = self.employee_id.job_id.id or False
+    #         self.duration_years = diff.years or 0
+    #         self.duration_months = diff.months or 0
+    #         self.duration_days = diff.days or 0
 
+    # button
     def eos_confirm(self):
         """
             EOS confirm state.
@@ -293,6 +295,7 @@ class HrEmployeeEos(models.Model):
         self.write({'state':'confirm', 'date_confirm':time.strftime('%Y-%m-%d')})
         # self.message_post(message_type="email", subtype='mail.mt_comment', body=_('EOS Confirmed.'))
 
+    # button
     def eos_validate(self):
         """
             EOS validate state.
@@ -312,6 +315,7 @@ class HrEmployeeEos(models.Model):
         self.write({'state': 'validate', 'date_valid': time.strftime('%Y-%m-%d'), 'user_valid': self.env.uid})
         # self.message_post(message_type="email", subtype='mail.mt_comment', body=_('EOS Validated.'))
 
+    # button
     def eos_accept(self):
         """
             EOS accept state
@@ -320,6 +324,7 @@ class HrEmployeeEos(models.Model):
         self.write({'state': 'accepted', 'date_approve': time.strftime('%Y-%m-%d'), 'user_approve': self.env.uid})
         # self.message_post(message_type="email", subtype='mail.mt_comment', body=_('EOS Approved.'))
 
+    # button
     def eos_canceled(self):
         """
             EOS confirm state
@@ -328,6 +333,7 @@ class HrEmployeeEos(models.Model):
         self.state = 'cancelled'
         # self.message_post(message_type="email", subtype='mail.mt_comment', body=_('EOS Cancelled.'))
 
+    # button
     def eos_draft(self):
         """
             EOS set to draft state
@@ -384,6 +390,7 @@ class HrEmployeeEos(models.Model):
             'analytic_account_id': x.get('account_analytic_id', False),
         }
 
+    # button
     def action_receipt_create(self):
         """
             main function that is called when trying to create the accounting entries related to an expense
@@ -444,6 +451,7 @@ class HrEmployeeEos(models.Model):
             self.write({'account_move_id': move_id.id, 'state': 'done'})
         return True
 
+    # button
     def action_view_receipt(self):
         """
             This function returns an action that display existing account.move of given expense ids.
