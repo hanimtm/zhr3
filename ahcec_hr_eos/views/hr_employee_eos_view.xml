@@ -65,7 +65,7 @@
                             <field name="user_valid" attrs="{'invisible': [('state','=','draft')]}"/>
                             <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
                             <field name="currency_id" groups="base.group_multi_currency"/>
-                            <field name="year_id"/>
+<!--                            <field name="year_id"/>-->
                         </group>
                     </group>
                     <notebook>

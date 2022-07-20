@@ -72,7 +72,7 @@ class HrEmployeeEos(models.Model):
     account_move_id = fields.Many2one('account.move', 'Ledger Posting')
     voucher_id = fields.Many2one('account.voucher', "Employee's Receipt")
     currency_id = fields.Many2one('res.currency', 'Currency', required=True, readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}, default=_get_currency)
-    year_id = fields.Many2one('year.year', 'Year', required=True, readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}, index=True, default=lambda self: self.env['year.year'].find(time.strftime("%Y-%m-%d"), True))
+    # year_id = fields.Many2one('year.year', 'Year', required=True, readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}, index=True, default=lambda self: self.env['year.year'].find(time.strftime("%Y-%m-%d"), True))
 
     def _track_subtype(self, init_values):
         """
