@@ -39,7 +39,7 @@ class ContractAmendment(models.Model):
     _inherit = ['mail.thread']
 
     employee_id = fields.Many2one('hr.employee', 'Employee', required=True, default=lambda self: self.env['hr.employee'].get_employee())
-    hr_contract_id = fields.Many2one('hr.contract', 'Contract', required=True, domain=[('employee_id', '=', 'employee_id.id')])
+    hr_contract_id = fields.Many2one('hr.contract', 'Contract', required=True)
     job_id = fields.Many2one('hr.job', 'From Job', readonly=True)
     department_id = fields.Many2one('hr.department', 'From Department', readonly=True)
     company_id = fields.Many2one('res.company', string='Company', readonly=True, default=lambda self: self.env.user.company_id)
