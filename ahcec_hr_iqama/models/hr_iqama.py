@@ -190,7 +190,7 @@ class HrIqama(models.Model):
                 [('branch_id', '=', iqama.employee_id.branch_id.id or False), ('gr_ids', '!=', False)])
             user_ids = gr_groups_config_ids and [employee.user_id.id for employee in gr_groups_config_ids.gr_ids if
                                                  employee.user_id] or []
-            iqama.sudo().message_subscribe_users(user_ids=user_ids)
+            # iqama.sudo().message_subscribe_users(user_ids=user_ids)
 
     def iqama_inprogress(self):
         """
