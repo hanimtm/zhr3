@@ -7,6 +7,7 @@ from datetime import date,datetime
 from odoo.exceptions import UserError
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
+
 class HrEmployeeEos(models.Model):
     _name = 'hr.employee.eos'
     _inherit = ['mail.thread']
