@@ -139,14 +139,14 @@ class HrEmployeeEos(models.Model):
                 raise UserError(_('You cannot remove the record which is in %s state!')%(object.state))
         return super(HrEmployeeEos, self).unlink()
 
-    @api.onchange('currency_id', 'company_id')
-    def onchange_currency_id(self):
-        """
-            find the journal using currency
-        """
-        journal_ids = self.env['account.journal'].search([('type','=','purchase'), ('currency_id','=',self.currency_id.id), ('company_id', '=', self.company_id.id)], limit=1)
-        if journal_ids:
-            self.journal_id = journal_ids[0].id
+    # @api.onchange('currency_id', 'company_id')
+    # def onchange_currency_id(self):
+    #     """
+    #         find the journal using currency
+    #     """
+    #     journal_ids = self.env['account.journal'].search([('type','=','purchase'), ('currency_id','=',self.currency_id.id), ('company_id', '=', self.company_id.id)], limit=1)
+    #     if journal_ids:
+    #         self.journal_id = journal_ids[0].id
 
     def calc_eos(self):
         """
