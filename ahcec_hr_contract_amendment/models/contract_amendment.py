@@ -130,44 +130,44 @@ class ContractAmendment(models.Model):
 
     def amendment_done(self):
         self.ensure_one()
-        # value = self.env['hr.employee'].browse(self.employee_id.id)
-        # self.employee_id.department_id = self.new_department_id.id or False
-        # self.employee_id.job_id = self.new_job_id.id or False
-        #
-        # self.hr_contract_id.date_start = self.current_start_date or False
-        # self.hr_contract_id.date_end = self.current_end_date or False
-        #
-        # for package in self.package_id:
-        #     if package.name == 'basic':
-        #         self.hr_contract_id.wage = package.new_package
-        #         package.approved_date = fields.Date.today()
-        #     elif package.name == 'transport':
-        #         self.hr_contract_id.is_TA = True
-        #         self.hr_contract_id.TA = package.new_package
-        #         package.approved_date = fields.Date.today()
-        #     elif package.name == 'hra':
-        #         self.hr_contract_id.is_HRA = True
-        #         self.hr_contract_id.HRA = package.new_package
-        #         package.approved_date = fields.Date.today()
-        #     elif package.name == 'mobile':
-        #         self.hr_contract_id.mobile = True
-        #         self.hr_contract_id.mobile_allowance = package.new_package
-        #     elif package.name == 'mobile':
-        #         self.hr_contract_id.mobile = True
-        #         self.hr_contract_id.mobile_allowance = package.new_package
-        #         package.approved_date = fields.Date.today()
-        #     elif package.name == 'shift':
-        #         self.hr_contract_id.is_shift_allow = True
-        #         self.hr_contract_id.shift_allow = package.new_package
-        #         package.approved_date = fields.Date.today()
-        #     elif package.name == 'remote':
-        #         self.hr_contract_id.is_remote_allow = True
-        #         self.hr_contract_id.remote_allow = package.new_package
-        #         package.approved_date = fields.Date.today()
-        #     elif package.name == 'other':
-        #         self.hr_contract_id.is_other_allow = True
-        #         self.hr_contract_id.other_allow = package.new_package
-        #         package.approved_date = fields.Date.today()
+        value = self.env['hr.employee'].browse(self.employee_id.id)
+        self.employee_id.department_id = self.new_department_id.id or False
+        self.employee_id.job_id = self.new_job_id.id or False
+
+        self.hr_contract_id.date_start = self.current_start_date or False
+        self.hr_contract_id.date_end = self.current_end_date or False
+
+        for package in self.package_id:
+            if package.name == 'basic':
+                self.hr_contract_id.wage = package.new_package
+                package.approved_date = fields.Date.today()
+            elif package.name == 'transport':
+                self.hr_contract_id.is_TA = True
+                self.hr_contract_id.TA = package.new_package
+                package.approved_date = fields.Date.today()
+            elif package.name == 'hra':
+                self.hr_contract_id.is_HRA = True
+                self.hr_contract_id.HRA = package.new_package
+                package.approved_date = fields.Date.today()
+            elif package.name == 'mobile':
+                self.hr_contract_id.mobile = True
+                self.hr_contract_id.mobile_allowance = package.new_package
+            elif package.name == 'mobile':
+                self.hr_contract_id.mobile = True
+                self.hr_contract_id.mobile_allowance = package.new_package
+                package.approved_date = fields.Date.today()
+            elif package.name == 'shift':
+                self.hr_contract_id.is_shift_allow = True
+                self.hr_contract_id.shift_allow = package.new_package
+                package.approved_date = fields.Date.today()
+            elif package.name == 'remote':
+                self.hr_contract_id.is_remote_allow = True
+                self.hr_contract_id.remote_allow = package.new_package
+                package.approved_date = fields.Date.today()
+            elif package.name == 'other':
+                self.hr_contract_id.is_other_allow = True
+                self.hr_contract_id.other_allow = package.new_package
+                package.approved_date = fields.Date.today()
 
         self.write({'state': 'done'})
 
