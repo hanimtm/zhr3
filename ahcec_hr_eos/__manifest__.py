@@ -32,7 +32,7 @@ EOS amount
         'data/hr_eos_data.xml',
         'views/hr_employee_eos_view.xml',
         # 'views/hr_employee_eos_workflow.xml',
-        'view_order_line.xml',
+        # 'view_order_line.xml',
         'register_qweb_report_eos.xml',
         'report/emp_experience_letter_maleqweb.xml',
         'report/emp_experience_letter_femaleqweb.xml',
