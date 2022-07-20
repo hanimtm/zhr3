@@ -13,20 +13,20 @@ class HrEmployeeEos(models.Model):
     _inherit = ['mail.thread']
     _description = "End of Service Indemnity (EOS)"
 
-    def _get_currency(self):
-        """
-            return currency of current user
-        """
-        user = self.env['res.users'].browse(self.env.uid)
-        return user.company_id.currency_id.id
+    # def _get_currency(self):
+    #     """
+    #         return currency of current user
+    #     """
+    #     user = self.env['res.users'].browse(self.env.uid)
+    #     return user.company_id.currency_id.id
 
-    def _calc_payable_eos(self):
-        """
-            Calculate the payable eos
-        """
-        print('a')
-        # for eos_amt in self:
-        #     eos_amt.payable_eos = (eos_amt.total_eos + eos_amt.current_month_salary + eos_amt.others + eos_amt.annual_leave_amount) or 0.0
+    # def _calc_payable_eos(self):
+    #     """
+    #         Calculate the payable eos
+    #     """
+    #     print('a')
+    #     # for eos_amt in self:
+    #     #     eos_amt.payable_eos = (eos_amt.total_eos + eos_amt.current_month_salary + eos_amt.others + eos_amt.annual_leave_amount) or 0.0
 
     name = fields.Char('Description', size=128, required=True, readonly=True,
                        states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})
