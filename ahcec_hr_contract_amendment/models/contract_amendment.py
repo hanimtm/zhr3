@@ -60,13 +60,13 @@ class ContractAmendment(models.Model):
 
     @api.onchange('employee_id')
     def onchange_employee_id(self):
-        effective_date = time.strftime('%Y-%m-%d')
-        payslip_obj = self.env['hr.payslip']
-        contract_ids = payslip_obj.get_contract(self.employee_id, effective_date, effective_date)
-        contract = payslip_obj.browse(contract_ids)
+        # effective_date = time.strftime('%Y-%m-%d')
+        # payslip_obj = self.env['hr.payslip']
+        # contract_ids = payslip_obj.get_contract(self.employee_id, effective_date, effective_date)
+        # contract = payslip_obj.browse(contract_ids)
         self.department_id = self.employee_id.department_id.id or False
         self.job_id = self.employee_id.job_id.id or False
-        self.hr_contract_id = contract and contract[0].id or False
+        # self.hr_contract_id = contract and contract[0].id or False
 
     @api.onchange('hr_contract_id')
     def onchange_hr_contract_id(self):
