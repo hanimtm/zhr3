@@ -75,37 +75,37 @@ class HrEmployeeEos(models.Model):
     currency_id = fields.Many2one('res.currency', 'Currency', required=True, readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}, default=_get_currency)
     # year_id = fields.Many2one('year.year', 'Year', required=True, readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}, index=True, default=lambda self: self.env['year.year'].find(time.strftime("%Y-%m-%d"), True))
 
-    def _track_subtype(self, init_values):
-        """
-            Track Subtypes of EOS
-        """
-        self.ensure_one()
-        if 'state' in init_values and self.state == 'draft':
-            return 'ahcec_hr_eos.mt_employee_eos_new'
-        elif 'state' in init_values and self.state == 'confirm':
-            return 'ahcec_hr_eos.mt_employee_eos_confirm'
-        elif 'state' in init_values and self.state == 'accepted':
-            return 'ahcec_hr_eos.mt_employee_eos_accept'
-        elif 'state' in init_values and self.state == 'validate':
-            return 'ahcec_hr_eos.mt_employee_eos_validate'
-        elif 'state' in init_values and self.state == 'done':
-            return 'ahcec_hr_eos.mt_employee_eos_done'
-        elif 'state' in init_values and self.state == 'cancelled':
-            return 'ahcec_hr_eos.mt_employee_eos_cancel'
-        return super(HrEmployeeEos, self)._track_subtype(init_values)
+    # def _track_subtype(self, init_values):
+    #     """
+    #         Track Subtypes of EOS
+    #     """
+    #     self.ensure_one()
+    #     if 'state' in init_values and self.state == 'draft':
+    #         return 'ahcec_hr_eos.mt_employee_eos_new'
+    #     elif 'state' in init_values and self.state == 'confirm':
+    #         return 'ahcec_hr_eos.mt_employee_eos_confirm'
+    #     elif 'state' in init_values and self.state == 'accepted':
+    #         return 'ahcec_hr_eos.mt_employee_eos_accept'
+    #     elif 'state' in init_values and self.state == 'validate':
+    #         return 'ahcec_hr_eos.mt_employee_eos_validate'
+    #     elif 'state' in init_values and self.state == 'done':
+    #         return 'ahcec_hr_eos.mt_employee_eos_done'
+    #     elif 'state' in init_values and self.state == 'cancelled':
+    #         return 'ahcec_hr_eos.mt_employee_eos_cancel'
+    #     return super(HrEmployeeEos, self)._track_subtype(init_values)
 
-    def copy(self, default=None):
-        """
-            Duplicate record
-        """
-        default = dict(default or {})
-        default.update(
-            account_move_id=False,
-            date_confirm=False,
-            date_valid=False,
-            date_approve=False,
-            user_valid=False)
-        return super(HrEmployeeEos, self).copy(default=default)
+    # def copy(self, default=None):
+    #     """
+    #         Duplicate record
+    #     """
+    #     default = dict(default or {})
+    #     default.update(
+    #         account_move_id=False,
+    #         date_confirm=False,
+    #         date_valid=False,
+    #         date_approve=False,
+    #         user_valid=False)
+    #     return super(HrEmployeeEos, self).copy(default=default)
 
     # @api.model
     # def create(self, vals):
@@ -342,28 +342,28 @@ class HrEmployeeEos(models.Model):
         self.state = 'draft'
         # self.message_post(message_type="email", subtype='mail.mt_comment', body=_('EOS Draft.'))
 
-    def account_move_get(self):
-        """
-            This method prepare the creation of the account move related to the given expense.
-
-            :param eos_id: Id of voucher for which we are creating account_move.
-            :return: mapping between fieldname and value of account move to create
-            :rtype: dict
-        """
-        self.ensure_one()
-        journal_obj = self.env['account.journal']
-        company_id = self.company_id.id
-        date = self.date_confirm
-        ref = self.name
-        journal_id = False
-        if self.journal_id:
-            journal_id = self.journal_id.id
-        else:
-            journal_id = journal_obj.search([('type', '=', 'purchase'), ('company_id', '=', company_id)])
-            if not journal_id:
-                raise UserError(_("No EOS journal found. Please make sure you have a journal with type 'purchase' configured."))
-            journal_id = journal_id[0].id
-        return self.env['account.move'].account_move_prepare(journal_id, date=date, ref=ref, company_id=company_id)
+    # def account_move_get(self):
+    #     """
+    #         This method prepare the creation of the account move related to the given expense.
+    #
+    #         :param eos_id: Id of voucher for which we are creating account_move.
+    #         :return: mapping between fieldname and value of account move to create
+    #         :rtype: dict
+    #     """
+    #     self.ensure_one()
+    #     journal_obj = self.env['account.journal']
+    #     company_id = self.company_id.id
+    #     date = self.date_confirm
+    #     ref = self.name
+    #     journal_id = False
+    #     if self.journal_id:
+    #         journal_id = self.journal_id.id
+    #     else:
+    #         journal_id = journal_obj.search([('type', '=', 'purchase'), ('company_id', '=', company_id)])
+    #         if not journal_id:
+    #             raise UserError(_("No EOS journal found. Please make sure you have a journal with type 'purchase' configured."))
+    #         journal_id = journal_id[0].id
+    #     return self.env['account.move'].account_move_prepare(journal_id, date=date, ref=ref, company_id=company_id)
 
     def line_get_convert(self, x, part, date):
         """
