@@ -224,9 +224,10 @@ class PackageLine(models.Model):
     approved_date = fields.Date('Amendment Approved on')
     effective_date = fields.Date(related='amendment_id.effective_date',store=True)
 
-    @api.depends('name','change_value','current_package')
+    @api.depends('name','change_value', 'current_package')
     def _compute_new_package(self):
-        self.new_package = self.current_package + self.change_value
+        for rec in self:
+            rec.new_package = rec.current_package + rec.change_value
 
     @api.onchange('name','amendment_id')
     def onchange_name(self):
