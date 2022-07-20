@@ -44,8 +44,8 @@ class HrLeave(models.Model):
             'context': {
                 'default_name': self.name or '' + ' / ' + self.holiday_status_id.name,
                 'default_employee_id': self.employee_id.id,
-                'default_start_date': datetime.strptime(self.date_from, "%Y-%m-%d %H:%M:%S").date(),
-                'default_end_date': datetime.strptime(self.date_to, "%Y-%m-%d %H:%M:%S").date(),
+                'default_start_date': datetime.strptime(str(self.date_from), "%Y-%m-%d %H:%M:%S").date(),
+                'default_end_date': datetime.strptime(str(self.date_to), "%Y-%m-%d %H:%M:%S").date(),
                 'default_dependents': self.dependents.ids,
                 'default_request_type': self.request_type,
                 'default_travellers': self.travellers,

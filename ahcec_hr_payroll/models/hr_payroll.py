@@ -84,8 +84,8 @@ class HrPayslip(models.Model):
                 line.vacation_pay = ((basic + total_amount) / (line.month_days - line.leave_days)) * line.annual_leaves
 
     def get_other_allowance_deduction(self, employee_id, date_from, date_to):
-        from_date = datetime.strptime(date_from, DEFAULT_SERVER_DATE_FORMAT)
-        to_date = datetime.strptime(date_to, DEFAULT_SERVER_DATE_FORMAT)
+        from_date = datetime.strptime(str(date_from), DEFAULT_SERVER_DATE_FORMAT)
+        to_date = datetime.strptime(str(date_to), DEFAULT_SERVER_DATE_FORMAT)
         new_from_date = from_date + relativedelta(months=-1, day=25)
         last_day = calendar.monthrange(to_date.year, to_date.month)[1]
         new_to_date = to_date + relativedelta(day=24)

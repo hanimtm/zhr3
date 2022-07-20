@@ -266,7 +266,7 @@ class HRContract(models.Model):
                     template_id.write({'email_to': email_to, 'reply_to': email_to, 'auto_delete': False})
                     template_id.send_mail(contract.id, force_send=True)
                     contract.write({'state': 'pending'})
-                elif datetime.now().date() == datetime.strptime(contract.date_end, DEFAULT_SERVER_DATE_FORMAT).date():
+                elif datetime.now().date() == datetime.strptime(str(contract.date_end), DEFAULT_SERVER_DATE_FORMAT).date():
                     contract.write({'state': 'close'})
         return True
 

@@ -71,8 +71,8 @@ class HrVisa(models.Model):
         """
         for stay in self:
             if stay.approved_date_from and stay.approved_date_to:
-                date_from = datetime.strptime(stay.approved_date_from, DEFAULT_SERVER_DATE_FORMAT)
-                date_to = datetime.strptime(stay.approved_date_to, DEFAULT_SERVER_DATE_FORMAT)
+                date_from = datetime.strptime(str(stay.approved_date_from), DEFAULT_SERVER_DATE_FORMAT)
+                date_to = datetime.strptime(str(stay.approved_date_to), DEFAULT_SERVER_DATE_FORMAT)
                 diff = rdelta.relativedelta(date_to, date_from)
                 if diff.years > 0:
                     self.years = diff.years

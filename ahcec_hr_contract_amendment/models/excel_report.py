@@ -84,8 +84,8 @@ class WizardPayrollHistory(models.TransientModel):
         worksheet.write_merge(1, 1, 0, 14, 'Payroll Report', style0)
         worksheet.write_merge(2, 2, 0, 14, '', style0)
         worksheet.write_merge(3, 3, 0, 14,
-                              'For the Period (' + datetime.strptime(self.xlsx_date_from, '%Y-%m-%d').strftime(
-                                  '%m/%d/%y') + '--' + datetime.strptime(self.xlsx_date_to,
+                              'For the Period (' + datetime.strptime(str(self.xlsx_date_from), '%Y-%m-%d').strftime(
+                                  '%m/%d/%y') + '--' + datetime.strptime(str(self.xlsx_date_to),
                                                                          '%Y-%m-%d').strftime('%m/%d/%y') + ')',
                               style0)
         worksheet.write(inv_name_row, 0, 'Code', for_center)
@@ -171,8 +171,8 @@ class WizardPayrollHistory(models.TransientModel):
         worksheet2.write_merge(1, 1, 0, 14, 'Project-Wise Analysis', style0)
         worksheet2.write_merge(2, 2, 0, 14, '', style0)
         worksheet2.write_merge(3, 3, 0, 14,
-                               'For the Period (' + datetime.strptime(self.xlsx_date_from, '%Y-%m-%d').strftime(
-                                   '%m/%d/%y') + '--' + datetime.strptime(self.xlsx_date_to,
+                               'For the Period (' + datetime.strptime(str(self.xlsx_date_from), '%Y-%m-%d').strftime(
+                                   '%m/%d/%y') + '--' + datetime.strptime(str(self.xlsx_date_to),
                                                                           '%Y-%m-%d').strftime('%m/%d/%y') + ')',
                                style0)
         worksheet2.write(inv_name_row, 0, 'Project', for_center)

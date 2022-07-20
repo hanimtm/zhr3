@@ -43,11 +43,11 @@ class leaves_adjustment(models.TransientModel):
 
     def adjustment_leave_new(self):
 
-        date1 = datetime.strptime(self.day_from, '%Y-%m-%d')
+        date1 = datetime.strptime(str(self.day_from), '%Y-%m-%d')
         day_from_start = fields.Datetime.to_string(
             datetime(year=date1.year, month=date1.month, day=date1.day, hour=00, minute=00, second=00))
 
-        date2 = datetime.strptime(self.day_end, '%Y-%m-%d')
+        date2 = datetime.strptime(str(self.day_end), '%Y-%m-%d')
         day_from_end = fields.Datetime.to_string(
             datetime(year=date2.year, month=date2.month, day=date2.day, hour=23, minute=59, second=59))
         holiday_ids = self.env['hr.holidays'].sudo().search([('type', '=', 'remove'),
@@ -70,8 +70,8 @@ class leaves_adjustment(models.TransientModel):
                 try:
                     dt = datetime.combine(date.today(), datetime.min.time())
                     print('Date From 1;', leave.date_from, '== Date To:', leave.date_to)
-                    date_to = datetime.strptime(leave.date_to,'%Y-%m-%d %H:%M:%S').date()
-                    date_from = datetime.strptime(leave.date_from, '%Y-%m-%d %H:%M:%S').date()
+                    date_to = datetime.strptime(str(leave.date_to),'%Y-%m-%d %H:%M:%S').date()
+                    date_from = datetime.strptime(str(leave.date_from), '%Y-%m-%d %H:%M:%S').date()
 
                     # leave.date_to = datetime.strptime(str(date_to) +" 17:00:00","%Y-%m-%d %H:%M:%S")
                     # leave.date_from = datetime.strptime(str(date_from)+" 07:00:00","%Y-%m-%d %H:%M:%S")
@@ -101,8 +101,8 @@ class hr_leaves_adjustment(models.Model):
                 try:
                     dt = datetime.combine(date.today(), datetime.min.time())
                     # print('Date From 1;', leave.date_from, '== Date To:', leave.date_to)
-                    date_to = datetime.strptime(leave.date_to,'%Y-%m-%d %H:%M:%S').date()
-                    date_from = datetime.strptime(leave.date_from, '%Y-%m-%d %H:%M:%S').date()
+                    date_to = datetime.strptime(str(leave.date_to),'%Y-%m-%d %H:%M:%S').date()
+                    date_from = datetime.strptime(str(leave.date_from), '%Y-%m-%d %H:%M:%S').date()
 
                     # leave.date_to = datetime.strptime(str(date_to) +" 17:00:00","%Y-%m-%d %H:%M:%S")
                     # leave.date_from = datetime.strptime(str(date_from)+" 07:00:00","%Y-%m-%d %H:%M:%S")

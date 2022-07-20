@@ -56,7 +56,7 @@ class HrEmployee(models.Model):
                 try:
                     join_date = datetime.strptime(str(employee.joining_date), DEFAULT_SERVER_DATE_FORMAT).date()
                     to_date = datetime.now().strftime(DEFAULT_SERVER_DATE_FORMAT)
-                    current_date = datetime.strptime(to_date, DEFAULT_SERVER_DATE_FORMAT)
+                    current_date = datetime.strptime(str(to_date), DEFAULT_SERVER_DATE_FORMAT)
                     employee.duration_in_months = (
                                                               current_date.year - join_date.year) * 12 + current_date.month - join_date.month
                 except:
@@ -206,7 +206,7 @@ class HrEmployee(models.Model):
             for manager in self.env['hr.groups.configuration'].search([('hr_ids', '!=', False)]):
                 for employee in self.env['hr.employee'].search([('branch_id', '=', manager.branch_id.id)]):
                     diff = relativedelta(datetime.today(),
-                                         datetime.strptime(employee.birthday, DEFAULT_SERVER_DATE_FORMAT))
+                                         datetime.strptime(str(employee.birthday), DEFAULT_SERVER_DATE_FORMAT))
                     if diff and diff.years == 59 and diff.months == 6:
                         employees.append(employee.name)
                         employees.append(employee.employee_code)
