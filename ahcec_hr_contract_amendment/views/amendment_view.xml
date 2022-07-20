@@ -34,7 +34,8 @@
                             <field name="hr_contract_id" context="{'default_employee_id':employee_id}"
                                    placeholder='Select Employee running contract...'
                                    attrs="{'readonly':[('state','!=','draft')]}"
-                                   domain="[('employee_id', '=', employee_id)]"/>
+                                   domain="[('employee_id', '=', employee_id)]"
+                                    options="{'no_create': True}"/>
                             <field name="effective_date" attrs="{'readonly':[('state','!=','draft')]}"/>
                         </group>
                     </group>
