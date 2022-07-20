@@ -17,7 +17,8 @@
         'hr_contract',
         'ahcec_hr_contract',
         'ahcec_hr_dependent',
-        'ahcec_hr_air_allowance'
+        'ahcec_hr_air_allowance',
+        'hr_holidays'
     ],
     'data': [
         # data

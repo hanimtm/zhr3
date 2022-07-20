@@ -175,13 +175,13 @@
         </field>
     </record>
 
-    <menuitem id="menu_eos_label"
-              name="End of Service Indemnity (EOS)"
-              sequence="4"
-              parent="hr.menu_hr_root"/>
+<!--    <menuitem id="menu_eos_label"-->
+<!--              name="End of Service Indemnity (EOS)"-->
+<!--              sequence="4"-->
+<!--              parent="hr.menu_hr_root"/>-->
     <menuitem action="eos_all"
               id="menu_eos_all"
               name="EOS"
-              parent="menu_eos_label"/>
+              parent="hr.menu_hr_root"/>
 
 </odoo>

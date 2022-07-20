@@ -198,8 +198,8 @@ class HrIqama(models.Model):
         """
         for iqama in self:
             iqama.state = 'inprogress'
-            iqama.message_post(message_type="email", subtype='mail.mt_comment',
-                               body=_('IQAMA request is In progress'))
+            # iqama.message_post(message_type="email", subtype='mail.mt_comment',
+            #                    body=_('IQAMA request is In progress'))
 
     def iqama_refuse(self):
         """
@@ -207,8 +207,8 @@ class HrIqama(models.Model):
         """
         for iqama in self:
             iqama.write({'state': 'refuse', 'refused_by': self.env.uid, 'refused_date': datetime.today()})
-            iqama.message_post(message_type="email", subtype='mail.mt_comment',
-                               body=_('IQAMA request is Refused'))
+            # iqama.message_post(message_type="email", subtype='mail.mt_comment',
+            #                    body=_('IQAMA request is Refused'))
 
     def iqama_received(self):
         """
@@ -216,8 +216,8 @@ class HrIqama(models.Model):
         """
         for iqama in self:
             iqama.state = 'received'
-            iqama.message_post(message_type="email", subtype='mail.mt_comment',
-                               body=_('IQAMA request is Received'))
+            # iqama.message_post(message_type="email", subtype='mail.mt_comment',
+            #                    body=_('IQAMA request is Received'))
 
     def iqama_validate(self):
         """
@@ -225,8 +225,8 @@ class HrIqama(models.Model):
         """
         for iqama in self:
             iqama.write({'state': 'validate', 'approved_by': self.env.uid, 'approved_date': datetime.today()})
-            iqama.message_post(message_type="email", subtype='mail.mt_comment',
-                               body=_('IQAMA request is Validated'))
+            # iqama.message_post(message_type="email", subtype='mail.mt_comment',
+            #                    body=_('IQAMA request is Validated'))
 
     def iqama_set_to_draft(self):
         """
@@ -235,8 +235,8 @@ class HrIqama(models.Model):
         for iqama in self:
             iqama.write({'state': 'draft', 'approved_by': False, 'approved_date': False, 'refused_by': False,
                          'refused_date': False})
-            iqama.message_post(message_type="email", subtype='mail.mt_comment',
-                               body=_('IQAMA request is reset to draft'))
+            # iqama.message_post(message_type="email", subtype='mail.mt_comment',
+            #                    body=_('IQAMA request is reset to draft'))
 
     def iqama_need_renewal(self):
         """
@@ -244,8 +244,8 @@ class HrIqama(models.Model):
         """
         for iqama in self:
             iqama.state = 'need_renewal'
-            iqama.message_post(message_type="email", subtype='mail.mt_comment',
-                               body=_('IQAMA need renewal'))
+            # iqama.message_post(message_type="email", subtype='mail.mt_comment',
+            #                    body=_('IQAMA need renewal'))
 
 
 class EmployeeDependent(models.Model):

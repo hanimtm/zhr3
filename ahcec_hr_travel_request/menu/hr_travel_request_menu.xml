@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 	<data>
-		<menuitem name="Travel Request" id="action_travel_request_main" parent="hr.menu_hr_root" sequence="40"/>
+		<menuitem name="Travel Request" id="action_travel_request_main" parent="hr_holidays.menu_hr_holidays_approvals" sequence="40"/>
    		<menuitem action="action_travel_request"
 					id="menu_travel_request" 
 					name="Travel Requests"

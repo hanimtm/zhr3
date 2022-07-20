@@ -18,7 +18,6 @@
             </field>
         </record>
 
-
         <record id="view_travel_request_tree" model="ir.ui.view">
             <field name="name">travel.request.tree</field>
             <field name="model">hr.travel.request</field>
