@@ -24,8 +24,9 @@ class HrEmployeeEos(models.Model):
         """
             Calculate the payable eos
         """
-        for eos_amt in self:
-            eos_amt.payable_eos = (eos_amt.total_eos + eos_amt.current_month_salary + eos_amt.others + eos_amt.annual_leave_amount) or 0.0
+        print('a')
+        # for eos_amt in self:
+        #     eos_amt.payable_eos = (eos_amt.total_eos + eos_amt.current_month_salary + eos_amt.others + eos_amt.annual_leave_amount) or 0.0
 
     name = fields.Char('Description', size=128, required=True, readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]})
     eos_date = fields.Date('Date', index=True,required=True, readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}, default=lambda self: datetime.today().date())
