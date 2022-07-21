@@ -68,10 +68,10 @@ class HrPayslip(models.Model):
                 nb_of_days = 30
             line.payment_days = nb_of_days - leave_days
 
-    payment_days = fields.Float(compute='_get_payment_days', string='Payment Day(s)', store=1)
-    month_days = fields.Float(compute='_get_payment_days', string='Month Day(s)', store=1)
-    leave_days = fields.Float(compute='_get_payment_days', string='Leave Day(s)', store=1)
-    annual_leaves = fields.Float(compute='_get_payment_days', string='Annual Day(s)', store=1)
+    payment_days = fields.Float(compute='_get_payment_days', string='Payment Day(s)', store=0)
+    month_days = fields.Float(compute='_get_payment_days', string='Month Day(s)', store=0)
+    leave_days = fields.Float(compute='_get_payment_days', string='Leave Day(s)', store=0)
+    annual_leaves = fields.Float(compute='_get_payment_days', string='Annual Day(s)', store=0)
     vacation_pay = fields.Float(string='Vacation Pay')
     department_id = fields.Many2one('hr.department', string="Department", related='employee_id.department_id',
                                     store=True)
