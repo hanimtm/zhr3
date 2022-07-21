@@ -28,8 +28,7 @@ class HrEmployeeEos(models.Model):
         """
 
         for eos_amt in self:
-            eos_amt.payable_eos = (
-                                              eos_amt.total_eos + eos_amt.current_month_salary + eos_amt.others + eos_amt.annual_leave_amount) or 0.0
+            eos_amt.payable_eos = (eos_amt.total_eos + eos_amt.current_month_salary + eos_amt.others + eos_amt.annual_leave_amount) or 0.0
 
     name = fields.Char('Description', size=128, required=True, readonly=True,
                        states={'draft': [('readonly', False)], 'confirm': [('readonly', False)]})

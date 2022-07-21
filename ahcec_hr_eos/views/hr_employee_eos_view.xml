@@ -25,23 +25,23 @@
         <field name="arch" type="xml">
             <form string="EOS Sheet">
                 <header>
-<!--                    <button name="eos_confirm" states="draft" string="Submit" type="object" class="oe_highlight"-->
-<!--                            groups="hr.group_hr_user"/>-->
-<!--                    <button name="calc_eos" states="draft" string="Calculate EOS" type="object" class="oe_highlight"-->
-<!--                            groups="hr.group_hr_user"/>-->
-<!--                    <button name="eos_validate" states="confirm" string="Validate" type="object" class="oe_highlight"-->
-<!--                            groups="hr.group_hr_user"/>-->
-<!--                    <button name="eos_accept" states="validate" string="Approve" type="object" class="oe_highlight"-->
-<!--                            groups="hr.group_hr_user"/>-->
-<!--                    &lt;!&ndash; <button name="done" states="accepted" string="Done" type="workflow" class="oe_highlight"/> &ndash;&gt;-->
-<!--                    <button name="action_receipt_create" states="accepted" string="Generate Accounting Entries"-->
-<!--                            type="object" groups="hr.group_hr_user"/>-->
-<!--                    <button name="action_view_receipt" states="done" string="Open Accounting Entries" type="object"-->
-<!--                            groups="hr.group_hr_user"/>-->
-<!--                    <button name="eos_canceled" states="accepted,validate,confirm" string="Refuse" type="object"-->
-<!--                            groups="hr.group_hr_user"/>-->
-<!--                    <button name="eos_draft" states="cancelled" string="Set to Draft" type="object"-->
-<!--                            groups="hr.group_hr_user"/>-->
+                    <button name="eos_confirm" states="draft" string="Submit" type="object" class="oe_highlight"
+                            groups="hr.group_hr_user"/>
+                    <button name="calc_eos" states="draft" string="Calculate EOS" type="object" class="oe_highlight"
+                            groups="hr.group_hr_user"/>
+                    <button name="eos_validate" states="confirm" string="Validate" type="object" class="oe_highlight"
+                            groups="hr.group_hr_user"/>
+                    <button name="eos_accept" states="validate" string="Approve" type="object" class="oe_highlight"
+                            groups="hr.group_hr_user"/>
+                    <!-- <button name="done" states="accepted" string="Done" type="workflow" class="oe_highlight"/> -->
+                    <button name="action_receipt_create" states="accepted" string="Generate Accounting Entries"
+                            type="object" groups="hr.group_hr_user"/>
+                    <button name="action_view_receipt" states="done" string="Open Accounting Entries" type="object"
+                            groups="hr.group_hr_user"/>
+                    <button name="eos_canceled" states="accepted,validate,confirm" string="Refuse" type="object"
+                            groups="hr.group_hr_user"/>
+                    <button name="eos_draft" states="cancelled" string="Set to Draft" type="object"
+                            groups="hr.group_hr_user"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirm"
                            statusbar_colors='{"confirm":"blue","cancelled":"red"}'/>
                 </header>
