@@ -13,7 +13,7 @@
             <xpath expr="//field[@name='credit_note']" position="after">
 <!--                <field name="payment_days" />-->
                 <field name="bank_account_id" attrs="{'readonly':[('state','not in','draft')]}"/>
-                <field name="first_month_days" invisible="1"/>
+<!--                <field name="first_month_days" invisible="1"/>-->
             </xpath>
         </field>
     </record>

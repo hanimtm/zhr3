@@ -31,19 +31,33 @@ class HrPayslipRun(models.Model):
 class HrPayslip(models.Model):
     _inherit = "hr.payslip"
 
-    def _get_payment_days(self):
-        for line in self:
-            day_from = datetime.strptime(str(line.date_from), DEFAULT_SERVER_DATE_FORMAT)
-            day_to = datetime.strptime(str(line.date_to), DEFAULT_SERVER_DATE_FORMAT)
-            nb_of_days = (day_to - day_from).days + 1
-            # We will set it to 30 as our calculation is based on 30 days for your company
-            month = datetime.strptime(str(line.date_from), DEFAULT_SERVER_DATE_FORMAT).month
-            if nb_of_days > 30 or month == 2 and nb_of_days == 28:  # If month is February or days are greater than 28 then payment days set to 30
-                nb_of_days = 30
-            line.payment_days = nb_of_days
+    # def _get_payment_days(self):
+    #     for line in self:
+    #         _logger.critical('111')
+    #         day_from = datetime.strptime(str(line.date_from), DEFAULT_SERVER_DATE_FORMAT)
+    #         day_to = datetime.strptime(str(line.date_to), DEFAULT_SERVER_DATE_FORMAT)
+    #         _logger.critical('222')
+    #         _logger.critical(day_from)
+    #         _logger.critical(day_to)
+    #         _logger.critical('333')
+    #         nb_of_days = (day_to - day_from).days + 1
+    #         _logger.critical('444')
+    #         _logger.critical(nb_of_days)
+    #         _logger.critical('555')
+    #         # We will set it to 30 as our calculation is based on 30 days for your company
+    #         month = datetime.strptime(str(line.date_from), DEFAULT_SERVER_DATE_FORMAT).month
+    #         _logger.critical('666')
+    #         _logger.critical(month)
+    #         _logger.critical('777')
+    #         if nb_of_days > 30 or month == 2 and nb_of_days == 28:  # If month is February or days are greater than 28 then payment days set to 30
+    #             _logger.critical('888')
+    #             nb_of_days = 30
+    #         _logger.critical('999')
+    #         line.payment_days = nb_of_days
 
+    # compute = '_get_first_month_days',
     # payment_days = fields.Float(compute='_get_payment_days', string='Payment Day(s)')
-    first_month_days = fields.Float(compute='_get_first_month_days', string='No of day(s)')
+    first_month_days = fields.Float(compute = '_get_first_month_days', string='No of day(s)')
     bank_account_id = fields.Many2one('res.partner.bank', 'Bank Account Number', help="Employee bank salary account",
                                       states={'draft': [('readonly', False)]})
 
