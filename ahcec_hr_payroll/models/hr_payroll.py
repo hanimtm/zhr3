@@ -8,6 +8,7 @@ from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from odoo.exceptions import UserError
 from datetime import time as datetime_time
 import logging
+
 _logger = logging.getLogger(__name__)
 
 
@@ -67,7 +68,14 @@ class HrPayslip(models.Model):
             day_from = datetime.strptime(str(line.date_from), DEFAULT_SERVER_DATE_FORMAT)
             day_to = datetime.strptime(str(line.date_to), DEFAULT_SERVER_DATE_FORMAT)
             nb_of_days = (day_to - day_from).days + 1
-            # line.month_days = nb_of_days
+            _logger.critical('-------------------')
+            _logger.critical(day_from)
+            _logger.critical(day_to)
+            _logger.critical(nb_of_days)
+            _logger.critical(leave_days)
+            _logger.critical('-------------------')
+            line.month_days = nb_of_days
+            _logger.critical(line.month_days)
             line.leave_days = leave_days
             line.annual_leaves = annual_leaves
             month = datetime.strptime(str(line.date_from), DEFAULT_SERVER_DATE_FORMAT).month
@@ -75,14 +83,14 @@ class HrPayslip(models.Model):
                 nb_of_days = 30
             line.payment_days = nb_of_days - leave_days
 
-    # @api.onchange('month_days', 'annual_leaves', 'line_ids')
-    # def onchange_vacation_pay(self):
-    #     for line in self:
-    #         total_amount = sum(line.line_ids.filtered(lambda line: line.category_id.code == 'ALW').mapped('amount'))
-    #         basic = sum(line.line_ids.filtered(lambda line: line.category_id.code == 'BASIC').mapped('amount'))
-    #         if line.month_days > 0:
-    #             if line.month_days - line.leave_days != 0:
-    #                 line.vacation_pay = ((basic + total_amount) / (line.month_days - line.leave_days)) * line.annual_leaves
+    @api.onchange('month_days', 'annual_leaves', 'line_ids')
+    def onchange_vacation_pay(self):
+        for line in self:
+            # line.month_days = 0
+            total_amount = sum(line.line_ids.filtered(lambda line: line.category_id.code == 'ALW').mapped('amount'))
+            basic = sum(line.line_ids.filtered(lambda line: line.category_id.code == 'BASIC').mapped('amount'))
+            if line.month_days - line.leave_days != 0:
+                line.vacation_pay = ((basic + total_amount) / (line.month_days - line.leave_days)) * line.annual_leaves
 
     def get_other_allowance_deduction(self, employee_id, date_from, date_to):
         from_date = datetime.strptime(str(date_from), DEFAULT_SERVER_DATE_FORMAT)
