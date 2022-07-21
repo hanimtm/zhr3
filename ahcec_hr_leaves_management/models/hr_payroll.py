@@ -43,8 +43,9 @@ class HrPayslip(models.Model):
     @api.depends('employee_id.joining_date', 'date_to')
     def _get_first_month_days(self):
         for line in self:
-            if not line.employee_id.joining_date:
-                raise UserError(_("Please enter 'Joining Date' of Employee first!"))
+            if line.employee_id:
+                if not line.employee_id.joining_date:
+                    raise UserError(_("Please enter 'Joining Date' of Employee first!"))
             join_date = datetime.strptime(str(line.employee_id.joining_date), DEFAULT_SERVER_DATE_FORMAT)
             day_to = datetime.strptime(str(line.date_to), DEFAULT_SERVER_DATE_FORMAT)
             number_of_days = (day_to - join_date).days + 1
