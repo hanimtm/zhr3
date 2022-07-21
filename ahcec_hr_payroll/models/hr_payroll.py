@@ -60,14 +60,7 @@ class HrPayslip(models.Model):
             day_from = datetime.strptime(str(line.date_from), DEFAULT_SERVER_DATE_FORMAT)
             day_to = datetime.strptime(str(line.date_to), DEFAULT_SERVER_DATE_FORMAT)
             nb_of_days = (day_to - day_from).days + 1
-            _logger.critical('-------------------')
-            _logger.critical(day_from)
-            _logger.critical(day_to)
-            _logger.critical(nb_of_days)
-            _logger.critical(leave_days)
-            _logger.critical('-------------------')
-            line.month_days = nb_of_days
-            _logger.critical(line.month_days)
+            line.month_days = (day_to - day_from).days + 1
             line.leave_days = leave_days
             line.annual_leaves = annual_leaves
             month = datetime.strptime(str(line.date_from), DEFAULT_SERVER_DATE_FORMAT).month
@@ -75,14 +68,13 @@ class HrPayslip(models.Model):
                 nb_of_days = 30
             line.payment_days = nb_of_days - leave_days
 
-    payment_days = fields.Float(compute='_get_payment_days', string='Payment Day(s)')
-    month_days = fields.Float(compute='_get_payment_days', string='Month Day(s)')
-    leave_days = fields.Float(compute='_get_payment_days', string='Leave Day(s)')
-    annual_leaves = fields.Float(compute='_get_payment_days', string='Annual Day(s)')
+    payment_days = fields.Float(compute='_get_payment_days', string='Payment Day(s)', store=1)
+    month_days = fields.Float(compute='_get_payment_days', string='Month Day(s)', store=1)
+    leave_days = fields.Float(compute='_get_payment_days', string='Leave Day(s)', store=1)
+    annual_leaves = fields.Float(compute='_get_payment_days', string='Annual Day(s)', store=1)
     vacation_pay = fields.Float(string='Vacation Pay')
     department_id = fields.Many2one('hr.department', string="Department", related='employee_id.department_id',
                                     store=True)
-
 
     @api.onchange('month_days', 'annual_leaves', 'line_ids')
     def onchange_vacation_pay(self):
