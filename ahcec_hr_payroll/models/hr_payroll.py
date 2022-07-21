@@ -45,14 +45,6 @@ class HrPayslipRun(models.Model):
 class HrPayslip(models.Model):
     _inherit = "hr.payslip"
 
-    payment_days = fields.Float(compute='_get_payment_days', string='Payment Day(s)')
-    month_days = fields.Float(compute='_get_payment_days', string='Month Day(s)')
-    leave_days = fields.Float(compute='_get_payment_days', string='Leave Day(s)')
-    annual_leaves = fields.Float(compute='_get_payment_days', string='Annual Day(s)')
-    vacation_pay = fields.Float(string='Vacation Pay')
-    department_id = fields.Many2one('hr.department', string="Department", related='employee_id.department_id',
-                                    store=True)
-
     @api.depends('date_from', 'date_to')
     def _get_payment_days(self):
         for line in self:
@@ -82,6 +74,15 @@ class HrPayslip(models.Model):
             if nb_of_days > 30 or month == 2 and nb_of_days == 28:  # If month is February or days are greater than 28 then payment days set to 30
                 nb_of_days = 30
             line.payment_days = nb_of_days - leave_days
+
+    payment_days = fields.Float(compute='_get_payment_days', string='Payment Day(s)')
+    month_days = fields.Float(compute='_get_payment_days', string='Month Day(s)')
+    leave_days = fields.Float(compute='_get_payment_days', string='Leave Day(s)')
+    annual_leaves = fields.Float(compute='_get_payment_days', string='Annual Day(s)')
+    vacation_pay = fields.Float(string='Vacation Pay')
+    department_id = fields.Many2one('hr.department', string="Department", related='employee_id.department_id',
+                                    store=True)
+
 
     @api.onchange('month_days', 'annual_leaves', 'line_ids')
     def onchange_vacation_pay(self):
