@@ -45,8 +45,8 @@ class HrPayslip(models.Model):
         for line in self:
             if not line.employee_id.joining_date:
                 raise UserError(_("Please enter 'Joining Date' of Employee first!"))
-            join_date = datetime.strptime(line.employee_id.joining_date, DEFAULT_SERVER_DATE_FORMAT)
-            day_to = datetime.strptime(line.date_to, DEFAULT_SERVER_DATE_FORMAT)
+            join_date = datetime.strptime(str(line.employee_id.joining_date), DEFAULT_SERVER_DATE_FORMAT)
+            day_to = datetime.strptime(str(line.date_to), DEFAULT_SERVER_DATE_FORMAT)
             number_of_days = (day_to - join_date).days + 1
             line.first_month_days = number_of_days
 
@@ -57,7 +57,7 @@ class HrPayslip(models.Model):
 
     @api.onchange('employee_id', 'date_from', 'date_to')
     def onchange_employee(self):
-        super(HrPayslip, self).onchange_employee()
+        # res = super(HrPayslip, self).onchange_employee()
         res = {}
         self.bank_account_id = False
         contract_obj = self.env['hr.contract']

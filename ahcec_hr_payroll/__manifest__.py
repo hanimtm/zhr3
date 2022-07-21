@@ -3,8 +3,8 @@
 
 {
     'name': "Middle East Human Resource Payroll",
-    'summary': """ Middle East Human Resource Payroll """,
-    'description': """ Middle East Human Resource Payroll """,
+    'summary': """ Middle East Human Resource Payroll ZHR""",
+    'description': """ Middle East Human Resource Payroll ZHR""",
     'author': 'ahcec',
     'website': 'http://www.ahcec.com',
     'category': 'Human Resources',

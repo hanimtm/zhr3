@@ -215,30 +215,30 @@ class HRContract(models.Model):
             contract.hr_rate = ((contract.basic * 12) / 2920)
             contract.ot_rate = ((contract.basic * 12) / 2920) * 1.5
     # ========== IBRAHIM ===================
-    # @api.onchange('employee_id')
-    # def onchange_employee(self):
-    #     self.job_id = False
-    #     self.mobile_allowance = 0.0
-    #     if self.employee_id:
-    #         employee = self.env['hr.employee'].browse(self.employee_id.id)
-    #         if employee.grade_id:
-    #             self.mobile_allowance = employee.grade_id.mobile_allowance
-    #         self.job_id = employee.job_id.id or False
-    #         self.department_id = employee.department_id.id or False
+    @api.onchange('employee_id')
+    def onchange_employee(self):
+        self.job_id = False
+        self.mobile_allowance = 0.0
+        if self.employee_id:
+            employee = self.env['hr.employee'].browse(self.employee_id.id)
+            if employee.grade_id:
+                self.mobile_allowance = employee.grade_id.mobile_allowance
+            self.job_id = employee.job_id.id or False
+            self.department_id = employee.department_id.id or False
 
-    # @api.onchange('insurance_id')
-    # def onchance_insurance_id(self):
-    #     for contract in self:
-    #         contract.insurance_cost = contract.insurance_id.insurance_amount
+    @api.onchange('insurance_id')
+    def onchance_insurance_id(self):
+        for contract in self:
+            contract.insurance_cost = contract.insurance_id.insurance_amount
 
     # =========================================
-    # @api.onchange('mobile', 'employee_id')
-    # def onchange_mobile(self):
-    #     self.mobile_allowance = 0.0
-    #     if self.mobile and self.employee_id:
-    #         employee = self.env['hr.employee'].browse(self.employee_id.id)
-    #         if employee.grade_id:
-    #             self.mobile_allowance = employee.grade_id.mobile_allowance
+    @api.onchange('mobile', 'employee_id')
+    def onchange_mobile(self):
+        self.mobile_allowance = 0.0
+        if self.mobile and self.employee_id:
+            employee = self.env['hr.employee'].browse(self.employee_id.id)
+            if employee.grade_id:
+                self.mobile_allowance = employee.grade_id.mobile_allowance
 
     @api.model
     def run_scheduler(self):
