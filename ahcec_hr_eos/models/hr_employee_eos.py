@@ -84,7 +84,7 @@ class HrEmployeeEos(models.Model):
         ('accepted', 'Approved'),
         ('done', 'Done'),
     ],
-        'Status', readonly=True, track_visibility='onchange', default='draft',
+        'Status', readonly=True,  default='draft',
         help='When the eos request is created the status is \'Draft\'.\n It is confirmed by the user and request is sent to finance, the status is \'Waiting Confirmation\'.\
         \nIf the finance accepts it, the status is \'Accepted\'.')
     total_eos = fields.Float('Total Award', readonly=True, states={'draft': [('readonly', False)]})
