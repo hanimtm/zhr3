@@ -18,7 +18,7 @@ class HrPayslipLine(models.Model):
 class Employee(models.Model):
     _inherit = 'hr.employee'
 
-    # is_aramco_smdcad = fields.Boolean('Employee is Aramco SMPCAD')
+    is_aramco_smdcad = fields.Boolean('Employee is Aramco SMPCAD')
 
 
 class Contract(models.Model):
