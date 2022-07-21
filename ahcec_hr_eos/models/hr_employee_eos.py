@@ -241,7 +241,7 @@ class HrEmployeeEos(models.Model):
                 'date_from': date_from,
                 'date_to': date_to,
                 'contract_id': contract_ids[0],
-                'struct_id': eos.contract_id.struct_id.id or False,
+                # 'struct_id': eos.contract_id.struct_id.id or False,
                 # 'journal_id': eos.contract_id.journal_id.id or False,
                 'journal_id': eos.journal_id.id or False,
             }
