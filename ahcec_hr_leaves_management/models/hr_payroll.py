@@ -8,6 +8,8 @@ from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMA
 from odoo.exceptions import UserError
 from itertools import groupby
 import pytz
+import logging
+_logger = logging.getLogger(__name__)
 
 
 def to_naive_utc(datetime, record):
@@ -40,21 +42,27 @@ class HrPayslip(models.Model):
                 nb_of_days = 30
             line.payment_days = nb_of_days
 
-    @api.depends('employee_id.joining_date', 'date_to')
-    def _get_first_month_days(self):
-        for line in self:
-            if line.employee_id:
-                # if not line.employee_id.joining_date:
-                #     raise UserError(_("Please enter 'Joining Date' of Employee first!"))
-                join_date = datetime.strptime(str(line.employee_id.joining_date), DEFAULT_SERVER_DATE_FORMAT)
-                day_to = datetime.strptime(str(line.date_to), DEFAULT_SERVER_DATE_FORMAT)
-                number_of_days = (day_to - join_date).days + 1
-                line.first_month_days = number_of_days
-
     # payment_days = fields.Float(compute='_get_payment_days', string='Payment Day(s)')
     first_month_days = fields.Float(compute='_get_first_month_days', string='No of day(s)')
     bank_account_id = fields.Many2one('res.partner.bank', 'Bank Account Number', help="Employee bank salary account",
                                       states={'draft': [('readonly', False)]})
+
+    @api.depends('employee_id.joining_date', 'date_to')
+    def _get_first_month_days(self):
+        for line in self:
+            line.first_month_days = 0
+            if line.employee_id:
+                # if not line.employee_id.joining_date:
+                #     raise UserError(_("Please enter 'Joining Date' of Employee first!"))
+                _logger.critical('=======--------------------')
+                join_date = datetime.strptime(str(line.employee_id.joining_date), DEFAULT_SERVER_DATE_FORMAT)
+                _logger.critical(join_date)
+                day_to = datetime.strptime(str(line.date_to), DEFAULT_SERVER_DATE_FORMAT)
+                _logger.critical(day_to)
+                number_of_days = (day_to - join_date).days + 1
+                _logger.critical(number_of_days)
+                line.first_month_days = number_of_days
+                _logger.critical('*****************************')
 
     @api.onchange('employee_id', 'date_from', 'date_to')
     def onchange_employee(self):
