@@ -93,8 +93,8 @@ class HrEmployeeEos(models.Model):
     payable_eos = fields.Float(compute=_calc_payable_eos, string='Total Amount')
     remaining_leave = fields.Float('Remaining Leave')
     # account
-    journal_id = fields.Many2one('account.journal', 'Force Journal', help="The journal used when the eos is done.")
-    account_id = fields.Many2one('account.account', 'EOS Account')
+    journal_id = fields.Many2one('account.journal', 'Force Journal', required=1, help="The journal used when the eos is done.")
+    account_id = fields.Many2one('account.account', 'EOS Account', required=1)
     account_move_id = fields.Many2one('account.move', 'Ledger Posting')
     # voucher_id = fields.Many2one('account.voucher', "Employee's Receipt")
     currency_id = fields.Many2one('res.currency', 'Currency', required=True, readonly=True,
@@ -219,7 +219,8 @@ class HrEmployeeEos(models.Model):
                 total_eos = ((wages / 2) * 5) + (wages * (duration_years - 5)) + ((wages / 12) * duration_months) + (
                         (wages / 365) * duration_days)
 
-            from_date = datetime.strptime(str(eos.employee_id.date_of_join), '%Y-%m-%d')
+            # from_date = datetime.strptime(str(eos.employee_id.date_of_join), '%Y-%m-%d')
+            from_date = datetime.strptime(str(eos.employee_id.joining_date), '%Y-%m-%d')
             start = datetime.date(from_date)
             end_date = datetime.strptime(str(eos.employee_id.date_of_leave), '%Y-%m-%d')
             end = datetime.date(end_date)
@@ -231,7 +232,9 @@ class HrEmployeeEos(models.Model):
                             ((days - 1825) * wages) / 365)
 
             date_from = datetime.strftime(date_from, '%Y-%m-%d')
-            if not eos.contract_id.journal_id:
+            # IBRAHIM
+            # if not eos.contract_id.journal_id:
+            if not eos.journal_id:
                 raise UserError(_('Please configure employee contract for journal.'))
             vals = {
                 'employee_id': eos.employee_id.id or False,
@@ -239,7 +242,8 @@ class HrEmployeeEos(models.Model):
                 'date_to': date_to,
                 'contract_id': contract_ids[0],
                 'struct_id': eos.contract_id.struct_id.id or False,
-                'journal_id': eos.contract_id.journal_id.id or False,
+                # 'journal_id': eos.contract_id.journal_id.id or False,
+                'journal_id': eos.journal_id.id or False,
             }
             if not eos.payslip_id:
                 payslip_id = payslip_obj.create(vals)
@@ -438,11 +442,13 @@ class HrEmployeeEos(models.Model):
             company_currency = eos.company_id.currency_id.id
             diff_currency_p = eos.currency_id.id != company_currency
             eml = []
-            if not eos.contract_id.journal_id:
+            # IBRAHIM
+            # if not eos.contract_id.journal_id:
+            if not eos.journal_id:
                 raise UserError(_('Please configure employee contract for journal.'))
 
             move_id = self.env['account.move'].create({
-                'journal_id': eos.contract_id.journal_id.id,
+                'journal_id': eos.journal_id.id,
                 'company_id': eos.env.user.company_id.id,
             })
 

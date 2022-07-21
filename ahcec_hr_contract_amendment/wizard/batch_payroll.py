@@ -3,19 +3,13 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
+
 class BatchPayroll(models.TransientModel):
     _name = 'batch.payroll'
 
-    date_from = fields.Date(
-        'Date From',
-        required = True,
-    )
-    date_to = fields.Date(
-        'Date To',
-        required = True,
-    )
-    is_aramco_smdcad = fields.Boolean('Include Aramco SMPCAD')
-    # IBRAHIM
+    date_from = fields.Date('Date From', required=True, )
+    date_to = fields.Date('Date To', required=True)
+
     # def generate_payslips(self):
     #     batch_id = self.env['hr.payslip.run'].create({
     #         'name': 'Payslip Batch For ' + str(self.date_from)+ ' -- ' + str(self.date_to),
