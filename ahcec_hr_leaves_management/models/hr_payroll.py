@@ -59,8 +59,9 @@ class HrPayslip(models.Model):
     first_month_days = fields.Float(compute='_get_first_month_days', string='No of day(s)')
     bank_account_id = fields.Many2one('res.partner.bank', 'Bank Account Number', help="Employee bank salary account",
                                       states={'draft': [('readonly', False)]})
+    joining_date = fields.Date(related='employee_id.joining_date')
 
-    @api.depends('employee_id.joining_date', 'date_to')
+    @api.depends('joining_date', 'date_to')
     def _get_first_month_days(self):
         _logger.critical('-000-')
         for line in self:
