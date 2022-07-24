@@ -55,10 +55,12 @@ class HrPayslip(models.Model):
 
     @api.depends('date_from', 'date_to')
     def _get_payment_days(self):
+        _logger.critical('_get_payment_days ************************')
         for line in self:
+            _logger.critical('=====================')
+            _logger.critical('*********************')
             if line.date_from and line.date_to:
-                _logger.critical('=====================')
-                _logger.critical('*********************')
+
                 # day_from = datetime.combine(fields.Date.from_string(line.date_from), datetime_time.min)
                 # day_to = datetime.combine(fields.Date.from_string(line.date_to), datetime_time.max)
                 # leave_days = line.employee_id.get_leaves_day_count(day_from, day_to,
