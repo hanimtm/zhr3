@@ -271,121 +271,121 @@ class HrPayslip(models.Model):
     #             res.extend(leaves.values())
     #         return res
 
-    # @api.model
-    # def get_worked_day_lines(self, contracts, date_from, date_to):
-    #     """
-    #     @param contract: Browse record of contracts
-    #     @return: returns a list of dict containing the input that should be applied for the given contract between date_from and date_to
-    #     """
-    #     res = []
-    #     if type(contracts) is not list:
-    #         for contract in contracts.filtered(lambda contract: contract.resource_calendar_id):
-    #             day_from = datetime.combine(fields.Date.from_string(date_from), datetime_time.min)
-    #             day_to = datetime.combine(fields.Date.from_string(date_to), datetime_time.max)
-    #
-    #             # compute leave days
-    #             leaves = {}
-    #             holiday_list = []
-    #             leave_detail_list = []
-    #             nb_of_days = (day_to - day_from).days + 1
-    #             day_from_start = datetime.strptime(((day_from).strftime("%Y-%m-%d 00:00:00")),
-    #                                                DEFAULT_SERVER_DATETIME_FORMAT)
-    #             day_from_end = datetime.strptime(((day_to).strftime("%Y-%m-%d 23:59:59")),
-    #                                              DEFAULT_SERVER_DATETIME_FORMAT)
-    #             for day in range(0, nb_of_days):
-    #                 day_from_start = datetime.strptime(((day_from + timedelta(days=day)).strftime("%Y-%m-%d 00:00:00")), DEFAULT_SERVER_DATETIME_FORMAT)
-    #                 day_from_end = datetime.strptime(((day_from + timedelta(days=day)).strftime("%Y-%m-%d 23:59:59")), DEFAULT_SERVER_DATETIME_FORMAT)
-    #                 holiday_ids = self.env['hr.holidays'].search([('type', '=', 'remove'),
-    #                                                         ('employee_id', '=', contract.employee_id.id),
-    #                                                         ('state', '=', 'validate'),
-    #                                                         '|',
-    #                                                         '&',
-    #                                                         ('date_from', '>=', str(day_from_start)),
-    #                                                         ('date_from', '<=', str(day_from_end)),
-    #                                                         '&',
-    #                                                         ('date_to', '>=', str(day_from_start)),
-    #                                                         ('date_to', '<=', str(day_from_end))
-    #                                                         ])
-    #                 # holiday_ids = self.env['hr.holidays'].search([('type', '=', 'remove'),
-    #                 #                                               ('employee_id', '=', contract.employee_id.id),
-    #                 #                                               ('state', '=', 'validate'),
-    #                 #                                               ('date_from', '<=', str(day_from_start)),
-    #                 #                                               ('date_to', '>=', str(day_from_end))
-    #                 #                                               ])
-    #                 # holiday_ids = self.env['hr.holidays'].search([('type', '=', 'remove'),
-    #                 #                                               ('employee_id', '=', contract.employee_id.id),
-    #                 #                                               ('state', '=', 'validate'),
-    #                 #                                               ('date_from', '<=', str(day_from_start)),
-    #                 #                                               ('date_to', '>=', str(day_from_end)),])
-    #                 leave_details = self.env['leave.detail'].search([('holiday_id', 'in', holiday_ids.ids),
-    #                                                         ('period_id.date_start', '<=', str(day_from_start.date())),
-    #                                                         ('period_id.date_stop', '>=', str(day_from_start.date())),
-    #                                                         ])
-    #                 leave_detail_list.extend(leave_details.ids)
-    #                 if holiday_ids:
-    #                     holiday_list.extend(holiday_ids.ids)
-    #
-    #             leave_detail_list = self.env['leave.detail'].browse(list(set(leave_detail_list)))
-    #
-    #             leave_detail_object = self.env['leave.detail']
-    #             for leave_detail in sorted(leave_detail_list, key=lambda l: l.holiday_id.holiday_status_id.id):
-    #                 leave_detail_object += leave_detail
-    #             paid_leave_days_list = []
-    #             paid_leave_hours_list = []
-    #             total_leave_day_list = []
-    #             total_leave_hours_list = []
-    #
-    #             # for holiday_status_id, lines in groupby(leave_detail_object, lambda l: l.holiday_id.holiday_status_id.id):
-    #             #     values = list(lines)
-    #             #
-    #             #     holiday_status_id = self.env['hr.holidays.status'].browse(holiday_status_id)
-    #             #     # holiday_status_id = self.env['hr.leave.type'].browse(holiday_status_id)
-    #             #     paid_leave_days_list.append(sum([detail.paid_leave for detail in values]))
-    #             #     paid_leave_hours_list.append(sum([detail.leave_hours for detail in values]))
-    #             #     total_leave_day_list.append(sum([detail.total_leave for detail in values]))
-    #             #     total_leave_hours_list.append(sum([detail.total_leave_hours for detail in values]))
-    #             #     leave_detail_obj = self.env['leave.detail']
-    #             #     for detail in values:
-    #             #         leave_detail_obj += detail
-    #             #     if leave_detail_obj.filtered(lambda l: l.unpaid_leave):
-    #             #         current_leave_struct = leaves.setdefault(holiday_status_id, {
-    #             #                     'name': holiday_status_id.name + ' Working Days unpaid at 100%',
-    #             #                     'sequence': 5,
-    #             #                     'code': holiday_status_id.code or holiday_status_id.name,
-    #             #                     'number_of_days': sum([detail.unpaid_leave for detail in values]),
-    #             #                     'number_of_hours': sum([detail.unpaid_leave_hours for detail in values]),
-    #             #                     'contract_id': contract.id,
-    #             #                 })
-    #
-    #             # compute unpaidleaves
-    #             paid_leave_dict = {}
-    #             if paid_leave_days_list:
-    #                 paid_leave_dict = {
-    #                     'name': _("Leave Working Days paid at 100%"),
-    #                     'sequence': 2,
-    #                     'code': 'annual_leave',
-    #                     'number_of_days': sum(paid_leave_days_list),
-    #                     'number_of_hours': sum(paid_leave_hours_list),
-    #                     'contract_id': contract.id,
-    #                 }
-    #
-    #             # compute worked days
-    #             work_data = contract.employee_id.get_work_days_data(day_from, day_to, calendar=contract.resource_calendar_id)
-    #             leave_days = contract.employee_id.get_leaves_day_count(day_from, day_to, calendar=contract.resource_calendar_id)
-    #             leave_hours = self.get_leaves_hours_count(day_from, day_to, employee_id=contract.employee_id, calendar=contract.resource_calendar_id)
-    #             attendances = {
-    #                 'name': _("Normal Working Days paid at 100%"),
-    #                 'sequence': 1,
-    #                 'code': 'WORK100',
-    #                 'number_of_days': float(float(work_data['days']) + leave_days) - sum(total_leave_day_list),
-    #                 'number_of_hours': float(float(work_data['hours']) + leave_hours) - sum(total_leave_hours_list),
-    #                 'contract_id': contract.id,
-    #             }
-    #             res.append(attendances)
-    #             if paid_leave_dict:
-    #                 res.append(paid_leave_dict)
-    #             res.extend(leaves.values())
-    #         return res
+    @api.model
+    def get_worked_day_lines(self, contracts, date_from, date_to):
+        """
+        @param contract: Browse record of contracts
+        @return: returns a list of dict containing the input that should be applied for the given contract between date_from and date_to
+        """
+        res = []
+        if type(contracts) is not list:
+            for contract in contracts.filtered(lambda contract: contract.resource_calendar_id):
+                day_from = datetime.combine(fields.Date.from_string(date_from), datetime_time.min)
+                day_to = datetime.combine(fields.Date.from_string(date_to), datetime_time.max)
+
+                # compute leave days
+                leaves = {}
+                holiday_list = []
+                leave_detail_list = []
+                nb_of_days = (day_to - day_from).days + 1
+                day_from_start = datetime.strptime(((day_from).strftime("%Y-%m-%d 00:00:00")),
+                                                   DEFAULT_SERVER_DATETIME_FORMAT)
+                day_from_end = datetime.strptime(((day_to).strftime("%Y-%m-%d 23:59:59")),
+                                                 DEFAULT_SERVER_DATETIME_FORMAT)
+                for day in range(0, nb_of_days):
+                    day_from_start = datetime.strptime(((day_from + timedelta(days=day)).strftime("%Y-%m-%d 00:00:00")), DEFAULT_SERVER_DATETIME_FORMAT)
+                    day_from_end = datetime.strptime(((day_from + timedelta(days=day)).strftime("%Y-%m-%d 23:59:59")), DEFAULT_SERVER_DATETIME_FORMAT)
+                    holiday_ids = self.env['hr.holidays'].search([('type', '=', 'remove'),
+                                                            ('employee_id', '=', contract.employee_id.id),
+                                                            ('state', '=', 'validate'),
+                                                            '|',
+                                                            '&',
+                                                            ('date_from', '>=', str(day_from_start)),
+                                                            ('date_from', '<=', str(day_from_end)),
+                                                            '&',
+                                                            ('date_to', '>=', str(day_from_start)),
+                                                            ('date_to', '<=', str(day_from_end))
+                                                            ])
+                    # holiday_ids = self.env['hr.holidays'].search([('type', '=', 'remove'),
+                    #                                               ('employee_id', '=', contract.employee_id.id),
+                    #                                               ('state', '=', 'validate'),
+                    #                                               ('date_from', '<=', str(day_from_start)),
+                    #                                               ('date_to', '>=', str(day_from_end))
+                    #                                               ])
+                    # holiday_ids = self.env['hr.holidays'].search([('type', '=', 'remove'),
+                    #                                               ('employee_id', '=', contract.employee_id.id),
+                    #                                               ('state', '=', 'validate'),
+                    #                                               ('date_from', '<=', str(day_from_start)),
+                    #                                               ('date_to', '>=', str(day_from_end)),])
+                    leave_details = self.env['leave.detail'].search([('holiday_id', 'in', holiday_ids.ids),
+                                                            ('period_id.date_start', '<=', str(day_from_start.date())),
+                                                            ('period_id.date_stop', '>=', str(day_from_start.date())),
+                                                            ])
+                    leave_detail_list.extend(leave_details.ids)
+                    if holiday_ids:
+                        holiday_list.extend(holiday_ids.ids)
+
+                leave_detail_list = self.env['leave.detail'].browse(list(set(leave_detail_list)))
+
+                leave_detail_object = self.env['leave.detail']
+                for leave_detail in sorted(leave_detail_list, key=lambda l: l.holiday_id.holiday_status_id.id):
+                    leave_detail_object += leave_detail
+                paid_leave_days_list = []
+                paid_leave_hours_list = []
+                total_leave_day_list = []
+                total_leave_hours_list = []
+
+                # for holiday_status_id, lines in groupby(leave_detail_object, lambda l: l.holiday_id.holiday_status_id.id):
+                #     values = list(lines)
+                #
+                #     holiday_status_id = self.env['hr.holidays.status'].browse(holiday_status_id)
+                #     # holiday_status_id = self.env['hr.leave.type'].browse(holiday_status_id)
+                #     paid_leave_days_list.append(sum([detail.paid_leave for detail in values]))
+                #     paid_leave_hours_list.append(sum([detail.leave_hours for detail in values]))
+                #     total_leave_day_list.append(sum([detail.total_leave for detail in values]))
+                #     total_leave_hours_list.append(sum([detail.total_leave_hours for detail in values]))
+                #     leave_detail_obj = self.env['leave.detail']
+                #     for detail in values:
+                #         leave_detail_obj += detail
+                #     if leave_detail_obj.filtered(lambda l: l.unpaid_leave):
+                #         current_leave_struct = leaves.setdefault(holiday_status_id, {
+                #                     'name': holiday_status_id.name + ' Working Days unpaid at 100%',
+                #                     'sequence': 5,
+                #                     'code': holiday_status_id.code or holiday_status_id.name,
+                #                     'number_of_days': sum([detail.unpaid_leave for detail in values]),
+                #                     'number_of_hours': sum([detail.unpaid_leave_hours for detail in values]),
+                #                     'contract_id': contract.id,
+                #                 })
+
+                # compute unpaidleaves
+                paid_leave_dict = {}
+                if paid_leave_days_list:
+                    paid_leave_dict = {
+                        'name': _("Leave Working Days paid at 100%"),
+                        'sequence': 2,
+                        'code': 'annual_leave',
+                        'number_of_days': sum(paid_leave_days_list),
+                        'number_of_hours': sum(paid_leave_hours_list),
+                        'contract_id': contract.id,
+                    }
+
+                # compute worked days
+                work_data = contract.employee_id.get_work_days_data(day_from, day_to, calendar=contract.resource_calendar_id)
+                leave_days = contract.employee_id.get_leaves_day_count(day_from, day_to, calendar=contract.resource_calendar_id)
+                leave_hours = self.get_leaves_hours_count(day_from, day_to, employee_id=contract.employee_id, calendar=contract.resource_calendar_id)
+                attendances = {
+                    'name': _("Normal Working Days paid at 100%"),
+                    'sequence': 1,
+                    'code': 'WORK100',
+                    'number_of_days': float(float(work_data['days']) + leave_days) - sum(total_leave_day_list),
+                    'number_of_hours': float(float(work_data['hours']) + leave_hours) - sum(total_leave_hours_list),
+                    'contract_id': contract.id,
+                }
+                res.append(attendances)
+                if paid_leave_dict:
+                    res.append(paid_leave_dict)
+                res.extend(leaves.values())
+            return res
 
     def get_leaves_hours_count(self, from_datetime, to_datetime, employee_id, calendar=None):
         hours_count = 0.0
