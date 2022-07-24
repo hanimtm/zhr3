@@ -28,6 +28,7 @@ class HrPayslipRun(models.Model):
 class HrPayslip(models.Model):
     _inherit = "hr.payslip"
 
+    @api.depends('date_from', 'date_to')
     def _get_payment_days(self):
         _logger.critical('000')
         _logger.critical(self)
