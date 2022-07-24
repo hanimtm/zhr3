@@ -30,6 +30,7 @@ class HrPayslip(models.Model):
 
     def _get_payment_days(self):
         _logger.critical('000')
+        _logger.critical(self)
         for line in self:
             _logger.critical('111')
             day_from = datetime.strptime(str(line.date_from), DEFAULT_SERVER_DATE_FORMAT)
