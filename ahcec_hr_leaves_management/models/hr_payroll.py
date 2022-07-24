@@ -64,25 +64,25 @@ class HrPayslip(models.Model):
     @api.depends('joining_date', 'date_to')
     def _get_first_month_days(self):
         _logger.critical('-000-')
-        for line in self:
-            _logger.critical('-111-')
-            _logger.critical(line)
-            _logger.critical(line.first_month_days)
-            line.first_month_days = 0
-            if line.employee_id:
-                _logger.critical('-333-')
-                _logger.critical(line.employee_id.name)
-                if not line.employee_id.joining_date:
-                    raise UserError(_("Please enter 'Joining Date' of Employee first!"))
-                _logger.critical('=======--------------------')
-                join_date = datetime.strptime(str(line.employee_id.joining_date), DEFAULT_SERVER_DATE_FORMAT)
-                _logger.critical(join_date)
-                day_to = datetime.strptime(str(line.date_to), DEFAULT_SERVER_DATE_FORMAT)
-                _logger.critical(day_to)
-                number_of_days = (day_to - join_date).days + 1
-                _logger.critical(number_of_days)
-                line.first_month_days = number_of_days
-                _logger.critical('*****************************')
+        # for line in self:
+        #     _logger.critical('-111-')
+        #     _logger.critical(line)
+        #     _logger.critical(line.first_month_days)
+        #     line.first_month_days = 0
+        #     if line.employee_id:
+        #         _logger.critical('-333-')
+        #         _logger.critical(line.employee_id.name)
+        #         if not line.employee_id.joining_date:
+        #             raise UserError(_("Please enter 'Joining Date' of Employee first!"))
+        #         _logger.critical('=======--------------------')
+        #         join_date = datetime.strptime(str(line.employee_id.joining_date), DEFAULT_SERVER_DATE_FORMAT)
+        #         _logger.critical(join_date)
+        #         day_to = datetime.strptime(str(line.date_to), DEFAULT_SERVER_DATE_FORMAT)
+        #         _logger.critical(day_to)
+        #         number_of_days = (day_to - join_date).days + 1
+        #         _logger.critical(number_of_days)
+        #         line.first_month_days = number_of_days
+        #         _logger.critical('*****************************')
 
     # @api.onchange('employee_id', 'date_from', 'date_to')
     # def onchange_employee(self):
