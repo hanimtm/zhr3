@@ -55,19 +55,24 @@ class HrPayslip(models.Model):
             _logger.critical('999')
             line.payment_days = nb_of_days
 
-    # compute = '_get_first_month_days',
     payment_days = fields.Float(compute='_get_payment_days', string='Payment Day(s)')
     first_month_days = fields.Float(compute='_get_first_month_days', string='No of day(s)')
     bank_account_id = fields.Many2one('res.partner.bank', 'Bank Account Number', help="Employee bank salary account",
                                       states={'draft': [('readonly', False)]})
 
-    @api.depends('employee_id.joining_date', 'date_to')
+    @api.depends('employee_id.joining_date', 'date_todate_to')
     def _get_first_month_days(self):
+        _logger.critical('-000-')
         for line in self:
+            _logger.critical('-111-')
+            _logger.critical(line)
+            _logger.critical(line.first_month_days)
             line.first_month_days = 0
             if line.employee_id:
-                # if not line.employee_id.joining_date:
-                #     raise UserError(_("Please enter 'Joining Date' of Employee first!"))
+                _logger.critical('-333-')
+                _logger.critical(line.employee_id.name)
+                if not line.employee_id.joining_date:
+                    raise UserError(_("Please enter 'Joining Date' of Employee first!"))
                 _logger.critical('=======--------------------')
                 join_date = datetime.strptime(str(line.employee_id.joining_date), DEFAULT_SERVER_DATE_FORMAT)
                 _logger.critical(join_date)
