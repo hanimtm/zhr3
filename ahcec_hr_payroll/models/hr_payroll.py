@@ -88,6 +88,7 @@ class HrPayslip(models.Model):
 
     @api.onchange('month_days', 'annual_leaves', 'line_ids')
     def onchange_vacation_pay(self):
+        _logger.critical('onchange_vacation_pay *******************')
         for line in self:
             # line.month_days = 0
             total_amount = sum(line.line_ids.filtered(lambda line: line.category_id.code == 'ALW').mapped('amount'))
@@ -415,6 +416,7 @@ class HrPayslip(models.Model):
         return True
 
     def compute_sheet(self):
+        _logger.critical('compute_sheet *******************************')
         res = super(HrPayslip, self).compute_sheet()
         for payslip in self:
             payslip.check_other_allowance()

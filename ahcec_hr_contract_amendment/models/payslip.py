@@ -7,6 +7,8 @@ from odoo.exceptions import UserError, ValidationError
 from itertools import groupby
 import pytz
 from datetime import datetime
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class HrPayslipLine(models.Model):
@@ -27,6 +29,7 @@ class Contract(models.Model):
 #     is_aramco_smdcad = fields.Boolean('Employee is Aramco SMPCAD')
 
     def get_basics(self, payslip, type, value):
+        _logger.critical('get_basics*************')
         for data in self:
             contracts = self.env['hr.contract'].browse(data.id)
             amount = 0
@@ -79,6 +82,7 @@ class Contract(models.Model):
             return amount
 
     def get_amount_day(self, data, contracts, changes, previous_date, payslip, no_of_days, amt):
+        _logger.critical('get_amount_day **********************')
         result = data.get_worked_day_lines(contracts, previous_date, changes.effective_date)
         amount = 0
         leave_days = sum([sub['number_of_days'] for sub in result if sub['code'] == 'unpaid_leave'])
