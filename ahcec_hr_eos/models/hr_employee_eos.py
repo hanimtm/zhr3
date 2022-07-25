@@ -16,9 +16,7 @@ class HrEmployeeEos(models.Model):
     _description = "End of Service Indemnity (EOS)"
 
     def _get_currency(self):
-        """
-            return currency of current user
-        """
+        """ return currency of current user """
         user = self.env['res.users'].browse(self.env.uid)
         return user.company_id.currency_id.id
 
@@ -179,9 +177,7 @@ class HrEmployeeEos(models.Model):
             self.journal_id = journal_ids[0].id
 
     def calc_eos(self):
-        """
-            Calculate eos
-        """
+        """ Calculate eos """
         user_id = self.env.user
         payslip_obj = self.env['hr.payslip']
         for eos in self:
