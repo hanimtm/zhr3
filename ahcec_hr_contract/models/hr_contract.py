@@ -123,29 +123,29 @@ class HRContract(models.Model):
                  'TA', 'other_allow', 'remote_allow', 'ticket_monthly')
     def _get_total(self):
         for contract in self:
-            total_salary = contract.wage
-            if contract.mobile:
-                total_salary += contract.mobile_allowance
-            if contract.signon_bonus:
-                total_salary += contract.signon_bonus_amount
-            if contract.is_HRA:
-                total_salary += contract.HRA
-            if contract.is_TA:
-                total_salary += contract.TA
-            if contract.is_other_allow:
-                total_salary += contract.other_allow
-            if contract.is_remote_allow:
-                total_salary += contract.remote_allow
-            if contract.is_ticket_monthly:
-                total_salary += contract.ticket_monthly
-            contract.total_salary = total_salary
-            # contract.total_salary = contract.wage + \
-            #                         contract.mobile_allowance + \
-            #                         contract.signon_bonus_amount + \
-            #                         contract.HRA + contract.TA + \
-            #                         contract.other_allow + \
-            #                         contract.remote_allow + \
-            #                         contract.ticket_monthly
+            # total_salary = contract.wage
+            # if contract.mobile:
+            #     total_salary += contract.mobile_allowance
+            # if contract.signon_bonus:
+            #     total_salary += contract.signon_bonus_amount
+            # if contract.is_HRA:
+            #     total_salary += contract.HRA
+            # if contract.is_TA:
+            #     total_salary += contract.TA
+            # if contract.is_other_allow:
+            #     total_salary += contract.other_allow
+            # if contract.is_remote_allow:
+            #     total_salary += contract.remote_allow
+            # if contract.is_ticket_monthly:
+            #     total_salary += contract.ticket_monthly
+            # contract.total_salary = total_salary
+            contract.total_salary = contract.wage + \
+                                    contract.mobile_allowance + \
+                                    contract.signon_bonus_amount + \
+                                    contract.HRA + contract.TA + \
+                                    contract.other_allow + \
+                                    contract.remote_allow + \
+                                    contract.ticket_monthly
 
     @api.depends('is_vacation', 'total_salary')
     def _get_vacation(self):
