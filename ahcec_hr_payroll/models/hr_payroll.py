@@ -416,7 +416,6 @@ class HrPayslip(models.Model):
         return True
 
     def compute_sheet(self):
-        _logger.critical('compute_sheet *******************************')
         res = super(HrPayslip, self).compute_sheet()
         for payslip in self:
             payslip.check_other_allowance()
