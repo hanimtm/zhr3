@@ -7,7 +7,7 @@
     'category': 'Human Resources',
     'version': '1.0',
     'sequence': 20,
-    'depends': ['hr_payroll', 'hr_payroll_account'],
+    'depends': ['hr_payroll', 'hr_payroll_account', 'account'],
     'data': [
         'views/salary_rule.xml',
     ],

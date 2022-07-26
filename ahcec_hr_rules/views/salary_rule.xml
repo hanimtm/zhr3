@@ -8,28 +8,62 @@
         <field name="arch" type="xml">
             <!--            <xpath expr="//notebook/page[@name='accounting']" position="replace">-->
             <xpath expr="//field[@name='account_debit']" position="before">
-                    <field name="journal"/>
-                    <field name="journal_id"
-                           attrs="{'invisible': [('journal', '=', False)],
+                <field name="journal"/>
+                <field name="journal_id"
+                       attrs="{'invisible': [('journal', '=', False)],
                                     'required': [('journal', '!=', False)]}"/>
-        </xpath>
+            </xpath>
 
-    </field>
-</record>
+        </field>
+    </record>
 
-        <!-- Inherit Form View to Modify it -->
-<record id="payslip_view_form_add_gosi_move_id" model="ir.ui.view">
-<field name="name">Add Gosi Accounting Fields</field>
-<field name="model">hr.payslip</field>
-<field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
-<field name="arch" type="xml">
+    <!-- Inherit Form View to Modify it -->
+    <record id="payslip_view_form_add_gosi_move_id" model="ir.ui.view">
+        <field name="name">Add Gosi Accounting Fields</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
 
-    <xpath expr="//field[@name='gosi_for_employee']" position="after">
-        <!-- Add your fields or attributes here -->
-        <field name="gosi_move_id" readonly="1"/>
-    </xpath>
+            <xpath expr="//notebook/page[@name='salary_computation']/field[@name='line_ids']/tree/field[@name='name']" position="after">
+                <field name="journal_id"/>
+            </xpath>
 
-</field>
-</record>
+            <xpath expr="//notebook//page[@name='account_info']" position="after">
+                <page string="Moves">
+<!--                    <group>-->
+                        <field name="move_ids" readonly="1"/>
+<!--                    </group>-->
+                </page>
 
-        </odoo>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Form View to Modify it -->
+    <record id="account_move_form_view_inherit" model="ir.ui.view">
+        <field name="name">Add Payslip field</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='ref']" position="after">
+                <!-- Add your fields or attributes here -->
+                <field name="payslip_id" readonly="1"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="account_move_tree_view_inherit" model="ir.ui.view">
+        <field name="name">Add Payslip field (tree)</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_tree"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="payslip_id" readonly="1"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

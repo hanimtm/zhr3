@@ -24,7 +24,8 @@ class HrPayslipLineInherit(models.Model):
 class HrPayslipInherit(models.Model):
     _inherit = 'hr.payslip'
 
-    gosi_move_id = fields.Many2one('account.move', 'Gosi Accounting Entry')
+    move_ids = fields.One2many(
+        comodel_name='account.move', inverse_name='payslip_id', string='Moves')
 
     def compute_sheet(self):
         res = super(HrPayslipInherit, self).compute_sheet()
@@ -37,11 +38,11 @@ class HrPayslipInherit(models.Model):
         res = super(HrPayslipInherit, self).action_payslip_done()
 
         date = fields.date.today()
-        ids = []
         for line in self.line_ids:
+            ids = []
             if line.journal_id:
                 debit_dic = {
-                    'name': _('GOSI Adjustment Entry'),
+                    'name': line.name + '-' + self.employee_id.name + '-' + self.name,
                     'partner_id': False,
                     'account_id': line.salary_rule_id.account_debit.id,
                     'journal_id': line.journal_id.id,
@@ -51,7 +52,7 @@ class HrPayslipInherit(models.Model):
                 }
                 ids.append((0, 0, debit_dic))
                 credit_dic = {
-                    'name': _('GOSI Adjustment Entry'),
+                    'name': line.name + '-' + self.employee_id.name + '-' + self.name,
                     'partner_id': False,
                     'account_id': line.salary_rule_id.account_credit.id,
                     'journal_id': line.journal_id.id,
@@ -63,6 +64,7 @@ class HrPayslipInherit(models.Model):
                 # ids.append(credit_dic)
                 move = self.env['account.move'].sudo().create({
                     'name': '/',
+                    'payslip_id': self.id,
                     'move_type': 'entry',
                     'ref': self.employee_id.name,
                     'journal_id': line.journal_id.id,
@@ -258,7 +260,7 @@ class HrPayslipInherit(models.Model):
                 date = slip_date
                 move_dict = {
                     'narration': '',
-                    'ref': date.strftime('%B %Y'),
+                    'ref': self.employee_id.name + str(date.strftime('%B %Y')),
                     'journal_id': journal_id,
                     'date': date,
                 }
@@ -365,4 +367,10 @@ class HrPayslipInherit(models.Model):
                 for slip in slip_mapped_data[journal_id][slip_date]:
                     slip.write({'move_id': move.id, 'date': date})
         return True
+
+
+class AccountMove(models.Model):
+    _inherit = 'account.move'
+
+    payslip_id = fields.Many2one('hr.payslip', 'Payslip')
 

@@ -578,62 +578,62 @@ class Payslip(models.Model):
         # #      print('Error')
 
     # IBRAHIM
-    # def check_installments_pay(self):
-    #     slip_line_obj = self.env['hr.payslip.line']
-    #     loan_obj = self.env['hr.loan']
-    #     rule_obj = self.env['hr.salary.rule']
-    #     skip_installment_obj = self.env['hr.skip.installment']
-    #     for payslip in self:
-    #         if not payslip.contract_id:
-    #             raise UserError(_("Please enter Employee contract first."))
-    #         loan_ids = loan_obj.search(['|', '&', ('start_date', '>=', payslip.date_from),
-    #                                     ('start_date', '<=', payslip.date_to),
-    #                                     ('start_date', '<=', payslip.date_from),
-    #                                     ('employee_id', '=', payslip.employee_id.id),
-    #                                     ('state', '=', 'approve')])
-    #         rule_ids = rule_obj.search([('code', '=', 'LOAN')])
-    #         if rule_ids:
-    #             rule = rule_ids[0]
-    #             oids = slip_line_obj.search([('slip_id', '=', payslip.id), ('code', '=', 'LOAN')])
-    #             if oids:
-    #                 oids.unlink()
-    #             for loan in loan_ids:
-    #                 skip_installment_ids = skip_installment_obj.search(
-    #                     [('loan_id', '=', loan.id), ('state', '=', 'approve'), ('date', '>=', payslip.date_from),
-    #                      ('date', '<=', payslip.date_to)])
-    #                 if not skip_installment_ids:
-    #                     slip_line_data = {
-    #                         'slip_id': payslip.id,
-    #                         'salary_rule_id': rule.id,
-    #                         'contract_id': payslip.contract_id.id,
-    #                         'name': loan.name,
-    #                         'code': 'LOAN' + str(loan.id),
-    #                         'category_id': rule.category_id.id,
-    #                         'sequence': rule.sequence + loan.id,
-    #                         'appears_on_payslip': rule.appears_on_payslip,
-    #                         'condition_select': rule.condition_select,
-    #                         'condition_python': rule.condition_python,
-    #                         'condition_range': rule.condition_range,
-    #                         'condition_range_min': rule.condition_range_min,
-    #                         'condition_range_max': rule.condition_range_max,
-    #                         'amount_select': rule.amount_select,
-    #                         'amount_fix': rule.amount_fix,
-    #                         'amount_python_compute': rule.amount_python_compute,
-    #                         'amount_percentage': rule.amount_percentage,
-    #                         'amount_percentage_base': rule.amount_percentage_base,
-    #                         'register_id': rule.register_id.id,
-    #                         'salary_type': rule.type.id,
-    #                         'amount': -(loan.deduction_amount),
-    #                         'employee_id': payslip.employee_id.id,
-    #                     }
-    #                     if abs(slip_line_data['amount']) > loan.amount_to_pay:
-    #                         slip_line_data.update({'amount': -(loan.amount_to_pay)})
-    #                     slip_line_obj.create(slip_line_data)
-    #                     net_ids = slip_line_obj.search([('slip_id', '=', payslip.id), ('code', '=', 'NET')])
-    #                     if net_ids:
-    #                         net_record = net_ids[0]
-    #                         net_ids.write({'amount': net_record.amount + slip_line_data['amount']})
-    #     return True
+    def check_installments_pay(self):
+        slip_line_obj = self.env['hr.payslip.line']
+        loan_obj = self.env['hr.loan']
+        rule_obj = self.env['hr.salary.rule']
+        skip_installment_obj = self.env['hr.skip.installment']
+        for payslip in self:
+            if not payslip.contract_id:
+                raise UserError(_("Please enter Employee contract first."))
+            loan_ids = loan_obj.search(['|', '&', ('start_date', '>=', payslip.date_from),
+                                        ('start_date', '<=', payslip.date_to),
+                                        ('start_date', '<=', payslip.date_from),
+                                        ('employee_id', '=', payslip.employee_id.id),
+                                        ('state', '=', 'approve')])
+            rule_ids = rule_obj.search([('code', '=', 'LOAN')])
+            if rule_ids:
+                rule = rule_ids[0]
+                oids = slip_line_obj.search([('slip_id', '=', payslip.id), ('code', '=', 'LOAN')])
+                if oids:
+                    oids.unlink()
+                for loan in loan_ids:
+                    skip_installment_ids = skip_installment_obj.search(
+                        [('loan_id', '=', loan.id), ('state', '=', 'approve'), ('date', '>=', payslip.date_from),
+                         ('date', '<=', payslip.date_to)])
+                    if not skip_installment_ids:
+                        slip_line_data = {
+                            'slip_id': payslip.id,
+                            'salary_rule_id': rule.id,
+                            'contract_id': payslip.contract_id.id,
+                            'name': loan.name,
+                            'code': 'LOAN' + str(loan.id),
+                            'category_id': rule.category_id.id,
+                            'sequence': rule.sequence + loan.id,
+                            'appears_on_payslip': rule.appears_on_payslip,
+                            'condition_select': rule.condition_select,
+                            'condition_python': rule.condition_python,
+                            'condition_range': rule.condition_range,
+                            'condition_range_min': rule.condition_range_min,
+                            'condition_range_max': rule.condition_range_max,
+                            'amount_select': rule.amount_select,
+                            'amount_fix': rule.amount_fix,
+                            'amount_python_compute': rule.amount_python_compute,
+                            'amount_percentage': rule.amount_percentage,
+                            'amount_percentage_base': rule.amount_percentage_base,
+                            'register_id': rule.register_id.id,
+                            'salary_type': rule.type.id,
+                            'amount': -(loan.deduction_amount),
+                            'employee_id': payslip.employee_id.id,
+                        }
+                        if abs(slip_line_data['amount']) > loan.amount_to_pay:
+                            slip_line_data.update({'amount': -(loan.amount_to_pay)})
+                        slip_line_obj.create(slip_line_data)
+                        net_ids = slip_line_obj.search([('slip_id', '=', payslip.id), ('code', '=', 'NET')])
+                        if net_ids:
+                            net_record = net_ids[0]
+                            net_ids.write({'amount': net_record.amount + slip_line_data['amount']})
+        return True
     #
     #
     # def compute_sheet_ahcec(self):

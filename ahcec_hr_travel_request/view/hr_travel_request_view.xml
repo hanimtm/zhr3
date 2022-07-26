@@ -12,6 +12,7 @@
                     <page string="Accrual Settings">
                         <group>
                             <field name="accrual_journal"/>
+                            <field name="travel_accrual_journal_id"/>
                         </group>
                     </page>
                 </xpath>
