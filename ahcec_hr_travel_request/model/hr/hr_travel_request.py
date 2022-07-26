@@ -6,13 +6,15 @@ import odoo.addons.decimal_precision as dp
 from odoo.exceptions import Warning, ValidationError
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT as DF
 from odoo.tools.translate import _
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
     accrual_journal = fields.Many2one('account.journal', string="Accrual Journal")
-    # travel_accrual_journal_id = fields.Many2one('account.journal', string="Travel Accrual Journal")
+
 
 class hr_travel_request(models.Model):
     _name = 'hr.travel.request'
@@ -244,9 +246,12 @@ class hr_travel_request(models.Model):
         with the travel request template message loaded by default
         """
         self.state = 'approved'
+        journal = int(self.env['ir.config_parameter'].sudo().get_param('travel_accrual_journal_id'))
+        if not journal:
+            raise ValidationError(_('Please go to config and put (travel accrual journal)'))
         move = {
             'name': '/',
-            'journal_id': self.company_id.accrual_journal.id,
+            'journal_id': journal,
             'date': fields.Date.today(),
         }
         line_ids = []
@@ -269,7 +274,7 @@ class hr_travel_request(models.Model):
                 'name': self.employee_id.name or '/ ' + 'Ticket Reverse Accrual',
                 'partner_id': self.employee_id.address_home_id.id,
                 'account_id': credit_account,
-                'journal_id': self.company_id.accrual_journal.id,
+                'journal_id': journal,
                 'date': fields.Date.today(),
                 'debit': self.ticket_price + self.visa_cost,
                 'credit': 0.0,
@@ -279,7 +284,7 @@ class hr_travel_request(models.Model):
                 'name': self.employee_id.name or '/ ' + 'EOS',
                 'partner_id': self.employee_id.address_home_id.id,
                 'account_id': debit_account,
-                'journal_id': self.company_id.accrual_journal.id,
+                'journal_id': journal,
                 # 'analytic_account_id': self.analytic_account_id.id or False,
                 'date': fields.Date.today(),
                 'credit': self.ticket_price + self.visa_cost,

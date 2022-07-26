@@ -198,8 +198,6 @@ class HrEmployeeEos(models.Model):
             l_d = date_from + relativedelta.relativedelta(day=selected_date.day)
             date_to = datetime.strftime(l_d, '%Y-%m-%d')
             contract_ids = self.payslip_id.get_contract(eos.employee_id, date_from, date_to)
-            _logger.critical('====================================')
-            _logger.critical('contract_ids')
             if not contract_ids:
                 raise UserError(_('Please define contract for selected Employee!'))
             # Currently your company contract wage will be calculate as last salary.
@@ -268,7 +266,7 @@ class HrEmployeeEos(models.Model):
             if eos.type == 'resignation':
                 if eos.calc_year > 2 and eos.calc_year < 5:
                     payable_eos = total_eos / 3
-                elif eos.calc_year > 2 and eos.calc_year < 10:
+                elif eos.calc_year > 5 and eos.calc_year < 10:
                     payable_eos = (total_eos * 2) / 3
                 elif eos.calc_year > 10:
                     payable_eos = total_eos

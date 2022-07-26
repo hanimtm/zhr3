@@ -293,10 +293,13 @@ class Payslip(models.Model):
                         date = datetime.strptime(str(self.date_to), '%Y-%m-%d')
                         month_days = calendar.monthrange(date.year, date.month)[1]
                         amount = ((cont.vacation / 12) / 30) * month_days
+                        journal = int(self.env['ir.config_parameter'].sudo().get_param('vacation_journal_id'))
+                        if not journal:
+                            raise ValidationError(_('Please go to config and put (Vacation Journal)'))
 
                         move = {
                             'name': '/',
-                            'journal_id': cont.company_id.accrual_journal.id,
+                            'journal_id': journal,
                             'date': self.date_to,
                         }
                         if self.employee_id.type_of_employee == 'employee':
@@ -317,7 +320,7 @@ class Payslip(models.Model):
                                 'name': 'Vacation Accrual',
                                 'partner_id': cont.employee_id.address_home_id.id,
                                 'account_id': credit_account,
-                                'journal_id': cont.company_id.accrual_journal.id,
+                                'journal_id': journal,
                                 'date': self.date_to,
                                 'credit': amount,
                                 'debit': 0.0,
@@ -327,7 +330,7 @@ class Payslip(models.Model):
                                 'name': 'Vacation Accrual',
                                 'partner_id': cont.employee_id.address_home_id.id,
                                 'account_id': debit_account,
-                                'journal_id': cont.company_id.accrual_journal.id,
+                                'journal_id': journal,
                                 'analytic_account_id': cont.analytic_account_id.id or False,
                                 'date': self.date_to,
                                 'debit': abs(amount),
