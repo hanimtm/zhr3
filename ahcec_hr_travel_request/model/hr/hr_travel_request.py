@@ -12,7 +12,7 @@ class ResCompany(models.Model):
     _inherit = 'res.company'
 
     accrual_journal = fields.Many2one('account.journal', string="Accrual Journal")
-    travel_accrual_journal_id = fields.Many2one('account.journal', string="Travel Accrual Journal")
+    # travel_accrual_journal_id = fields.Many2one('account.journal', string="Travel Accrual Journal")
 
 class hr_travel_request(models.Model):
     _name = 'hr.travel.request'
@@ -246,7 +246,7 @@ class hr_travel_request(models.Model):
         self.state = 'approved'
         move = {
             'name': '/',
-            'journal_id': self.company_id.travel_accrual_journal_id.id,
+            'journal_id': self.company_id.accrual_journal.id,
             'date': fields.Date.today(),
         }
         line_ids = []
@@ -269,7 +269,7 @@ class hr_travel_request(models.Model):
                 'name': self.employee_id.name or '/ ' + 'Ticket Reverse Accrual',
                 'partner_id': self.employee_id.address_home_id.id,
                 'account_id': credit_account,
-                'journal_id': self.company_id.travel_accrual_journal_id.id,
+                'journal_id': self.company_id.accrual_journal.id,
                 'date': fields.Date.today(),
                 'debit': self.ticket_price + self.visa_cost,
                 'credit': 0.0,
@@ -279,7 +279,7 @@ class hr_travel_request(models.Model):
                 'name': self.employee_id.name or '/ ' + 'EOS',
                 'partner_id': self.employee_id.address_home_id.id,
                 'account_id': debit_account,
-                'journal_id': self.company_id.travel_accrual_journal_id.id,
+                'journal_id': self.company_id.accrual_journal.id,
                 # 'analytic_account_id': self.analytic_account_id.id or False,
                 'date': fields.Date.today(),
                 'credit': self.ticket_price + self.visa_cost,
