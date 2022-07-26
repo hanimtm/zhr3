@@ -12,7 +12,7 @@ class ResCompany(models.Model):
     _inherit = 'res.company'
 
     accrual_journal = fields.Many2one('account.journal', string="Accrual Journal")
-    travel_accrual_journal_id = fields.Many2one('account.journal', string="Travel Accrual Journal")
+    # travel_accrual_journal_id = fields.Many2one('account.journal', string="Travel Accrual Journal")
 
 class hr_travel_request(models.Model):
     _name = 'hr.travel.request'
