@@ -16,6 +16,7 @@
                     <group>
                         <field name="amount_text"/>
                         <field name="amount_in_ar"/>
+                        <field name="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                     </group>
                 </page>
 
