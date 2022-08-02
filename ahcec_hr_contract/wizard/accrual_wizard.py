@@ -72,6 +72,7 @@ class AccrualWizard(models.TransientModel):
                             'name': '/',
                             'journal_id': journal,
                             'date': self.date_to,
+                            'employee_id': self.employee_id.id
                         }
                         if self.employee_id.type_of_employee == 'employee':
                             debit_account = int(self.env['ir.config_parameter'].sudo().get_param('eos_debit_account'))
@@ -158,6 +159,7 @@ class AccrualWizard(models.TransientModel):
                             'name': '/',
                             'journal_id': journal,
                             'date': self.date_to,
+                            'employee_id': self.employee_id.id
                         }
                         if self.employee_id.type_of_employee == 'employee':
                             debit_account = int(

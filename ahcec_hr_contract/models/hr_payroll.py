@@ -8,6 +8,14 @@ from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 class HrPayslip(models.Model):
     _inherit = "hr.payslip"
 
+    def action_payslip_draft(self):
+        res = super(HrPayslip, self).action_payslip_draft()
+        if self.move_ids:
+            for line in self.move_ids:
+                if line.state == 'draft':
+                    line.unlink()
+        return res
+
     @api.depends('contract_id')
     def check_signon_deduction(self):
         slip_obj = self.env['hr.payslip']
