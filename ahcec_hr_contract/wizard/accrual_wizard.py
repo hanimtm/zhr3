@@ -66,9 +66,11 @@ class AccrualWizard(models.TransientModel):
                         amount = cont.eos_amount
                         if cont.eos_accrual_move_id:
                             amount = amount - cont.eos_accrual_move_id.amount
+                        if not journal:
+                            raise ValidationError(_('Please go to config and put (Vacation journal)'))
                         move = {
                             'name': '/',
-                            'journal_id': cont.company_id.accrual_journal.id,
+                            'journal_id': journal,
                             'date': self.date_to,
                         }
                         if self.employee_id.type_of_employee == 'employee':
@@ -148,10 +150,13 @@ class AccrualWizard(models.TransientModel):
                         date = datetime.strptime(str(self.date_to), '%Y-%m-%d')
                         month_days = calendar.monthrange(date.year, date.month)[1]
                         amount = ((cont.vacation / 12) / 30) * month_days
+                        journal = int(self.env['ir.config_parameter'].sudo().get_param('vacation_journal_id'))
+                        if not journal:
+                            raise ValidationError(_('Please go to config and put (Vacation journal)'))
 
                         move = {
                             'name': '/',
-                            'journal_id': cont.company_id.accrual_journal.id,
+                            'journal_id': journal,
                             'date': self.date_to,
                         }
                         if self.employee_id.type_of_employee == 'employee':

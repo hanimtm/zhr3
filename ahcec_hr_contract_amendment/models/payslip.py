@@ -237,6 +237,10 @@ class Payslip(models.Model):
                         amount = cont.eos_amount
                         # if cont.eos_accrual_move_id:
                         #     amount = amount - cont.eos_accrual_move_id.amount_total
+                        journal = int(self.env['ir.config_parameter'].sudo().get_param('eos_journal_id'))
+                        if not journal:
+                            raise ValidationError(_('Please go to config and put (EOS Journal)'))
+
                         move = {
                             'name': '/',
                             'journal_id': cont.company_id.accrual_journal.id,

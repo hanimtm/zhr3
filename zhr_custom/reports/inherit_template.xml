@@ -1,44 +1,235 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-     <template id="report_saleorder_document_inherit_sale_stock" inherit_id="sale.report_saleorder_document">
+    <template id="id_report_saleorder_document_inherit_sale_stock" inherit_id="sale.report_saleorder_document">
         <xpath expr="//div[@class='page']/h2[@class='mt16']" position="replace">
             <h2 class="mt16">
                 <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
-                    <span t-if="doc.state not in ['draft','sent','waiting_for_approval','waiting_for_approval_ceo','ready_to_confirm']">Order # </span>
+                    <span t-if="doc.state not in ['draft','sent','waiting_for_approval','waiting_for_approval_ceo','ready_to_confirm']">
+                        Sale Order #
+                    </span>
                     <span t-if="doc.state in ['draft','sent','waiting_for_approval','waiting_for_approval_ceo','ready_to_confirm']">
-                        Quotation # </span>
+                        Quotation #
+                    </span>
                 </t>
                 <t t-if="env.context.get('proforma', False) or is_pro_forma">
-                    <span>Pro-Forma Invoice # </span>
+                    <span>Pro-Forma Invoice #</span>
                 </t>
                 <span t-field="doc.name"/>
             </h2>
+
+            <xpath expr="//t[@t-set='address']" position="replace">
+                <t t-set="address">
+                    <div t-field="doc.partner_id"
+                         t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                    <p t-if="doc.partner_id.vat">
+                        <t t-esc="doc.company_id.account_fiscal_country_id.vat_label or 'Tax ID'"/>:
+                        <span t-field="doc.partner_id.vat"/>
+                    </p>
+                    <span t-if="doc.state in ['draft','sent','waiting_for_approval','waiting_for_approval_ceo','ready_to_confirm']">
+                        <p t-if="doc.contact_id">
+                            <span t-field="doc.contact_id.name"/>
+                            <span t-field="doc.contact_id.email"/>
+                            <span t-field="doc.contact_id.mobile"/>
+                        </p>
+                    </span>
+                </t>
+            </xpath>
         </xpath>
 
-         <xpath expr="//div[@id='informations']" position="replace">
-             <div class="row mt32 mb32" id="informations">
-                 <div t-if="doc.client_order_ref" class="col-auto col-3 mw-100 mb-2">
-                     <strong>Your Reference:</strong>
-                     <p class="m-0" t-field="doc.client_order_ref"/>
-                 </div>
-                 <div t-if="doc.date_order and doc.state not in ['draft','sent','waiting_for_approval','waiting_for_approval_ceo','ready_to_confirm']" class="col-auto col-3 mw-100 mb-2">
-                     <strong>Order Date:</strong>
-                     <p class="m-0" t-field="doc.date_order"/>
-                 </div>
-                 <div t-if="doc.date_order and doc.state in ['draft','sent','waiting_for_approval','waiting_for_approval_ceo','ready_to_confirm']" class="col-auto col-3 mw-100 mb-2">
-                     <strong>Quotation Date:</strong>
-                     <p class="m-0" t-field="doc.date_order" t-options='{"widget": "date"}'/>
-                 </div>
-                 <div t-if="doc.validity_date and doc.state in ['draft','sent','waiting_for_approval','waiting_for_approval_ceo','ready_to_confirm']" class="col-auto col-3 mw-100 mb-2"
-                      name="expiration_date">
-                     <strong>Expiration:</strong>
-                     <p class="m-0" t-field="doc.validity_date"/>
-                 </div>
-                 <div t-if="doc.user_id.name" class="col-auto col-3 mw-100 mb-2">
-                     <strong>Salesperson:</strong>
-                     <p class="m-0" t-field="doc.user_id"/>
-                 </div>
-             </div>
-         </xpath>
+        <xpath expr="//div[@id='informations']" position="replace">
+            <div class="row mt32 mb32" id="informations">
+                <t t-if="doc.state in ['draft','sent','waiting_for_approval','waiting_for_approval_ceo','ready_to_confirm']">
+                    <div t-if="doc.date_order and doc.state in ['draft','sent','waiting_for_approval','waiting_for_approval_ceo','ready_to_confirm']"
+                         class="col-auto col-3 mw-100 mb-2">
+                        <strong>Quotation Date:</strong>
+                        <p class="m-0" t-field="doc.date_order" t-options='{"widget": "date"}'/>
+                    </div>
+
+                    <div t-if="doc.validity_date and doc.state in ['draft','sent','waiting_for_approval','waiting_for_approval_ceo','ready_to_confirm']"
+                         class="col-auto col-3 mw-100 mb-2"
+                         name="expiration_date">
+                        <strong>Expiration:</strong>
+                        <p class="m-0" t-field="doc.validity_date"/>
+                    </div>
+
+                    <div t-if="doc.user_id.name" class="col-auto col-3 mw-100 mb-2">
+                        <strong>Salesperson:</strong>
+                        <p class="m-0" t-field="doc.user_id"/>
+                    </div>
+
+                    <div t-if="doc.user_id.name" class="col-auto col-3 mw-100 mb-2">
+                        <strong>Email:</strong>
+                        <p class="m-0" t-field="doc.user_id.email"/>
+                    </div>
+
+                    <div t-if="doc.user_id.name" class="col-auto col-3 mw-100 mb-2">
+                        <strong>Tel/Mob No:</strong>
+                        <p class="m-0" t-field="doc.user_id.mobile"/>
+                    </div>
+
+                    <div t-if="doc.user_id.name" class="col-auto col-3 mw-100 mb-2">
+                        <strong>Customer Ref:</strong>
+                        <p class="m-0" t-field="doc.partner_id.comment"/>
+                    </div>
+                </t>
+                <t t-if="doc.date_order and doc.state not in ['draft','sent','waiting_for_approval','waiting_for_approval_ceo','ready_to_confirm']">
+                    <div t-if="doc.client_order_ref" class="col-auto col-3 mw-100 mb-2">
+                        <strong>Quotation Reference:</strong>
+                        <p class="m-0" t-field="doc.client_order_ref"/>
+                    </div>
+                    <div t-if="doc.date_order and doc.state not in ['draft','sent','waiting_for_approval','waiting_for_approval_ceo','ready_to_confirm']"
+                         class="col-auto col-3 mw-100 mb-2">
+                        <strong>Order Date:</strong>
+                        <p class="m-0" t-field="doc.date_order"/>
+                    </div>
+                    <div t-if="doc.user_id.name" class="col-auto col-3 mw-100 mb-2">
+                        <strong>Salesperson:</strong>
+                        <p class="m-0" t-field="doc.user_id"/>
+                    </div>
+
+                    <div t-if="doc.user_id.name" class="col-auto col-3 mw-100 mb-2">
+                        <strong>Delivery Due Date:</strong>
+                        <p class="m-0" t-field="doc.commitment_date"/>
+                    </div>
+
+                </t>
+
+
+            </div>
+        </xpath>
+
+
+        <xpath expr="//p[@t-field='doc.note']" position="replace">
+            <div t-if="doc.note">
+                <p>Payment Terms:</p>
+                <span t-field="doc.note"/>
+            </div>
+            <p>Highlights / Special requirements (if any)</p>
+            <!--            <span Payment Terms: t-field="doc.note" </span>-->
+        </xpath>
+        <!--                <xpath expr="//div[@class='row mt32 mb32']" position="replace">-->
+    </template>
+
+    <template id="report_purchase_customized" inherit_id="purchase.report_purchaseorder_document">
+        <xpath expr="//div[@id='informations']" position="inside">
+            <!--            <div id="informations" class="row mt32 mb32">-->
+            <!--                <div t-if="o.user_id" class="col-2 bm-2">-->
+            <!--                    <strong>Purchase Representative:</strong>-->
+            <!--                    <p t-field="o.user_id" class="m-0"/>-->
+            <!--                </div>-->
+            <!--                <div t-if="o.partner_ref" class="col-2 bm-2">-->
+            <!--                    <strong>Your Order Reference:</strong>-->
+            <!--                    <p t-field="o.partner_ref" class="m-0"/>-->
+            <!--                </div>-->
+            <!--                <div t-if="o.date_order" class="col-2 bm-2">-->
+            <!--                    <strong>Order Date:</strong>-->
+            <!--                    <p t-field="o.date_order" class="m-0"/>-->
+            <!--                </div>-->
+
+            <div t-if="o.date_order" class="col-2 bm-1">
+                <strong>Email:</strong>
+                <p t-field="o.user_id.partner_id.email" class="m-0"/>
+            </div>
+
+            <div t-if="o.date_order" class="col-2 bm-1">
+                <strong>Tel/Mob:</strong>
+                <p t-field="o.user_id.partner_id.mobile" class="m-0"/>
+            </div>
+
+            <div t-if="o.date_order" class="col-2 bm-1">
+                <strong>Vendor Reference:</strong>
+                <p t-field="o.partner_ref" class="m-0"/>
+            </div>
+            <!--            </div>-->
+        </xpath>
+
+        <xpath expr="//div[@class='page']">
+            <p>Test Certificate</p>
+            <p>Inspection</p>
+            <p>Penalty</p>
+            <table style="border: none; border-left: none; width:100%">
+                <tr>
+                    <td style="border: none; width:34%">
+                        <p>Remarks (if any)</p>
+                    </td>
+                    <td style="border: none; width:33%; color: black;">Created By</td>
+                    <td style="border: none; width:33%; background-color:white">Approved By</td>
+                </tr>
+                <tr>
+                    <td style="border: none; width:34%">
+                        <p></p>
+                    </td>
+                    <td style="border: none; width:33%">
+                        <p t-field="o.create_uid" class="m-0"/>
+                    </td>
+                    <td style="border: none; width:33%; background-color:white">
+                        <p t-field="o.user_approve_id" class="m-0"/>
+                    </td>
+                </tr>
+            </table>
+        </xpath>
+    </template>
+
+    <template id="report_picking_customized" inherit_id="stock.report_picking">
+        <xpath expr="//h1[@class='mt0 float-left']" position="before">
+            <h5 class="mt0 float-left">Delivery Note:</h5>
+            <br/>
+            <br/>
+        </xpath>
+        <xpath expr="//div[@class='row mt48 mb32']" position="replace">
+            <div class="row mt48 mb32">
+                <div t-if="o.origin" class="col-auto" name="div_origin">
+                    <strong>Source Document:</strong>
+                    <p t-field="o.origin"/>
+                </div>
+                <div t-if="o.origin" class="col-auto" name="div_origin">
+                    <strong>Shipping Date:</strong>
+                    <p t-field="o.date_done"/>
+                </div>
+                <div class="col-auto" name="div_state">
+                    <strong>Status:</strong>
+                    <p t-field="o.state"/>
+                </div>
+
+                <!--                <div t-if="o.origin" class="col-auto" name="div_origin">-->
+                <!--                    <strong>Po Nb:</strong>-->
+                <!--                    <p t-field="o.origin"/>-->
+                <!--                </div>-->
+
+                <div t-if="o.origin" class="col-auto" name="div_origin">
+                    <strong>Delivery Terms:</strong>
+                    <p t-field="o.note"/>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//div[@class='page']" position="inside">
+            <div class="row">
+                <div class="col-6">
+                    <h6>For ZAHAR INDUSTRIAL</h6>
+                    <h6>Signature:</h6>
+                    <p>Print Name:
+                        <span t-esc="user.name"/>
+                    </p>
+                </div>
+                <div class="col-6">
+                    <h6>Receive Number:</h6>
+                    <h6>Signature:</h6>
+                    <p>Date:</p>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//div[@class='row justify-content-end mb16']" position="replace">
+            <div class="row justify-content-end mb16">
+                <div class="col-8" name="left_box">
+                    <div>
+                        <p>ZHR/MKT/F/08</p>
+                    </div>
+                </div>
+                <div class="col-4" name="right_box">
+                    <div t-field="o.name"
+                         t-options="{'widget': 'barcode', 'width': 600, 'height': 100, 'img_style': 'width:300px;height:50px;'}"/>
+                </div>
+            </div>
+        </xpath>
     </template>
 </odoo>

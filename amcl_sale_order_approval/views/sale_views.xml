@@ -123,7 +123,7 @@
             <xpath expr="//h2[@class='mt16']" position="replace">
                 <h2 class="mt16">
                     <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
-                        <span t-if="doc.state in ['sale','done']">Order # </span>
+                        <span t-if="doc.state in ['sale','done']">Sale Order # </span>
                         <span t-if="doc.state in ['ready_to_confirm']">Quotation # </span>
                     </t>
                     <t t-if="env.context.get('proforma', False) or is_pro_forma">
@@ -135,7 +135,7 @@
             <xpath expr="//div[@id='informations']" position="replace">
                 <div class="row mt32 mb32" id="informations">
                     <div t-if="doc.client_order_ref" class="col-auto col-3 mw-100 mb-2">
-                        <strong>Your Reference:</strong>
+                        <strong>Quotation Reference:</strong>
                         <p class="m-0" t-field="doc.client_order_ref"/>
                     </div>
                     <div t-if="doc.date_order and doc.state in ['sale','done']" class="col-auto col-3 mw-100 mb-2">
@@ -143,7 +143,7 @@
                         <p class="m-0" t-field="doc.date_order"/>
                     </div>
                     <div t-if="doc.date_order and doc.state in ['sale','done']" class="col-auto col-3 mw-100 mb-2">
-                        <strong>Quotation Date:</strong>
+                        <strong>Sales Person:</strong>
                         <p class="m-0" t-field="doc.date_order" t-options='{"widget": "date"}'/>
                     </div>
                     <div t-if="doc.validity_date and doc.state in ['ready_to_confirm']" class="col-auto col-3 mw-100 mb-2" name="expiration_date">
@@ -151,7 +151,7 @@
                         <p class="m-0" t-field="doc.validity_date"/>
                     </div>
                     <div t-if="doc.user_id.name" class="col-auto col-3 mw-100 mb-2">
-                        <strong>Salesperson:</strong>
+                        <strong>Sales person:</strong>
                         <p class="m-0" t-field="doc.user_id"/>
                     </div>
                 </div>
