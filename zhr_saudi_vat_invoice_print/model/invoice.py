@@ -61,6 +61,7 @@ class AccountMove(models.Model):
     po_date = fields.Date('PO Date')
     wbs = fields.Char('WBS')
     gdn = fields.Char('GDN')
+    employee_id = fields.Many2one('hr.employee', string='Employee')
 
     @api.depends('invoice_line_ids', 'amount_untaxed', 'amount_tax')
     def _compute_all_price(self):

@@ -249,15 +249,15 @@ class hr_travel_request(models.Model):
         journal = int(self.env['ir.config_parameter'].sudo().get_param('travel_accrual_journal_id'))
         if not journal:
             raise ValidationError(_('Please go to config and put (travel accrual journal)'))
-        employee_name = self.employee_id.name + ' ' + self.employee_id.middle_name
-        if self.employee_id.grand_father_name:
-            employee_name += ' ' + self.employee_id.grand_father_name
-        employee_name += self.employee_id.last_name
+        # employee_name = self.employee_id.name + ' ' + self.employee_id.middle_name
+        # if self.employee_id.grand_father_name:
+        #     employee_name += ' ' + self.employee_id.grand_father_name
+        # employee_name += ' ' + self.employee_id.last_name
         move = {
             'name': '/',
             'journal_id': journal,
             'date': fields.Date.today(),
-            'ref': employee_name
+            'employee_id': self.employee_id.id
         }
         line_ids = []
         # credit_account = int(self.env['ir.config_parameter'].sudo().get_param('ticket_debit_account'))
